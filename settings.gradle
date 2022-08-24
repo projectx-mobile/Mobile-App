@@ -5,3 +5,11 @@ pluginManagement {
 	}
 }
 rootProject.name = 'kids-app'
+
+include 'application'
+include 'authorization'
+include 'tasks'
+//include 'reward'
+include 'accounts'
+include 'rewards'
+
