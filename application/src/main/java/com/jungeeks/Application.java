@@ -1,9 +1,9 @@
-package com.prjxAPP;
+package com.jungeeks;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = "com.prjxAPP")
+@SpringBootApplication(scanBasePackages = "com.jungeeks")
 public class Application {
 
     public static void main(String[] args) {

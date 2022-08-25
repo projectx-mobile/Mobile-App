@@ -1,4 +1,4 @@
-package com.prjxAPP.controllers;
+package com.jungeeks.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
