@@ -1,17 +1,19 @@
 package com.jungeeks.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import com.jungeeks.entities.enums.REWARD_STATUS;
+import com.jungeeks.entities.enums.REWARD_TYPE;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Entity
 public class Reward {
     @Id
@@ -19,6 +21,24 @@ public class Reward {
     private long id;
     private String title;
     private Long points;
+    private String familyId;
 
-//    private Photo photo;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "reward_status")
+    private REWARD_STATUS rewardStatus;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "reward_type")
+    private REWARD_TYPE rewardType;
+
+    @OneToOne(orphanRemoval = true,mappedBy = "reward")
+    private Request request;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "reward_photo", joinColumns = @JoinColumn(name = "reward_id"))
+    @AttributeOverrides({
+            @AttributeOverride(name = "path", column = @Column(name = "path"))
+    })
+    private List<Photo> photo;
+
 }

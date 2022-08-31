@@ -2,13 +2,13 @@ package com.jungeeks.entities;
 
 import lombok.*;
 
-import java.io.File;
-
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Data
 public class Photo {
-//    private String name;
-    private File path;
+    private String path;
 }

@@ -1,22 +1,23 @@
 package com.jungeeks.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Entity
 @Table(name = "sec_pass")
-public class Password {
+public class Password implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User id;
     private String hash;
     private String salt;
-    private Long userId;
-//    @OneToOne
-//    private User user;
 }
