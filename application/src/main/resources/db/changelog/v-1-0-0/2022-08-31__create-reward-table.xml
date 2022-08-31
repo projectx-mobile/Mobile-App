@@ -6,14 +6,14 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet id="4" author="alex_ivashko">
-        <tagDatabase tag="create-reward-table"/>
+        <tagDatabase tag="create-reward"/>
     </changeSet>
 
     <changeSet id="4.1" author="alex_ivashko">
         <sqlFile relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true"
-                 path="sql/create/create-reward-table.sql"/>
+                 path="sql/create-reward-table.sql"/>
         <rollback>
             drop table reward;
         </rollback>

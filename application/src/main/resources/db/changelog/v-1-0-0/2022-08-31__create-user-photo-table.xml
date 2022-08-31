@@ -6,14 +6,14 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet id="5" author="alex_ivashko">
-        <tagDatabase tag="create-user-photo-table"/>
+        <tagDatabase tag="create-user-photo"/>
     </changeSet>
 
     <changeSet id="5.1" author="alex_ivashko">
         <sqlFile relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true"
-                 path="sql/create/create-user-photo-table.sql"/>
+                 path="sql/create-user-photo-table.sql"/>
         <rollback>
             drop table user_photo;
         </rollback>

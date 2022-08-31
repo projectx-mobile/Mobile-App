@@ -13,7 +13,7 @@
         <sqlFile relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true"
-                 path="sql/create/create-request-table.sql"/>
+                 path="sql/create-request-table.sql"/>
         <rollback>
             drop table request;
         </rollback>

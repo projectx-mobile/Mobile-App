@@ -13,9 +13,9 @@
         <sqlFile relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true"
-                 path="sql/create/create-user-table.sql"/>
+                 path="sql/create-user-table.sql"/>
         <rollback>
-            drop table user;
+            drop table sec_user;
         </rollback>
     </changeSet>
 
