@@ -1,0 +1,63 @@
+databaseChangeLog:
+  - changeSet:
+      validCheckSum: ANY
+      id: 20220902_initial_database_structure
+      author: a.ivashko
+      preConditions:
+        - on fail: HALT
+      changes:
+        - sqlFile:
+            dbms: mysql
+            encoding: utf8
+            path: db/changelog/v-1-0-0/sql/V20220902_create_table_user.sql
+        - sqlFile:
+            dbms: mysql
+            encoding: utf8
+            path: db/changelog/v-1-0-0/sql/V20220902_create_table_task.sql
+        - sqlFile:
+            dbms: mysql
+            encoding: utf8
+            path: db/changelog/v-1-0-0/sql/V20220902_create_table_family_task.sql
+        - sqlFile:
+            dbms: mysql
+            encoding: utf8
+            path: db/changelog/v-1-0-0/sql/V20220902_create_table_user_photo.sql
+        - sqlFile:
+            dbms: mysql
+            encoding: utf8
+            path: db/changelog/v-1-0-0/sql/V20220902_create_table_request.sql
+        - sqlFile:
+            dbms: mysql
+            encoding: utf8
+            path: db/changelog/v-1-0-0/sql/V20220902_create_table_reward.sql
+        - sqlFile:
+            dbms: mysql
+            encoding: utf8
+            path: db/changelog/v-1-0-0/sql/V20220902_create_table_task_photo.sql
+        - sqlFile:
+            dbms: mysql
+            encoding: utf8
+            path: db/changelog/v-1-0-0/sql/V20220902_create_table_reward_photo.sql
+        - sqlFile:
+            dbms: mysql
+            encoding: utf8
+            path: db/changelog/v-1-0-0/sql/V20220902_create_relationships.sql
+
+
+      rollback:
+        - sql:
+            sql: drop table sec_users;
+        - sql:
+            sql: drop table task;
+        - sql:
+            sql: drop table user_photo;
+        - sql:
+            sql: drop table task_photo;
+        - sql:
+            sql: drop table reward_photo;
+        - sql:
+            sql: drop table reward;
+        - sql:
+            sql: drop table family_task;
+        - sql:
+            sql: drop table request;

@@ -1,6 +1,6 @@
 CREATE TABLE sec_users
 (
-    id              BIGINT UNSIGNED AUTO_INCREMENT primary key,
+    id              BIGINT AUTO_INCREMENT primary key,
     email           VARCHAR(255) NOT NULL UNIQUE,
     name            VARCHAR(255) NOT NULL,
     points          BIGINT DEFAULT 0,

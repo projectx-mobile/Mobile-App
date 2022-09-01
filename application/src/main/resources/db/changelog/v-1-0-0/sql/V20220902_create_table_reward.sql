@@ -8,5 +8,3 @@ CREATE TABLE reward
     family_id        VARCHAR(255) NOT NULL
 );
 
-ALTER TABLE reward
-    ADD CONSTRAINT reward_family_id_fk FOREIGN KEY (family_id) REFERENCES sec_user (family_id);
