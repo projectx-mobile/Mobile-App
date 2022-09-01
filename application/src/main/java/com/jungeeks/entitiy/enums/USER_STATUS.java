@@ -1,4 +1,4 @@
-package com.jungeeks.entities.enums;
+package com.jungeeks.entitiy.enums;
 
 public enum USER_STATUS {
     BANNED,

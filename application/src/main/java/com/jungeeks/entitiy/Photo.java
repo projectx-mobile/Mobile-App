@@ -1,4 +1,4 @@
-package com.jungeeks.entities;
+package com.jungeeks.entitiy;
 
 import lombok.*;
 
@@ -7,7 +7,6 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
-@RequiredArgsConstructor
 @Data
 public class Photo {
     private String path;

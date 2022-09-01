@@ -1,24 +1,22 @@
-package com.jungeeks.entities;
+package com.jungeeks.entitiy;
 
-import com.jungeeks.entities.enums.REWARD_STATUS;
-import com.jungeeks.entities.enums.REWARD_TYPE;
+import com.jungeeks.entitiy.enums.REWARD_STATUS;
+import com.jungeeks.entitiy.enums.REWARD_TYPE;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@RequiredArgsConstructor
 @Entity
 public class Reward {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String title;
     private Long points;
     private String familyId;

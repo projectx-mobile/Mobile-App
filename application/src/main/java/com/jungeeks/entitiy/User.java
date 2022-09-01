@@ -1,7 +1,7 @@
-package com.jungeeks.entities;
+package com.jungeeks.entitiy;
 
-import com.jungeeks.entities.enums.USER_ROLE;
-import com.jungeeks.entities.enums.USER_STATUS;
+import com.jungeeks.entitiy.enums.USER_ROLE;
+import com.jungeeks.entitiy.enums.USER_STATUS;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,14 +12,13 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@RequiredArgsConstructor
 @Entity
 @Table(name = "sec_users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String email;
 
     @Enumerated(value = EnumType.STRING)
@@ -31,7 +30,7 @@ public class User {
     private String name;
     private String familyId;
 
-    @OneToOne(mappedBy = "id")
+    @OneToOne(mappedBy = "user")
     private Password pass;
 
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "user")
@@ -39,8 +38,8 @@ public class User {
 
     @ManyToMany
     @JoinTable(name = "family_task",
-            joinColumns = @JoinColumn(name = "family_Id",referencedColumnName = "familyId"),
-            inverseJoinColumns = @JoinColumn(name = "tasks_id"))
+            joinColumns = {@JoinColumn(name = "family_Id", referencedColumnName = "familyId")},
+            inverseJoinColumns = {@JoinColumn(name = "tasks_id", referencedColumnName = "id")})
     private List<Task> tasks;
 
     @ElementCollection(fetch = FetchType.LAZY)

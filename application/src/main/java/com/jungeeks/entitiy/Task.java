@@ -1,7 +1,7 @@
-package com.jungeeks.entities;
+package com.jungeeks.entitiy;
 
-import com.jungeeks.entities.enums.TASK_STATUS;
-import com.jungeeks.entities.enums.TASK_TYPE;
+import com.jungeeks.entitiy.enums.TASK_STATUS;
+import com.jungeeks.entitiy.enums.TASK_TYPE;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,16 +13,15 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@RequiredArgsConstructor
 @Entity
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String title;
     private String description;
-    private long points;
+    private Long points;
     private Date deadline;
     private String category;
 
@@ -38,8 +37,8 @@ public class Task {
     @Column(name = "family_id")
     private String familyId;
 
-    @ManyToMany(mappedBy = "tasks")
-    private List<User> users = new java.util.ArrayList<>();
+    @ManyToMany
+    private List<User> users;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "task_photo", joinColumns = @JoinColumn(name = "task_id"))
