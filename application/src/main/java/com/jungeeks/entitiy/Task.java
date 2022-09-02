@@ -37,8 +37,6 @@ public class Task {
     @Column(name = "family_id")
     private String familyId;
 
-    @ManyToMany
-    private List<User> users;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "task_photo", joinColumns = @JoinColumn(name = "task_id"))

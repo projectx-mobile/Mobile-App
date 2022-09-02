@@ -30,16 +30,16 @@ public class User {
     private String name;
     private String familyId;
 
-    @OneToOne(mappedBy = "user")
-    private Password pass;
+//    @OneToOne(mappedBy = "user")
+//    private Password pass;
 
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "user")
     private List<Request> requests;
 
     @ManyToMany
     @JoinTable(name = "family_task",
-            joinColumns = {@JoinColumn(name = "family_Id", referencedColumnName = "familyId")},
-            inverseJoinColumns = {@JoinColumn(name = "tasks_id", referencedColumnName = "id")})
+            joinColumns = {@JoinColumn(name = "family_id", referencedColumnName = "familyId")},
+            inverseJoinColumns = {@JoinColumn(name = "task_id", referencedColumnName = "id")})
     private List<Task> tasks;
 
     @ElementCollection(fetch = FetchType.LAZY)
