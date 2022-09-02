@@ -1,8 +1,8 @@
-package com.jungeeks.entities;
+package com.jungeeks.entitiy;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import com.jungeeks.entitiy.enums.TASK_STATUS;
+import com.jungeeks.entitiy.enums.TASK_TYPE;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,26 +11,40 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Entity
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String title;
     private String description;
-    private long points;
-    private Date deadLine;
+    private Long points;
+    private Date deadline;
     private String category;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "task_status")
     private TASK_STATUS taskStatus;
     private boolean daily;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "task_type")
+    private TASK_TYPE taskType;
+
+    @Column(name = "family_id")
     private String familyId;
+
+    @ManyToMany
+    private List<User> users;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "task_photo", joinColumns = @JoinColumn(name = "task_id"))
     @AttributeOverrides({
-            @AttributeOverride(name = "name", column = @Column(name = "name")),
             @AttributeOverride(name = "path", column = @Column(name = "path"))
     })
     private List<Photo> photo;
+
 }

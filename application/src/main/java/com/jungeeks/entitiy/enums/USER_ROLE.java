@@ -1,4 +1,4 @@
-package com.jungeeks.entities;
+package com.jungeeks.entitiy.enums;
 
 public enum USER_ROLE {
     ADMIN,
