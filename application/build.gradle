@@ -16,7 +16,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.liquibase:liquibase-core:4.15.0'
     liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:3.0.2'
-    implementation 'mysql:mysql-connector-java:8.0.30'}
+    implementation 'mysql:mysql-connector-java:8.0.30'
+}
 
 tasks.jar {
     enabled = false

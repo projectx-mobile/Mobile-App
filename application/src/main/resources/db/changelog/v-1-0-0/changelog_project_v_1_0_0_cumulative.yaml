@@ -45,6 +45,10 @@ databaseChangeLog:
 
 
       rollback:
+        - sqlFile:
+            dbms: mysql
+            encoding: utf8
+            path: db/changelog/v-1-0-0/sql/V20220902_drop_relationships.sql
         - sql:
             sql: drop table sec_users;
         - sql:
