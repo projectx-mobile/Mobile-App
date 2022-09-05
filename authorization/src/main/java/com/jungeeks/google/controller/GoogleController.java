@@ -1,4 +1,4 @@
-package com.jungeeks.google;
+package com.jungeeks.google.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +10,7 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/")
 @CrossOrigin()
-public class Controller {
+public class GoogleController {
 
     @GetMapping("google")
     public Principal user(Principal principal) {
