@@ -8,6 +8,10 @@ dependencies {
     implementation 'com.auth0:java-jwt:4.0.0'
     implementation 'com.auth0:jwks-rsa:0.21.1'
 
+    implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+
+// https://mavenlibs.com/maven/dependency/io.vlinx/mailsender
+    implementation 'io.vlinx:mailsender:1.0.0'
     implementation 'com.google.api-client:google-api-client:2.0.0'
     implementation 'com.google.http-client:google-http-client-jackson2:1.42.2'
     implementation 'org.postgresql:postgresql'
