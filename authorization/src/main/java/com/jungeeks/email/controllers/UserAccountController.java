@@ -1,11 +1,11 @@
 package com.jungeeks.email.controllers;
 
 
-import com.jungeeks.email.entity.User;
 import com.jungeeks.email.repo.EmailSender;
 import com.jungeeks.email.repo.UserRepository;
 import com.jungeeks.email.request.EmailRequest;
 import com.jungeeks.email.services.ConfirmationTokenService;
+import com.jungeeks.email.services.EmailValidator;
 import com.jungeeks.email.token.ConfirmationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +25,15 @@ public class UserAccountController {
 
     @Autowired
     ConfirmationTokenService confirmationTokenService;
+    @Autowired
+    EmailValidator emailValidator;
 
     @PostMapping()
     public String verifyEmail(@RequestBody EmailRequest email) {
-        //TODO: add check for mail exists
+        boolean isValidEmail = emailValidator.test(email.getEmail());
+        if (!isValidEmail) {
+            throw new IllegalStateException("email not valid");
+        }
         String token = UUID.randomUUID().toString();
 
         ConfirmationToken confirmationToken = new ConfirmationToken(
