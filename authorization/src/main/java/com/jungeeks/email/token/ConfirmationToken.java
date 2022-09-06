@@ -1,16 +1,11 @@
 package com.jungeeks.email.token;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
-@Setter
-@Getter
 @NoArgsConstructor
 @Entity
 public class ConfirmationToken {
@@ -18,19 +13,25 @@ public class ConfirmationToken {
     private Long id;
     @NotBlank
     private String token;
-    @NotBlank
     private LocalDateTime createAt;
-    @NotBlank
-    private LocalDateTime expiredAt;
+    private LocalDateTime expiresAt;
     @NotBlank
     private LocalDateTime confirmedAt;
 
+    public LocalDateTime getExpiresAt() {
+        return expiresAt;
+    }
+
+    public void setExpiresAt(LocalDateTime expiresAt) {
+        this.expiresAt = expiresAt;
+    }
+
     public ConfirmationToken(String token,
                              LocalDateTime createAt,
-                             LocalDateTime expiredAt) {
+                             LocalDateTime expiresAt) {
         this.token = token;
         this.createAt = createAt;
-        this.expiredAt = expiredAt;
+        this.expiresAt = expiresAt;
     }
 
     public String getToken() {
@@ -47,14 +48,6 @@ public class ConfirmationToken {
 
     public void setCreateAt(LocalDateTime createAt) {
         this.createAt = createAt;
-    }
-
-    public LocalDateTime getExpiredAt() {
-        return expiredAt;
-    }
-
-    public void setExpiredAt(LocalDateTime expiredAt) {
-        this.expiredAt = expiredAt;
     }
 
     public LocalDateTime getConfirmedAt() {

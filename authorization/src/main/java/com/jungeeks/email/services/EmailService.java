@@ -35,7 +35,7 @@ public class EmailService implements EmailSender {
             helper.setText(email, true);
             helper.setTo(to);
             helper.setSubject("Confirm your email");
-            helper.setFrom("neevels@mail.ru");
+            helper.setFrom("test.jun222@gmail.com");
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
             LOGGER.error("failed to send email", e);
@@ -54,7 +54,7 @@ public class EmailService implements EmailSender {
             throw new IllegalStateException("email already confirmed");
         }
 
-        LocalDateTime expiredAt = confirmationToken.getExpiredAt();
+        LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
             throw new IllegalStateException("token expired");
