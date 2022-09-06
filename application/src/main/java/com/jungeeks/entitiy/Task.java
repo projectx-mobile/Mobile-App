@@ -23,7 +23,9 @@ public class Task {
     private String description;
     private Long points;
     private Date deadline;
-    private String category;
+
+    @OneToMany
+    private List<Category> category;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "task_status")

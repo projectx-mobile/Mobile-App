@@ -12,7 +12,6 @@ public class Family {
     @Id
     private String id;
 
-
     @OneToMany
     private List<Task> task;
 

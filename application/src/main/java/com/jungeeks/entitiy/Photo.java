@@ -2,12 +2,12 @@ package com.jungeeks.entitiy;
 
 import lombok.*;
 
-@Builder
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @Data
 public class Photo {
     private String path;
+    private LocalDateTime creationDate;
 }

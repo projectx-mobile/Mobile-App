@@ -28,15 +28,8 @@ public class User {
     private Long points;
     private String name;
 
-
     @ManyToOne
     private Family familyId;
-
-
-//    @OneToMany
-//    @JoinTable(name = "family_task",
-//            joinColumns = {@JoinColumn(name = "family_id", referencedColumnName = "familyId")})
-//    private List<Task> tasks;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "user_photo", joinColumns = @JoinColumn(name = "user_id"))
