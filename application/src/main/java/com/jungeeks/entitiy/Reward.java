@@ -10,8 +10,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Entity
 public class Reward {
     @Id
@@ -28,7 +27,7 @@ public class Reward {
     @Column(name = "reward_type")
     private REWARD_TYPE rewardType;
 
-    @OneToOne(orphanRemoval = true,mappedBy = "reward")
+    @OneToOne(mappedBy = "reward")
     private Request request;
 
     @ElementCollection(fetch = FetchType.LAZY)

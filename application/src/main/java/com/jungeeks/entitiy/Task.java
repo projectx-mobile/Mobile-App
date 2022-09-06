@@ -11,8 +11,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Entity
 public class Task {
     @Id
@@ -24,21 +23,20 @@ public class Task {
     private Long points;
     private Date deadline;
 
-    @OneToMany
+    @OneToMany()
     private List<Category> category;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "task_status")
     private TASK_STATUS taskStatus;
+
     private boolean daily;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "task_type")
     private TASK_TYPE taskType;
 
-
-
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "task_photo", joinColumns = @JoinColumn(name = "task_id"))
     @AttributeOverrides({
             @AttributeOverride(name = "path", column = @Column(name = "path"))

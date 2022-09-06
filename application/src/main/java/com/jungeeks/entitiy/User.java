@@ -10,8 +10,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "sec_users")
 public class User {
@@ -28,8 +27,9 @@ public class User {
     private Long points;
     private String name;
 
-    @ManyToOne
-    private Family familyId;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "family_id")
+    private Family family;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "user_photo", joinColumns = @JoinColumn(name = "user_id"))

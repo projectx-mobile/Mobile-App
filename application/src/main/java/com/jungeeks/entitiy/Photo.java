@@ -4,8 +4,9 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class Photo {
     private String path;

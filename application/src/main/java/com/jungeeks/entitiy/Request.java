@@ -9,17 +9,17 @@ import java.util.Objects;
 
 @Builder
 @NoArgsConstructor
-@Getter
-@Setter
 @AllArgsConstructor
+@Data
 @Entity
-public class Request implements Serializable {
+public class Request {
 
     @Id
-    @OneToOne(optional = false)
-    @JoinColumn(nullable = false)
-    private Reward reward;
+    private Long id;
 
+    @OneToOne
+    @JoinColumn
+    private Reward reward;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "request_status")
