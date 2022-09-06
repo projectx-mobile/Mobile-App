@@ -14,7 +14,6 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "sec_users")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,19 +27,16 @@ public class User {
     private USER_STATUS user_status;
     private Long points;
     private String name;
-    private String familyId;
 
-//    @OneToOne(mappedBy = "user")
-//    private Password pass;
 
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "user")
-    private List<Request> requests;
+    @ManyToOne
+    private Family familyId;
 
-    @ManyToMany
-    @JoinTable(name = "family_task",
-            joinColumns = {@JoinColumn(name = "family_id", referencedColumnName = "familyId")},
-            inverseJoinColumns = {@JoinColumn(name = "task_id", referencedColumnName = "id")})
-    private List<Task> tasks;
+
+//    @OneToMany
+//    @JoinTable(name = "family_task",
+//            joinColumns = {@JoinColumn(name = "family_id", referencedColumnName = "familyId")})
+//    private List<Task> tasks;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "user_photo", joinColumns = @JoinColumn(name = "user_id"))

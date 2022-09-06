@@ -2,7 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.3'
     id 'io.spring.dependency-management' version '1.0.13.RELEASE'
     id 'java'
-    id 'org.liquibase.gradle' version '2.1.1'
+//    id 'org.liquibase.gradle' version '2.1.1'
 }
 
 dependencies {
@@ -15,30 +15,29 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'org.liquibase:liquibase-core:4.15.0'
-    liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:3.0.2'
-    liquibaseRuntime 'info.picocli:picocli:4.6.3'
-    liquibaseRuntime group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
-    implementation 'mysql:mysql-connector-java:8.0.30'
-    liquibaseRuntime sourceSets.main.output
+//    implementation 'org.liquibase:liquibase-core:4.15.0'
+//    liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:3.0.2'
+//    liquibaseRuntime 'info.picocli:picocli:4.6.3'
+//    liquibaseRuntime group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+//    liquibaseRuntime sourceSets.main.output
 }
+//
+//configurations {
+//    liquibaseRuntime.extendsFrom runtimeClasspath
+//}
 
-configurations {
-    liquibaseRuntime.extendsFrom runtimeClasspath
-}
 
-
-liquibase {
-    activities {
-        main {
-            changeLogFile "application/src/main/resources/db/changelog/db.changelog-master.yaml"
-            url "jdbc:mysql://127.0.0.1:3306/kids_app"
-            driver "com.mysql.cj.jdbc.Driver"
-            username "root"
-            password "12344321"
-        }
-    }
-}
+//liquibase {
+//    activities {
+//        main {
+//            changeLogFile "application/src/main/resources/db/changelog/db.changelog-master.yaml"
+//            url "jdbc:mysql://127.0.0.1:3306/kids_app"
+//            driver "com.mysql.cj.jdbc.Driver"
+//            username "root"
+//            password "12344321"
+//        }
+//    }
+//}
 
 
 tasks.jar {

@@ -34,8 +34,6 @@ public class Task {
     @Column(name = "task_type")
     private TASK_TYPE taskType;
 
-    @Column(name = "family_id")
-    private String familyId;
 
 
     @ElementCollection(fetch = FetchType.EAGER)

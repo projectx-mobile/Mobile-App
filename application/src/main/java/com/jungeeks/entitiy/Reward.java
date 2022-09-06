@@ -19,7 +19,6 @@ public class Reward {
     private Long id;
     private String title;
     private Long points;
-    private String familyId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "reward_status")
