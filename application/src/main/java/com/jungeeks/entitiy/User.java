@@ -40,4 +40,6 @@ public class User {
     @OneToOne(mappedBy = "user")
     private ConfirmationToken confirmationToken;
 
+    @OneToOne(mappedBy = "user", optional = false)
+    private SocialCredentials socialCredentials;
 }

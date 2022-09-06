@@ -15,10 +15,9 @@ import java.util.Objects;
 public class Request {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @OneToOne
-    @JoinColumn
     private Reward reward;
 
     @Enumerated(EnumType.STRING)

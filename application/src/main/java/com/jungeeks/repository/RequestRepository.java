@@ -1,4 +1,4 @@
-package com.jungeeks.entitiy.repositories;
+package com.jungeeks.repository;
 
 import com.jungeeks.entitiy.Request;
 import com.jungeeks.entitiy.Reward;

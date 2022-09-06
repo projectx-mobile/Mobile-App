@@ -5,6 +5,7 @@ import com.jungeeks.entitiy.enums.TASK_TYPE;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -20,17 +21,12 @@ public class Task {
 
     private String title;
     private String description;
-    private Long points;
-    private Date deadline;
 
-    @OneToMany()
-    private List<Category> category;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "task_status")
-    private TASK_STATUS taskStatus;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    private boolean daily;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "task_type")
@@ -41,6 +37,6 @@ public class Task {
     @AttributeOverrides({
             @AttributeOverride(name = "path", column = @Column(name = "path"))
     })
-    private List<Photo> photo;
+    private List<Photo> photos;
 
 }

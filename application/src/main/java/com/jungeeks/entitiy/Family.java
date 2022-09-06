@@ -19,10 +19,11 @@ public class Family {
     private String id;
 
     @OneToMany(cascade = CascadeType.MERGE)
-    private List<Task> task;
+    @JoinColumn(name = "family_id", referencedColumnName = "id")
+    private List<FamilyTask> task;
 
     @OneToMany(cascade = CascadeType.MERGE)
-    private List<Request> request;
+    private List<Request> requests;
 
     @OneToMany(cascade = CascadeType.MERGE)
     private List<Reward> rewards;

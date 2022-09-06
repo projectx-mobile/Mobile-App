@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 public class Photo {
+
     private String path;
     private LocalDateTime creationDate;
 }
