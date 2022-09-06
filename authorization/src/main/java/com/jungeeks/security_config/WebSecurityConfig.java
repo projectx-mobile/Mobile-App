@@ -31,12 +31,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/registration/**").permitAll()
                 .antMatchers("/email").permitAll()
-                .antMatchers("/auth/google").permitAll()
-                .antMatchers("/**").permitAll();
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                .formLogin();
+                .antMatchers("/google").permitAll()
+                .antMatchers("/**").permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .formLogin();
     }
 
 
@@ -59,14 +59,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //            UserDetailsRepo userDetailsRepo
     ) {
         return map -> {
-            String id = (String) map.get("sub");
+            Long sub = (Long) map.get("sub");
 //            return userDetailsRepo.findById(id).orElseGet(() -> {
 //                User newUser = new User();
-            String idi = id;
+            //String idi = id;
             String name = (String) map.get("name");
             String email = (String) map.get("email");
 
 //                newUser.setId(id);
+//                newUser.setSub(sub);
 //                newUser.setName((String) map.get("name"));
 //                newUser.setEmail((String) map.get("email"));
 //                userDetailsRepo.save(newUser);
