@@ -37,4 +37,7 @@ public class User {
             @AttributeOverride(name = "path", column = @Column(name = "path"))})
     private List<Photo> photo;
 
+    @OneToOne(mappedBy = "user")
+    private ConfirmationToken confirmationToken;
+
 }
