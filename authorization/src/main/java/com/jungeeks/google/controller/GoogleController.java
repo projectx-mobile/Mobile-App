@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping()
 @CrossOrigin()
 public class GoogleController {
 
-    @GetMapping("google")
+    @GetMapping()
     public Principal user(Principal principal) {
         return principal;
     }

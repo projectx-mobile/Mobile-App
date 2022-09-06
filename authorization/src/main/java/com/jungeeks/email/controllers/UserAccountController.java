@@ -42,6 +42,16 @@ public class UserAccountController {
                 LocalDateTime.now().plusMinutes(15)
         );
 
+        if (confirmationToken.getConfirmedAt() != null) {
+            throw new IllegalStateException("email already confirmed");
+        }
+
+        LocalDateTime expiredAt = confirmationToken.getExpiresAt();
+
+        if (expiredAt.isBefore(LocalDateTime.now())) {
+            throw new IllegalStateException("token expired");
+        }
+
         String link = "http://localhost:8000/email/confirm?token=" + token;
         emailSender.send(email.getEmail(),
                 emailSender.buildEmail(email.getEmail(), link));
