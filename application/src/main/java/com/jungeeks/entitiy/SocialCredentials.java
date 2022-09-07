@@ -1,8 +1,15 @@
 package com.jungeeks.entitiy;
 
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Data
 public class SocialCredentials {
@@ -16,4 +23,5 @@ public class SocialCredentials {
     
     private Long sub;
     private Long socialId;
+
 }

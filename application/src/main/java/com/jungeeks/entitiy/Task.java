@@ -15,6 +15,7 @@ import java.util.List;
 @Data
 @Entity
 public class Task {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,13 +23,12 @@ public class Task {
     private String title;
     private String description;
 
-
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-
     @Enumerated(EnumType.STRING)
     @Column(name = "task_type")
     private TASK_TYPE taskType;
+    
 }

@@ -27,4 +27,5 @@ public class Family {
 
     @OneToMany(cascade = CascadeType.MERGE)
     private List<Reward> rewards;
+
 }

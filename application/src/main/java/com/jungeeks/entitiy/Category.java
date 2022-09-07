@@ -23,4 +23,5 @@ public class Category {
 
     @Enumerated(value = EnumType.STRING)
     private CATEGORY_TYPE category_type;
+
 }

@@ -18,7 +18,7 @@ public class FamilyTask {
     @Id
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "task_id")
     private Task task;
 
@@ -33,13 +33,8 @@ public class FamilyTask {
     })
     private List<Photo> photos;
 
-
     @Enumerated(EnumType.STRING)
     @Column(name = "task_status")
     private TASK_STATUS taskStatus;
 
-
 }
-
-
-

@@ -14,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "sec_users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,4 +43,5 @@ public class User {
 
     @OneToOne(mappedBy = "user", optional = false)
     private SocialCredentials socialCredentials;
+
 }

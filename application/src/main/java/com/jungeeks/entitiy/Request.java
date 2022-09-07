@@ -17,10 +17,12 @@ public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @OneToOne
     private Reward reward;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "request_status")
     private REQUEST_STATUS requestStatus;
+
 }
