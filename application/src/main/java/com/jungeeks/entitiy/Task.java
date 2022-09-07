@@ -31,12 +31,4 @@ public class Task {
     @Enumerated(EnumType.STRING)
     @Column(name = "task_type")
     private TASK_TYPE taskType;
-
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "task_photo", joinColumns = @JoinColumn(name = "task_id"))
-    @AttributeOverrides({
-            @AttributeOverride(name = "path", column = @Column(name = "path"))
-    })
-    private List<Photo> photos;
-
 }
