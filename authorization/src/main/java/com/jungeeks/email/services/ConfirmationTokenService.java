@@ -1,7 +1,7 @@
 package com.jungeeks.email.services;
 
 import com.jungeeks.email.repo.ConfirmationTokenRepository;
-import com.jungeeks.email.token.ConfirmationToken;
+import com.jungeeks.email.entity.ConfirmationToken;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,5 +1,6 @@
 package com.jungeeks.registration.services;
 
+import com.jungeeks.email.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,7 +16,7 @@ public class AppUserService implements UserDetailsService {
     /*
      *   Parameter signUpUser should have User entity
      */
-    public String signUpUser() {
+    public String signUpUser(User user) {
         return "";
     }
 }

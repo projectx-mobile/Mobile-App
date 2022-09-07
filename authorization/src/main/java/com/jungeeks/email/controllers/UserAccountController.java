@@ -1,12 +1,11 @@
 package com.jungeeks.email.controllers;
 
-
 import com.jungeeks.email.repo.EmailSender;
 import com.jungeeks.email.repo.UserRepository;
 import com.jungeeks.email.request.EmailRequest;
 import com.jungeeks.email.services.ConfirmationTokenService;
 import com.jungeeks.email.services.EmailValidator;
-import com.jungeeks.email.token.ConfirmationToken;
+import com.jungeeks.email.entity.ConfirmationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,6 +52,7 @@ public class UserAccountController {
         }
 
         String link = "http://localhost:8000/email/confirm?token=" + token;
+
         emailSender.send(email.getEmail(),
                 emailSender.buildEmail(email.getEmail(), link));
         return token;
@@ -63,6 +63,7 @@ public class UserAccountController {
 //        emailSender.confirmToken(token);
         return "it works";
     }
+
 
 
 }
