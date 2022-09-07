@@ -1,4 +1,4 @@
-package com.jungeeks.email.token;
+package com.jungeeks.email.entity;
 
 import lombok.NoArgsConstructor;
 import javax.persistence.Entity;

@@ -5,7 +5,6 @@ import lombok.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-@Getter
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
@@ -17,4 +16,16 @@ public class RegistrationRequest {
     private  String email;
     @NotBlank
     private  String password;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }

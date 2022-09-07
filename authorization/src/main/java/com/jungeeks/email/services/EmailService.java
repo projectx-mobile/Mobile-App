@@ -1,7 +1,7 @@
 package com.jungeeks.email.services;
 
 import com.jungeeks.email.repo.EmailSender;
-import com.jungeeks.email.token.ConfirmationToken;
+import com.jungeeks.email.entity.ConfirmationToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,4 +133,6 @@ public class EmailService implements EmailSender {
                 "\n" +
                 "</div></div>";
     }
+
+
 }

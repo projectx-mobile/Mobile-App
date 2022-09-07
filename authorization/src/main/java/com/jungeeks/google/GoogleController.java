@@ -1,4 +1,4 @@
-package com.jungeeks.google.controller;
+package com.jungeeks.google;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
