@@ -1,31 +1,13 @@
 package com.jungeeks.email.services;
 
-import com.jungeeks.email.repo.ConfirmationTokenRepository;
 import com.jungeeks.email.entity.ConfirmationToken;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
-@Service
-@AllArgsConstructor
-public class ConfirmationTokenService {
+public interface ConfirmationTokenService {
+    void saveConfirmationToken(ConfirmationToken token);
 
-    @Autowired
-    private ConfirmationTokenRepository confirmationTokenRepository;
+    Optional<ConfirmationToken> getToken(String token);
 
-    public void saveConfirmationToken(ConfirmationToken token) {
-        confirmationTokenRepository.save(token);
-    }
-
-    public Optional<ConfirmationToken> getToken(String token) {
-        return confirmationTokenRepository.findByToken(token);
-    }
-
-    public int setConfirmedAt(String token) {
-        return confirmationTokenRepository.updateConfirmedAt(
-                token, LocalDateTime.now());
-    }
+    int setConfirmedAt(String token);
 }

@@ -1,11 +1,10 @@
 package com.jungeeks.email.controllers;
 
 import com.jungeeks.email.repo.ConfirmationTokenRepository;
-import com.jungeeks.email.repo.EmailSender;
+import com.jungeeks.email.services.EmailService;
 import com.jungeeks.email.repo.UserRepository;
-import com.jungeeks.email.request.EmailRequest;
-import com.jungeeks.email.services.ConfirmationTokenService;
-import com.jungeeks.email.services.EmailValidator;
+import com.jungeeks.email.controllers.request.EmailRequest;
+import com.jungeeks.email.services.imp.ConfirmationTokenServiceImp;
 import com.jungeeks.email.entity.ConfirmationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,23 +20,16 @@ public class UserAccountController {
     UserRepository userRepository;
 
     @Autowired
-    EmailSender emailSender;
+    EmailService emailSender;
 
     @Autowired
-    ConfirmationTokenService confirmationTokenService;
-
-    @Autowired
-    EmailValidator emailValidator;
+    ConfirmationTokenServiceImp confirmationTokenService;
 
     @Autowired
     ConfirmationTokenRepository confirmationTokenRepository;
 
     @PostMapping()
     public String verifyEmail(@RequestBody EmailRequest email) {
-        boolean isValidEmail = emailValidator.test(email.getEmail());
-        if (!isValidEmail) {
-            throw new IllegalStateException("email not valid");
-        }
         String token = UUID.randomUUID().toString();
 
         ConfirmationToken confirmationToken = new ConfirmationToken(
@@ -67,8 +59,7 @@ public class UserAccountController {
 
     @GetMapping(path = "confirm")
     public String confirmToken(@RequestParam("token") String token) {
-        emailSender.confirmToken(token);
-        return "it works";
+        return emailSender.confirmToken(token);
     }
 
 
