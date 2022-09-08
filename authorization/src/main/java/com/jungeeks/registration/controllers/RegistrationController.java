@@ -19,10 +19,13 @@ import javax.validation.Valid;
 //@AllArgsConstructor
 public class RegistrationController {
 
-    @Autowired
-    private RegistrationService registrationService;
-    @Autowired
-    private UserRepository userRepository;
+    private final RegistrationService registrationService;
+    private final UserRepository userRepository;
+
+    public RegistrationController(RegistrationService registrationService, UserRepository userRepository) {
+        this.registrationService = registrationService;
+        this.userRepository = userRepository;
+    }
 
     @PostMapping
     public ResponseEntity<?> register(@Valid @RequestBody RegistrationRequest request) {
