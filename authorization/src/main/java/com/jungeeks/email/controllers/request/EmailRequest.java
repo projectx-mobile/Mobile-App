@@ -1,4 +1,4 @@
-package com.jungeeks.email.request;
+package com.jungeeks.email.controllers.request;
 
 import lombok.*;
 
