@@ -8,29 +8,35 @@ import javax.persistence.*;
 @Entity
 @Table(name = "usr")
 @Data
-@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long sub;
+    private String sub;
     private String email;
     private String name;
     private String password;
 
-    public User(String email, String name, String password) {
+//    public User(String email, String name, String password) {
+//        this.email = email;
+//        this.name = name;
+//        this.password = password;
+//    }
+
+    public User(String sub, String email, String name) {
+        this.sub = sub;
         this.email = email;
         this.name = name;
-        this.password = password;
     }
 
+    public User() {
+    }
 
-
-    public Long getSub() {
+    public String getSub() {
         return sub;
     }
 
-    public void setSub(Long sub) {
+    public void setSub(String sub) {
         this.sub = sub;
     }
 

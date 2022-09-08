@@ -1,5 +1,6 @@
 package com.jungeeks.email.controllers;
 
+import com.jungeeks.email.repo.ConfirmationTokenRepository;
 import com.jungeeks.email.repo.EmailSender;
 import com.jungeeks.email.repo.UserRepository;
 import com.jungeeks.email.request.EmailRequest;
@@ -24,8 +25,12 @@ public class UserAccountController {
 
     @Autowired
     ConfirmationTokenService confirmationTokenService;
+
     @Autowired
     EmailValidator emailValidator;
+
+    @Autowired
+    ConfirmationTokenRepository confirmationTokenRepository;
 
     @PostMapping()
     public String verifyEmail(@RequestBody EmailRequest email) {
@@ -40,6 +45,8 @@ public class UserAccountController {
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(15)
         );
+
+        confirmationTokenRepository.save(confirmationToken);
 
         if (confirmationToken.getConfirmedAt() != null) {
             throw new IllegalStateException("email already confirmed");
@@ -60,10 +67,9 @@ public class UserAccountController {
 
     @GetMapping(path = "confirm")
     public String confirmToken(@RequestParam("token") String token) {
-//        emailSender.confirmToken(token);
+        emailSender.confirmToken(token);
         return "it works";
     }
-
 
 
 }

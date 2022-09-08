@@ -1,4 +1,4 @@
-package com.jungeeks.registration.security;
+package com.jungeeks.security_config;
 
 
 import org.springframework.context.annotation.Bean;

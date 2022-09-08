@@ -2,6 +2,8 @@ package com.jungeeks.email.entity;
 
 import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -10,6 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 public class ConfirmationToken {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
     private String token;
@@ -32,6 +35,9 @@ public class ConfirmationToken {
         this.token = token;
         this.createAt = createAt;
         this.expiresAt = expiresAt;
+    }
+
+    public ConfirmationToken() {
     }
 
     public String getToken() {

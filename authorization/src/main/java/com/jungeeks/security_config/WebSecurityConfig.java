@@ -1,6 +1,9 @@
 package com.jungeeks.security_config;
 
+import com.jungeeks.email.entity.User;
+import com.jungeeks.email.repo.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +26,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    private final AppUserService appUserService;
 
 //    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+//    @Autowired
+//    private UserRepository userRepository;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -55,24 +61,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
 
     @Bean
-    public PrincipalExtractor principalExtractor(
-//            UserDetailsRepo userDetailsRepo
-    ) {
+    public PrincipalExtractor principalExtractor(UserRepository userRepository) {
         return map -> {
-            String id = (String) map.get("sub");
-//            return userDetailsRepo.findById(id).orElseGet(() -> {
-//                User newUser = new User();
-            String idi = id;
-            String name = (String) map.get("name");
-            String email = (String) map.get("email");
-
-//                newUser.setId(id);
-//                newUser.setName((String) map.get("name"));
-//                newUser.setEmail((String) map.get("email"));
-//                userDetailsRepo.save(newUser);
-//                return newUser;
-//            });
-            return null;
+            String sub = (String) map.get("sub");
+            return userRepository.findBySub(sub).orElseGet(() -> {
+                User newUser = new User();
+                newUser.setSub(sub);
+                newUser.setName((String) map.get("name"));
+                newUser.setEmail((String) map.get("email"));
+                userRepository.save(newUser);
+                return newUser;
+            });
         };
     }
 }
