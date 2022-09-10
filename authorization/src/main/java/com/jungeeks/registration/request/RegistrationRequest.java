@@ -1,4 +1,4 @@
-package com.jungeeks.registration.requests;
+package com.jungeeks.registration.request;
 
 import lombok.*;
 

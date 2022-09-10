@@ -11,7 +11,6 @@ import java.security.Principal;
 @RequestMapping()
 @CrossOrigin()
 public class GoogleController {
-
     @GetMapping()
     public Principal user(Principal principal) {
         return principal;
