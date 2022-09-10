@@ -1,8 +1,8 @@
-package com.jungeeks.email.services.imp;
+package com.jungeeks.email.service.imp;
 
 import com.jungeeks.email.repo.ConfirmationTokenRepository;
 import com.jungeeks.email.entity.ConfirmationToken;
-import com.jungeeks.email.services.ConfirmationTokenService;
+import com.jungeeks.email.service.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +18,14 @@ public class ConfirmationTokenServiceImp implements ConfirmationTokenService {
     private ConfirmationTokenRepository confirmationTokenRepository;
 
     @Override
-    public void saveConfirmationToken(ConfirmationToken token) {
-        confirmationTokenRepository.save(token);
+    public void saveConfirmationToken(String token) {
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15)
+        );
+        confirmationTokenRepository.save(confirmationToken);
+
     }
 
     @Override

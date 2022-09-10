@@ -3,7 +3,6 @@ package com.jungeeks.security_config;
 import com.jungeeks.email.entity.User;
 import com.jungeeks.email.repo.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.context.annotation.Bean;
@@ -23,13 +22,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableOAuth2Sso
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    private final AppUserService appUserService;
-
-//    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-//    @Autowired
-//    private UserRepository userRepository;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -44,21 +36,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin();
     }
-
-
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(daoAuthenticationProvider());
-//    }
-
-//    @Bean
-//    public DaoAuthenticationProvider daoAuthenticationProvider() {
-//        DaoAuthenticationProvider provider =
-//                new DaoAuthenticationProvider();
-//        provider.setPasswordEncoder(bCryptPasswordEncoder);
-//        provider.setUserDetailsService(appUserService);
-//        return provider;
-//    }
 
     @Bean
     public PrincipalExtractor principalExtractor(UserRepository userRepository) {

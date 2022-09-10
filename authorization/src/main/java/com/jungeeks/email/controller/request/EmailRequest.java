@@ -1,4 +1,4 @@
-package com.jungeeks.email.controllers.request;
+package com.jungeeks.email.controller.request;
 
 import lombok.*;
 
@@ -10,11 +10,9 @@ public class EmailRequest {
     @Email
     @NotBlank
     private String email;
-
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
