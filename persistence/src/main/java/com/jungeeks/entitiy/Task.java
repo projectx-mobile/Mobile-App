@@ -1,13 +1,9 @@
 package com.jungeeks.entitiy;
 
-import com.jungeeks.entitiy.enums.TASK_STATUS;
 import com.jungeeks.entitiy.enums.TASK_TYPE;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
 @Builder
 @NoArgsConstructor

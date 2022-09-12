@@ -41,7 +41,7 @@ public class User {
     @OneToOne(mappedBy = "user")
     private ConfirmationToken confirmationToken;
 
-    @OneToOne(mappedBy = "user", optional = false)
+    @OneToOne(mappedBy = "user", optional = false,cascade = CascadeType.PERSIST)
     private SocialCredentials socialCredentials;
 
 }

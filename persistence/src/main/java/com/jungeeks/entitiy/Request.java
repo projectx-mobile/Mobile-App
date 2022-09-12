@@ -4,8 +4,6 @@ import com.jungeeks.entitiy.enums.REQUEST_STATUS;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
 @Builder
 @NoArgsConstructor
