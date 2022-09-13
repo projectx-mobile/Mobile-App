@@ -24,6 +24,7 @@ public class FamilyTask {
 
     private LocalDateTime deadline;
     private Long points;
+
     @Column(name = "is_daily")
     private boolean daily;
 
