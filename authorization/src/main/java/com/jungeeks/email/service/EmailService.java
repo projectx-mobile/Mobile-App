@@ -7,5 +7,5 @@ public interface EmailService {
 
     String buildEmail(String name, String link);
 
-    ResponseEntity confirmToken(String token);
+    ResponseEntity<String> confirmToken(String token);
 }

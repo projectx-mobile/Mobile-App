@@ -4,7 +4,6 @@ import com.jungeeks.email.repo.ConfirmationTokenRepository;
 import com.jungeeks.email.entity.ConfirmationToken;
 import com.jungeeks.email.service.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,7 +13,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ConfirmationTokenServiceImp implements ConfirmationTokenService {
 
-    @Autowired
     private ConfirmationTokenRepository confirmationTokenRepository;
 
     @Override

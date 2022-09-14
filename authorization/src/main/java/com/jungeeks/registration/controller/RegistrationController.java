@@ -5,13 +5,11 @@ import com.jungeeks.registration.service.imp.RegistrationServiceImp;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/registration")
 public class RegistrationController {
 
     private final RegistrationServiceImp registrationService;
@@ -20,8 +18,8 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
 
-    @PostMapping
-    public ResponseEntity register(@Valid @RequestBody RegistrationRequest request) {
+    @PostMapping("/api/registration")
+    public ResponseEntity<String> register(@Valid @RequestBody RegistrationRequest request) {
         return registrationService.register(request);
 
     }

@@ -8,24 +8,15 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Getter
+@Builder
+@NoArgsConstructor
 public class RegistrationRequest {
     @NotBlank
-    private  String name;
+    private String name;
     @NotBlank
     @Email
-    private  String email;
+    private String email;
     @NotBlank
-    private  String password;
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
+    private String password;
 }

@@ -4,9 +4,6 @@ import com.jungeeks.email.service.EmailService;
 import com.jungeeks.email.entity.ConfirmationToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -23,8 +20,8 @@ import java.time.LocalDateTime;
 public class EmailServiceImp implements EmailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImp.class);
-    private JavaMailSender mailSender;
-    private ConfirmationTokenServiceImp confirmationTokenService;
+    private final JavaMailSender mailSender;
+    private final ConfirmationTokenServiceImp confirmationTokenService;
 
     public EmailServiceImp(JavaMailSender mailSender, ConfirmationTokenServiceImp confirmationTokenService) {
         this.mailSender = mailSender;
@@ -33,12 +30,12 @@ public class EmailServiceImp implements EmailService {
 
     @Override
     @Async
-    public void send(String to, String email) {
+    public void send(String to, String confirmLink) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper =
                     new MimeMessageHelper(mimeMessage, "utf-8");
-            helper.setText(email, true);
+            helper.setText(buildEmail(to, confirmLink), true);
             helper.setTo(to);
             helper.setSubject("Confirm your email");
             helper.setFrom("FastEmaaiil@yandex.ru");
@@ -51,24 +48,24 @@ public class EmailServiceImp implements EmailService {
 
     @Override
     @Transactional
-    public ResponseEntity<?> confirmToken(String token) {
+    public ResponseEntity<String> confirmToken(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() -> {
-                    LOGGER.info("token not found");
-                    return new IllegalStateException("token not found");
+                    LOGGER.info("Token not found");
+                    return new IllegalStateException("Token not found");
                 });
 
         if (confirmationToken.getConfirmedAt() != null) {
-            LOGGER.info("email already confirmed");
-            return ResponseEntity.badRequest().body("email already confirmed");
+            LOGGER.info("Email already confirmed");
+            return ResponseEntity.badRequest().body("Email already confirmed");
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            LOGGER.info("token expired");
-            return ResponseEntity.badRequest().body("token expired");
+            LOGGER.info("Token expired");
+            return ResponseEntity.badRequest().body("Token expired");
         }
 
         confirmationTokenService.setConfirmedAt(token);
