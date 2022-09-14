@@ -1,6 +1,9 @@
 package com.jungeeks.email.entity;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,6 +13,8 @@ import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Entity
+@Setter
+@Getter
 public class ConfirmationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,42 +30,11 @@ public class ConfirmationToken {
         return expiresAt;
     }
 
-    public void setExpiresAt(LocalDateTime expiresAt) {
-        this.expiresAt = expiresAt;
-    }
-
     public ConfirmationToken(String token,
                              LocalDateTime createAt,
                              LocalDateTime expiresAt) {
         this.token = token;
         this.createAt = createAt;
         this.expiresAt = expiresAt;
-    }
-
-    public ConfirmationToken() {
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public LocalDateTime getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(LocalDateTime createAt) {
-        this.createAt = createAt;
-    }
-
-    public LocalDateTime getConfirmedAt() {
-        return confirmedAt;
-    }
-
-    public void setConfirmedAt(LocalDateTime confirmedAt) {
-        this.confirmedAt = confirmedAt;
     }
 }

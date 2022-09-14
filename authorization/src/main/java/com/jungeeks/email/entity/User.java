@@ -1,26 +1,29 @@
 package com.jungeeks.email.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "usr")
 @Data
+@Setter
+@Getter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "sub")
     private String sub;
+    @Column(name = "email")
     private String email;
+    @Column(name = "name")
     private String name;
+    @Column(name = "password")
     private String password;
 
-//    public User(String email, String name, String password) {
-//        this.email = email;
-//        this.name = name;
-//        this.password = password;
-//    }
 
     public User(String sub, String email, String name) {
         this.sub = sub;
@@ -29,37 +32,5 @@ public class User {
     }
 
     public User() {
-    }
-
-    public String getSub() {
-        return sub;
-    }
-
-    public void setSub(String sub) {
-        this.sub = sub;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }
