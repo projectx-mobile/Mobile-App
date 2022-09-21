@@ -29,9 +29,6 @@ public class Reward {
     @Column(name = "reward_type")
     private REWARD_TYPE rewardType;
 
-//    @OneToOne(mappedBy = "reward")
-//    private RewardRequest request;
-
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "reward_photo", joinColumns = @JoinColumn(name = "reward_id"))
     @AttributeOverrides({

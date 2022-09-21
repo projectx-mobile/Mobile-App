@@ -35,7 +35,4 @@ public class Family {
             inverseJoinColumns = @JoinColumn(name = "reward_id",referencedColumnName = "id"))
     private List<Reward> rewards;
 
-//    @OneToMany(cascade = CascadeType.PERSIST)
-//    private List<User> users;
-
 }
