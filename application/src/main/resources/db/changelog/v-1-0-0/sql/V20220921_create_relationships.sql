@@ -20,7 +20,7 @@ create unique index family_rewards_family_id_uindex
 
 alter table confirmation_token
     add constraint confirmation_token_sec_users_id_fk
-        foreign key (user_id) references sec_users (id);
+        foreign key (user_id) references sec_user (id);
 
 alter table family_rewards_requests
     add constraint family_rewards_requests_request_id_fk
@@ -48,7 +48,7 @@ alter table family_task
 
 alter table family_task
     add constraint family_task_user_id_fk
-        foreign key (user_id) references sec_users (id);
+        foreign key (user_id) references sec_user (id);
 
 alter table family_task
     add constraint family_task_family_id_fk
@@ -60,7 +60,7 @@ alter table family_task_user
 
 alter table family_task_user
     add constraint family_task_user_user_id_fk
-        foreign key (user_id) references sec_users (id);
+        foreign key (user_id) references sec_user (id);
 
 
 alter table reward_request
@@ -69,7 +69,7 @@ alter table reward_request
 
 alter table reward_request
     add constraint reward_request_user_id_fk
-        foreign key (user_id) references sec_users (id);
+        foreign key (user_id) references sec_user (id);
 
 
 alter table reward_photo
@@ -77,13 +77,13 @@ alter table reward_photo
         foreign key (reward_id) references reward (id);
 
 
-alter table sec_users
-    add constraint sec_users_family_id_fk
+alter table sec_user
+    add constraint sec_user_family_id_fk
         foreign key (family_id) references family (id);
 
 alter table social_credentials
     add constraint social_credentials_sec_users_id_fk
-        foreign key (user_id) references sec_users (id);
+        foreign key (user_id) references sec_user (id);
 
 alter table task
     add constraint task_category_id_fk
@@ -91,5 +91,5 @@ alter table task
 
 
 alter table user_photo
-    add constraint user_photo_sec_users_id_fk
-        foreign key (user_id) references sec_users (id);
+    add constraint user_photo_sec_user_id_fk
+        foreign key (user_id) references sec_user (id);

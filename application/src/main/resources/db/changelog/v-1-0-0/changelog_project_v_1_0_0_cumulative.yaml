@@ -9,7 +9,7 @@ databaseChangeLog:
         - sqlFile:
             dbms: mysql
             encoding: utf8
-            path: db/changelog/v-1-0-0/sql/V20220921_create_table_sec_users.sql
+            path: db/changelog/v-1-0-0/sql/V20220921_create_table_sec_user.sql
         - sqlFile:
             dbms: mysql
             encoding: utf8
@@ -78,7 +78,7 @@ databaseChangeLog:
             encoding: utf8
             path: db/changelog/v-1-0-0/sql/V20220921_drop_relationships.sql
         - sql:
-            sql: drop table sec_users;
+            sql: drop table sec_user;
         - sql:
             sql: drop table task;
         - sql:

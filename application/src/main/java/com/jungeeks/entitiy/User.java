@@ -12,25 +12,29 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "sec_users")
+@Table(name = "sec_user")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String email;
-
-    @Enumerated(value = EnumType.STRING)
-    private USER_ROLE user_role;
-
-    @Enumerated(value = EnumType.STRING)
-    private USER_STATUS user_status;
     private Long points;
     private String name;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "family_id")
     private Family family;
+
+    @Enumerated(value = EnumType.STRING)
+    private USER_ROLE user_role;
+
+    @Enumerated(value = EnumType.STRING)
+    private USER_STATUS user_status;
+
+    @ManyToMany(mappedBy = "users")
+    private List<FamilyTask> tasks;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "user_photo", joinColumns = @JoinColumn(name = "user_id"))

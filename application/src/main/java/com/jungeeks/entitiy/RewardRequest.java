@@ -4,21 +4,24 @@ import com.jungeeks.entitiy.enums.REQUEST_STATUS;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
-public class Request {
+@Table(name = "reward_request")
+public class RewardRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToOne(cascade = CascadeType.MERGE)
     private Reward reward;
 
     @Enumerated(EnumType.STRING)
