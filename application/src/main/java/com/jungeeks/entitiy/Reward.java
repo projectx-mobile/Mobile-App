@@ -17,6 +17,7 @@ public class Reward {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
     private Long points;
 
@@ -27,9 +28,6 @@ public class Reward {
     @Enumerated(EnumType.STRING)
     @Column(name = "reward_type")
     private REWARD_TYPE rewardType;
-
-    @OneToOne(mappedBy = "reward")
-    private Request request;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "reward_photo", joinColumns = @JoinColumn(name = "reward_id"))

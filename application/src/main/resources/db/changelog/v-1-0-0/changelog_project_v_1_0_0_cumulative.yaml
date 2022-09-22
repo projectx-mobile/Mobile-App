@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       validCheckSum: ANY
-      id: 20220907_initial_database_structure
+      id: 20220921_initial_database_structure
       author: a.ivashko
       preConditions:
         - on fail: HALT
@@ -9,72 +9,76 @@ databaseChangeLog:
         - sqlFile:
             dbms: mysql
             encoding: utf8
-            path: db/changelog/v-1-0-0/sql/V20220907_create_table_sec_users.sql
+            path: db/changelog/v-1-0-0/sql/V20220921_create_table_sec_user.sql
         - sqlFile:
             dbms: mysql
             encoding: utf8
-            path: db/changelog/v-1-0-0/sql/V20220907_create_table_task.sql
+            path: db/changelog/v-1-0-0/sql/V20220921_create_table_task.sql
         - sqlFile:
             dbms: mysql
             encoding: utf8
-            path: db/changelog/v-1-0-0/sql/V20220907_create_table_user_photo.sql
+            path: db/changelog/v-1-0-0/sql/V20220921_create_table_user_photo.sql
         - sqlFile:
             dbms: mysql
             encoding: utf8
-            path: db/changelog/v-1-0-0/sql/V20220907_create_table_request.sql
+            path: db/changelog/v-1-0-0/sql/V20220921_create_table_reward_request.sql
         - sqlFile:
             dbms: mysql
             encoding: utf8
-            path: db/changelog/v-1-0-0/sql/V20220907_create_table_reward.sql
+            path: db/changelog/v-1-0-0/sql/V20220921_create_table_reward.sql
         - sqlFile:
             dbms: mysql
             encoding: utf8
-            path: db/changelog/v-1-0-0/sql/V20220907_create_table_family_task_photo.sql
+            path: db/changelog/v-1-0-0/sql/V20220921_create_table_family_task_photo.sql
         - sqlFile:
             dbms: mysql
             encoding: utf8
-            path: db/changelog/v-1-0-0/sql/V20220907_create_table_reward_photo.sql
+            path: db/changelog/v-1-0-0/sql/V20220921_create_table_reward_photo.sql
         - sqlFile:
             dbms: mysql
             encoding: utf8
-            path: db/changelog/v-1-0-0/sql/V20220907_create_table_category.sql
+            path: db/changelog/v-1-0-0/sql/V20220921_create_table_category.sql
         - sqlFile:
             dbms: mysql
             encoding: utf8
-            path: db/changelog/v-1-0-0/sql/V20220907_create_table_confirmation_token.sql
+            path: db/changelog/v-1-0-0/sql/V20220921_create_table_confirmation_token.sql
         - sqlFile:
             dbms: mysql
             encoding: utf8
-            path: db/changelog/v-1-0-0/sql/V20220907_create_table_family.sql
+            path: db/changelog/v-1-0-0/sql/V20220921_create_table_family.sql
         - sqlFile:
             dbms: mysql
             encoding: utf8
-            path: db/changelog/v-1-0-0/sql/V20220907_create_table_family_requests.sql
+            path: db/changelog/v-1-0-0/sql/V20220921_create_table_family_rewards_requests.sql
         - sqlFile:
             dbms: mysql
             encoding: utf8
-            path: db/changelog/v-1-0-0/sql/V20220907_create_table_family_rewards.sql
+            path: db/changelog/v-1-0-0/sql/V20220921_create_table_family_rewards.sql
         - sqlFile:
             dbms: mysql
             encoding: utf8
-            path: db/changelog/v-1-0-0/sql/V20220907_create_table_family_tasks.sql
+            path: db/changelog/v-1-0-0/sql/V20220921_create_table_family_task.sql
         - sqlFile:
             dbms: mysql
             encoding: utf8
-            path: db/changelog/v-1-0-0/sql/V20220907_create_table_social_credentials.sql
+            path: db/changelog/v-1-0-0/sql/V20220921_create_table_social_credentials.sql
         - sqlFile:
             dbms: mysql
             encoding: utf8
-            path: db/changelog/v-1-0-0/sql/V20220907_create_relationships.sql
+            path: db/changelog/v-1-0-0/sql/V20220921_create_table_family_task_user.sql
+        - sqlFile:
+            dbms: mysql
+            encoding: utf8
+            path: db/changelog/v-1-0-0/sql/V20220921_create_relationships.sql
 
 
       rollback:
         - sqlFile:
             dbms: mysql
             encoding: utf8
-            path: db/changelog/v-1-0-0/sql/V20220907_drop_relationships.sql
+            path: db/changelog/v-1-0-0/sql/V20220921_drop_relationships.sql
         - sql:
-            sql: drop table sec_users;
+            sql: drop table sec_user;
         - sql:
             sql: drop table task;
         - sql:
@@ -84,7 +88,7 @@ databaseChangeLog:
         - sql:
             sql: drop table reward;
         - sql:
-            sql: drop table request;
+            sql: drop table reward_request;
         - sql:
             sql: drop table category;
         - sql:
@@ -92,7 +96,7 @@ databaseChangeLog:
         - sql:
             sql: drop table family;
         - sql:
-            sql: drop table family_requests;
+            sql: drop table family_rewards_requests;
         - sql:
             sql: drop table family_rewards;
         - sql:
@@ -101,3 +105,5 @@ databaseChangeLog:
             sql: drop table family_tasks;
         - sql:
             sql: drop table social_credentials;
+        - sql:
+            sql: drop table family_task_user;

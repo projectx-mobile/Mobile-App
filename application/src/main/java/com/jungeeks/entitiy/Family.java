@@ -20,12 +20,19 @@ public class Family {
 
     @OneToMany(cascade = CascadeType.MERGE)
     @JoinColumn(name = "family_id", referencedColumnName = "id")
-    private List<FamilyTask> task;
+    private List<FamilyTask> tasks;
 
     @OneToMany(cascade = CascadeType.MERGE)
-    private List<Request> requests;
+    @JoinTable(name = "family_rewards_requests",
+    joinColumns = @JoinColumn(name = "family_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "request_id",referencedColumnName = "id")
+    )
+    private List<RewardRequest> requests;
 
     @OneToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "family_rewards",
+            joinColumns = @JoinColumn(name = "family_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "reward_id",referencedColumnName = "id"))
     private List<Reward> rewards;
 
 }

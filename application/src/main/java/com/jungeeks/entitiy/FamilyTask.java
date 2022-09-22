@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "family_tasks")
+@Entity(name = "family_task")
 public class FamilyTask {
 
     @Id
@@ -25,6 +25,10 @@ public class FamilyTask {
     private LocalDateTime deadline;
     private Long points;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "task_status")
+    private TASK_STATUS taskStatus;
+
     @Column(name = "is_daily")
     private boolean daily;
 
@@ -35,8 +39,19 @@ public class FamilyTask {
     })
     private List<Photo> photos;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "task_status")
-    private TASK_STATUS taskStatus;
+    @ManyToMany
+    @JoinTable(name = "family_task_user",
+            joinColumns = {@JoinColumn(name = "family_task_id",referencedColumnName = "id")},
+            inverseJoinColumns ={@JoinColumn(name = "user_id", referencedColumnName = "id")}
+    )
+    private List<User> users;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User author;
+
+    @ManyToOne
+    @JoinColumn(name = "family_id")
+    private Family family;
 
 }
