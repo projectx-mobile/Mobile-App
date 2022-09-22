@@ -10,13 +10,18 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Data
 @Entity
-public class Request {
+@Table(name = "reward_request")
+public class RewardRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToOne(cascade = CascadeType.MERGE)
     private Reward reward;
 
     @Enumerated(EnumType.STRING)

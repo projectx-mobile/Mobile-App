@@ -1,4 +1,4 @@
-create table family_tasks
+create table family_task
 (
     id          bigint                not null,
     is_daily    boolean default false not null,
@@ -7,5 +7,6 @@ create table family_tasks
     task_status varchar(255),
     task_id     bigint,
     family_id   varchar(255),
+    user_id     bigint,
     primary key (id)
 )

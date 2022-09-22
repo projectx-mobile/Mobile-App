@@ -1,4 +1,4 @@
-create table sec_users
+create table sec_user
 (
     id          bigint not null auto_increment,
     email       varchar(255),
