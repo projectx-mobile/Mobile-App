@@ -1,5 +1,6 @@
-package com.jungeeks.services.entity;
+package com.jungeeks.service;
 
+import com.jungeeks.dto.ParentHomeDto;
 import com.jungeeks.entitiy.User;
 
 import java.util.List;
@@ -10,4 +11,5 @@ public interface UserService {
 
     Optional<List<User>> getAllByFamilyId(String familyId);
 
+    ParentHomeDto getParentHomeDate(Long id);
 }
