@@ -22,6 +22,9 @@ dependencies {
     liquibaseRuntime 'info.picocli:picocli:4.6.3'
     liquibaseRuntime group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
     liquibaseRuntime sourceSets.main.output
+    // https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
 }
 
 configurations {

@@ -5,6 +5,7 @@ import com.jungeeks.services.dto.UserInfoService;
 import com.jungeeks.services.storage.StorageService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
@@ -30,9 +31,8 @@ public class PersonalInfController {
      * get personal info
      **/
     @PostMapping()
-    public UserInfoDto getUserPersonalInfo() {
-
-        return userInfoService.getUserInfoByUserId(1L);
+    public UserInfoDto getUserPersonalInfo(@RequestParam(required = true,name = "id") Long id) {
+        return userInfoService.getUserInfoByUserId(id);
     }
 
     /**
