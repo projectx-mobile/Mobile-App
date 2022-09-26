@@ -36,7 +36,7 @@ liquibase {
             url "jdbc:mysql://127.0.0.1:3306/kids_app"
             driver "com.mysql.cj.jdbc.Driver"
             username "root"
-            password "12344321"
+            password "212109"
         }
     }
 }

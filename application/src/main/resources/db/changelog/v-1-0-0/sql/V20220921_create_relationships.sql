@@ -1,21 +1,11 @@
-create unique index family_rewards_requests_request_id_uindex
-    on family_rewards_requests (request_id);
 
-create unique index family_rewards_requests_family_id_uindex
+create index family_rewards_requests_family_id_index
     on family_rewards_requests (family_id);
 
-
-create unique index family_task_user_family_task_id_uindex
-    on family_task_user (family_task_id);
-
-
-create unique index family_task_user_user_id_uindex
+create index family_task_user_user_id_index
     on family_task_user (user_id);
 
-create unique index family_rewards_reward_id_uindex
-    on family_rewards (reward_id);
-
-create unique index family_rewards_family_id_uindex
+create index family_rewards_family_id_index
     on family_rewards (family_id);
 
 alter table confirmation_token
