@@ -1,6 +1,6 @@
 on: 
   push:
-    branches: [ "master", "stage", "develop", "devops" ]
+    branches: [ "master", "stage", "develop" ]
 name: build application
 jobs:
   build:
