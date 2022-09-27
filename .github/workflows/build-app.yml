@@ -12,7 +12,6 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'adopt'
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
       - name: Build with Gradle
@@ -21,5 +20,5 @@ jobs:
           arguments: build
       - uses: actions/upload-artifact@v3
         with:
-          name: Package
-          path: build/libs
+          name: "*.jar"
+          path: application/build/libs
