@@ -29,5 +29,12 @@ jobs:
     needs: build
     if: ${{ github.event_name == 'push' && github.ref_name == 'main' || github.ref_name == 'develop' || github.ref_name == 'stage' || github.ref_name == 'devops' }}
     steps:
-      - run: ls -l application/
-      - run: ls -l application/build/libs/
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Retrieve saved artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: "Output artifacts"
+          path: application/build/libs/
+      - run : ls -l /application/build/libs
+      
