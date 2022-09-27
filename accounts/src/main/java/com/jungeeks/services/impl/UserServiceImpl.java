@@ -9,6 +9,7 @@ import com.jungeeks.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,15 +26,15 @@ public class UserServiceImpl implements UserService {
 
     public List<FamilyTask> getUserActiveTaskById(Long id) {
         User child = userRepository.findUserById(id).orElse(null);
-        System.out.println(child.toString());
-        System.out.println(child.getTasks());
-        List<FamilyTask> listOfActiveTasks =  child.getTasks().stream().filter(task -> task.equals(TASK_STATUS.ACTIVE)).collect(Collectors.toList());
-        return listOfActiveTasks;
+        List<FamilyTask> s = child.getTasks();
+         return  child.getTasks().stream()
+                .filter(task -> task.getTaskStatus().equals(TASK_STATUS.COMPLETED))
+                 .toList();
     }
 
     public List<FamilyTask> getUserTaskById(Long id) {
         User child = userRepository.findUserById(id).orElse(null);
-        List<FamilyTask> listOfTasks =  child.getTasks().stream().collect(Collectors.toList());
+        List<FamilyTask> listOfTasks = new ArrayList<>(child.getTasks());
         return listOfTasks;
     }
 
