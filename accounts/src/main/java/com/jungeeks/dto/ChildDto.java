@@ -16,5 +16,8 @@ public class ChildDto {
 
     private String name;
     private String photoFileName;
-    private List<ChildTaskDto> childTaskDtos;
+    private Long numberOfCompletedTasks;
+    private Long numberOfActiveTasks;
+    private List<Long> rewardRequestIdsDtos;
+    private List<Long> taskRequestIdsDtos;
 }
