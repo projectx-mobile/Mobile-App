@@ -19,7 +19,6 @@ jobs:
       security-events: write
 
     strategy:
-      fail-fast: false
       matrix:
         language: [ 'java' ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
@@ -66,3 +65,7 @@ jobs:
       uses: github/codeql-action/analyze@v2
       with:
         category: "/language:${{matrix.language}}"
+    - uses: actions/upload-artifact@v3
+      with:
+        name: "Output artifacts"
+        path: application/build/libs/*
