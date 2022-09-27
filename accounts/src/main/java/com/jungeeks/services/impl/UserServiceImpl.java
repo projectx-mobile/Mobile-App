@@ -23,12 +23,18 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-    public List<FamilyTask> getUserById(Long id) {
+    public List<FamilyTask> getUserActiveTaskById(Long id) {
         User child = userRepository.findUserById(id).orElse(null);
         System.out.println(child.toString());
         System.out.println(child.getTasks());
         List<FamilyTask> listOfActiveTasks =  child.getTasks().stream().filter(task -> task.equals(TASK_STATUS.ACTIVE)).collect(Collectors.toList());
         return listOfActiveTasks;
+    }
+
+    public List<FamilyTask> getUserTaskById(Long id) {
+        User child = userRepository.findUserById(id).orElse(null);
+        List<FamilyTask> listOfTasks =  child.getTasks().stream().collect(Collectors.toList());
+        return listOfTasks;
     }
 
     public Optional<List<User>> getAllByFamilyId(String familyId) {

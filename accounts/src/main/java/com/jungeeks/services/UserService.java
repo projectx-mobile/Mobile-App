@@ -7,7 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    List<FamilyTask> getUserById(Long id);
+    List<FamilyTask> getUserActiveTaskById(Long id);
+
+    List<FamilyTask> getUserTaskById(Long id);
+
+
 
     Optional<List<User>> getAllByFamilyId(String familyId);
 
