@@ -1,5 +1,6 @@
 package com.jungeeks.controllers;
 
+import com.jungeeks.response.TaskResponse;
 import com.jungeeks.entitiy.FamilyTask;
 import com.jungeeks.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,15 +22,14 @@ public class ChildController {
     /*
     *  Get all ACTIVE tasks of child
     * */
-    @GetMapping("/{id}")
-    public List<FamilyTask> getNotifications(@PathVariable Long id) {
-        return userService.getUserActiveTaskById(id);
-    }
+//    @GetMapping("/{id}")
+//    public List<TaskResponse> getNotifications(@PathVariable Long id) {
+//        return userService.getUserActiveTaskById(id);
+//    }
 
-    @GetMapping("user/{id}")
-    public ResponseEntity<List<FamilyTask>> getTasks(@PathVariable Long id) {
-        System.out.println(new ResponseEntity<>(userService.getUserTaskById(id), HttpStatus.ACCEPTED));
-        return null;
+    @GetMapping("/{id}")
+    public ResponseEntity<List<TaskResponse>> getTasks(@PathVariable Long id) {
+        return new ResponseEntity<>(userService.getUserTaskById(id), HttpStatus.ACCEPTED);
     }
 
 

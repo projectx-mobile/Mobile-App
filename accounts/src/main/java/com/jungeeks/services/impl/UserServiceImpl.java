@@ -1,18 +1,16 @@
 package com.jungeeks.services.impl;
 
-import com.jungeeks.entitiy.FamilyTask;
-import com.jungeeks.entitiy.Task;
-import com.jungeeks.entitiy.User;
 import com.jungeeks.entitiy.enums.TASK_STATUS;
+import com.jungeeks.exceptionhandler.UserNotFoundException;
+import com.jungeeks.response.TaskResponse;
+import com.jungeeks.entitiy.User;
 import com.jungeeks.repository.UserRepository;
 import com.jungeeks.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,22 +22,30 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-    public List<FamilyTask> getUserActiveTaskById(Long id) {
-        User child = userRepository.findUserById(id).orElse(null);
-        List<FamilyTask> s = child.getTasks();
-         return  child.getTasks().stream()
-                .filter(task -> task.getTaskStatus().equals(TASK_STATUS.COMPLETED))
-                 .toList();
-    }
+    public List<TaskResponse> getUserTaskById(Long id) {
+        User childs = userRepository.findUserById(id).orElseThrow(
+                () -> new UserNotFoundException(String.format("User %s not found", id)));
 
-    public List<FamilyTask> getUserTaskById(Long id) {
-        User child = userRepository.findUserById(id).orElse(null);
-        List<FamilyTask> listOfTasks = new ArrayList<>(child.getTasks());
-        return listOfTasks;
+        return childs.getTasks().stream()
+                .map((child) ->
+                        TaskResponse.builder()
+                                .taskStatus(child.getTaskStatus())
+                                .title(child.getTask().getTitle())
+                                .point(child.getPoints())
+                                .localDateTime(child.getDeadline())
+                                .build()
+                ).toList();
     }
+    public List<TaskResponse> getUserActiveTaskById(Long id) {
+        User childs = userRepository.findUserById(id).orElse(null);
 
-    public Optional<List<User>> getAllByFamilyId(String familyId) {
-        return userRepository.findAllByFamilyId(familyId);
+        return childs.getTasks().stream()
+                .filter(task -> task.getTaskStatus().equals(TASK_STATUS.ACTIVE))
+                .map((child) ->TaskResponse.builder()
+                        .taskStatus(child.getTaskStatus())
+                        .title(child.getTask().getTitle())
+                        .point(childs.getPoints()).build()
+        ).toList();
     }
 
 }
