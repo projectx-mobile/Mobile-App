@@ -1,5 +1,4 @@
 dependencies {
-    implementation 'com.google.firebase:firebase-auth-impl:16.1.0'
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.slf4j:slf4j-simple:2.0.0'
