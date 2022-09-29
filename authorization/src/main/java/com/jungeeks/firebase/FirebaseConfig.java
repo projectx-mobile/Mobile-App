@@ -2,45 +2,52 @@ package com.jungeeks.firebase;
 
 import java.io.IOException;
 import java.io.InputStream;
-
-import javax.annotation.PostConstruct;
-
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.ClassPathResource;
 
 @Configuration
+@Slf4j
 public class FirebaseConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FirebaseConfig.class);
 
-    @PostConstruct
-    public void onStart() {
-        LOGGER.info("Initializing Firebase App...");
+    @Autowired
+    SecurityProperties secProps;
+
+    @Primary
+    @Bean
+    public void firebaseInit() {
+        InputStream inputStream = null;
         try {
-            this.initializeFirebaseApp();
-        } catch (IOException e) {
-            LOGGER.error("Initializing Firebase App {0}", e);
+            inputStream = new ClassPathResource("firebase_config.json").getInputStream();
+        } catch (IOException e3) {
+            e3.printStackTrace();
         }
-    }
+        try {
 
-    private void initializeFirebaseApp() throws IOException {
-
-        if (FirebaseApp.getApps() == null || FirebaseApp.getApps().isEmpty()) {
-            InputStream serviceAccount = FirebaseConfig.class.getResourceAsStream("/firebase-service-credentials.json");
-            assert serviceAccount != null;
-            GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
+            assert inputStream != null;
             FirebaseOptions options = FirebaseOptions.builder()
-                    .setCredentials(credentials)
+                    .setCredentials(GoogleCredentials.fromStream(inputStream))
                     .build();
 
-            FirebaseApp.initializeApp(options);
-        }
+            if (FirebaseApp.getApps().isEmpty()) {
+                FirebaseApp.initializeApp(options);
+            }
+            LOGGER.info("Firebase Initialize");
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 }
