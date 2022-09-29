@@ -1,4 +1,4 @@
-package com.jungeeks.services.dto;
+package com.jungeeks.service.dto;
 
 import com.jungeeks.dto.UserInfoDto;
 

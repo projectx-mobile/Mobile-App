@@ -22,9 +22,9 @@ dependencies {
     liquibaseRuntime 'info.picocli:picocli:4.6.3'
     liquibaseRuntime group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
     liquibaseRuntime sourceSets.main.output
-    // https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
-
+    implementation 'io.swagger:swagger-jaxrs:1.6.6'
+    implementation 'com.amazonaws:aws-java-sdk-s3'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.11'
 }
 
 configurations {
@@ -32,18 +32,23 @@ configurations {
 }
 
 
-liquibase {
-    activities {
-        main {
-            changeLogFile "application/src/main/resources/db/changelog/db.changelog-master.yaml"
-            url "jdbc:mysql://127.0.0.1:3306/kids_app"
-            driver "com.mysql.cj.jdbc.Driver"
-            username "root"
-            password "12344321"
-        }
+//liquibase {
+//    activities {
+//        main {
+//            changeLogFile "application/src/main/resources/db/changelog/db.changelog-master.yaml"
+//            url "jdbc:mysql://127.0.0.1:3306/kids_app"
+//            driver "com.mysql.cj.jdbc.Driver"
+//            username "root"
+//            password "12344321"
+//        }
+//    }
+//}
+
+dependencyManagement {
+    imports {
+        mavenBom 'com.amazonaws:aws-java-sdk-bom:1.11.1000'
     }
 }
-
 
 tasks.jar {
     enabled = false

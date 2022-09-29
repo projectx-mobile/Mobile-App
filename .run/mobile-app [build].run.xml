@@ -3,10 +3,47 @@
     <ExternalSystemSettings>
       <option name="env">
         <map>
-          <entry key="app_port" value="8092" />
+          <entry key="APP_CONFIG_SERVICE_SOURCE" value="yandex" />
+          <entry key="SERVER_PORT" value="8092" />
+          <entry key="SPRING_DATASOURCE_PASSWORD" value="12345678Root" />
+          <entry key="SPRING_DATASOURCE_URL" value="jdbc:mysql://127.0.0.1:3306/kids_app?createDatabaseIfNotExist\=true&amp;allowPublicKeyRetrieval\=true&amp;useSSL\=false&amp;useUnicode\=true&amp;characterEncoding\=UTF8&amp;serverTimezone\=UTC" />
+          <entry key="SPRING_DATASOURCE_USERNAME" value="root" />
           <entry key="app_tst" value="test_debug_prp" />
-          <entry key="db_password" value="12345678Root" />
-          <entry key="db_username" value="root" />
+        </map>
+      </option>
+      <option name="executionName" />
+      <option name="externalProjectPath" value="$PROJECT_DIR$" />
+      <option name="externalSystemIdString" value="GRADLE" />
+      <option name="scriptParameters" value="" />
+      <option name="taskDescriptions">
+        <list />
+      </option>
+      <option name="taskNames">
+        <list>
+          <option value="build" />
+        </list>
+      </option>
+      <option name="vmOptions" />
+    </ExternalSystemSettings>
+    <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+    <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+    <DebugAllEnabled>false</DebugAllEnabled>
+    <method v="2" />
+  </configuration>
+  <configuration default="false" name="mobile-app [build]" type="GradleRunConfiguration" factoryName="Gradle">
+    <ExternalSystemSettings>
+      <option name="env">
+        <map>
+          <entry key="AWS_ACCESS_KEY_ID" value="YCAJEIUSanBvZFz0MdWePZrbV" />
+          <entry key="AWS_SECRET_ACCESS_KEY" value="YCN-RdPlOkoM7wcuVni8mFX1KuMijjrxt5rkauaA" />
+          <entry key="PHOTO_BUCKET_NAME" value="testbacket12332145" />
+          <entry key="SERVER_PORT" value="8092" />
+          <entry key="SPRING_DATASOURCE_PASSWORD" value="12345678Root" />
+          <entry key="SPRING_DATASOURCE_URL" value="jdbc:mysql://127.0.0.1:3306/kids_app?createDatabaseIfNotExist=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF8&amp;serverTimezone=UTC" />
+          <entry key="SPRING_DATASOURCE_USERNAME" value="root" />
+          <entry key="STORAGE_PROVIDER" value="YANDEX" />
+          <entry key="STORAGE_REGION" value="us-west-2" />
+          <entry key="app_tst" value="test_debug_prp" />
         </map>
       </option>
       <option name="executionName" />

@@ -19,5 +19,5 @@ public class UserInfoDto {
     private USER_STATUS userStatus;
     private SIGN_UP_TYPE signUpType;
     private List<FamilyMemberDto> familyMembers;
-    private String photoFileName;
+    private String photoPath;
 }
