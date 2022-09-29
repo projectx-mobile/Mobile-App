@@ -15,18 +15,26 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "sub")
-    private String sub;
-    @Column(name = "email")
-    private String email;
+
+    @Column(name = "uid")
+    private String uid;
+
     @Column(name = "name")
     private String name;
+
+    @Column(name = "email")
+    private String email;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "password")
     private String password;
 
+    @Column(name = "photoUrl")
+    private String photoUrl;
 
-    public User(String sub, String email, String name) {
-        this.sub = sub;
+
+    public User(String uid, String email, String name) {
+        this.uid = uid;
         this.email = email;
         this.name = name;
     }
