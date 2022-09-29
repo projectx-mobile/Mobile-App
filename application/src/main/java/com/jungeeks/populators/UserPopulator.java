@@ -8,6 +8,7 @@ import com.jungeeks.entitiy.enums.USER_ROLE;
 import com.jungeeks.entitiy.enums.USER_STATUS;
 import com.jungeeks.repository.FamilyRepository;
 import com.jungeeks.repository.UserRepository;
+import com.jungeeks.service.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +38,7 @@ public class UserPopulator {
                                         .path("photo.jpg")
                                         .creationDate(LocalDateTime.now())
                                 .build()))
+                        .points(0L)
                         .family(savedFamily)
                         .user_role(USER_ROLE.ADMIN)
                         .user_status(USER_STATUS.ACTIVE)

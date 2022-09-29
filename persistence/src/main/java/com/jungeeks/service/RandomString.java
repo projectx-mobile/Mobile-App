@@ -1,4 +1,4 @@
-package com.jungeeks.populators;
+package com.jungeeks.service;
 
 import java.security.SecureRandom;
 import java.util.Locale;

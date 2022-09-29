@@ -15,9 +15,8 @@ import java.util.List;
 public class UserInfoDto {
     private String username;
     private String email;
-    private Long passwordLength;
     private USER_STATUS userStatus;
     private SIGN_UP_TYPE signUpType;
     private List<FamilyMemberDto> familyMembers;
-    private String photoFileName;
+    private String photoPath;
 }
