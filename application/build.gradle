@@ -33,23 +33,18 @@ configurations {
 }
 
 
-//liquibase {
-//    activities {
-//        main {
-//            changeLogFile "application/src/main/resources/db/changelog/db.changelog-master.yaml"
-//            url "jdbc:mysql://127.0.0.1:3306/kids_app"
-//            driver "com.mysql.cj.jdbc.Driver"
-//            username "root"
-//            password "12344321"
-//        }
-//    }
-//}
-
-dependencyManagement {
-    imports {
-        mavenBom 'com.amazonaws:aws-java-sdk-bom:1.11.1000'
+liquibase {
+    activities {
+        main {
+            changeLogFile "application/src/main/resources/db/changelog/db.changelog-master.yaml"
+            url "jdbc:mysql://127.0.0.1:3306/kids_app"
+            driver "com.mysql.cj.jdbc.Driver"
+            username "root"
+            password "12344321"
+        }
     }
 }
+
 
 tasks.jar {
     enabled = false
