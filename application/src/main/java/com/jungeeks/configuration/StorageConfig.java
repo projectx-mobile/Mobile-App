@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class StorageConfig {
-
     @Bean
     public AmazonS3 amazonS3(@Value("${STORAGE_PROVIDER}") STORAGE_PROVIDER_ENUM storageProvider, @Value("${STORAGE_REGION}") String region) {
         EnvironmentVariableCredentialsProvider envProvider = new EnvironmentVariableCredentialsProvider();
