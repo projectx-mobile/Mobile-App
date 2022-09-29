@@ -1,18 +1,19 @@
-package com.jungeeks.services.impl;
+package com.jungeeks.service.impl;
 
-import com.jungeeks.entitiy.enums.TASK_STATUS;
-import com.jungeeks.exceptionhandler.UserNotFoundException;
+import com.jungeeks.exception.UserNotFoundException;
+import com.jungeeks.response.NotificationResponse;
 import com.jungeeks.response.TaskResponse;
 import com.jungeeks.entitiy.User;
 import com.jungeeks.repository.UserRepository;
-import com.jungeeks.services.UserService;
+import com.jungeeks.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<TaskResponse> getUserTaskById(Long id) {
+        log.debug(String.format("Request getUserTaskById by id %s", id));
         User childs = userRepository.findUserById(id).orElseThrow(
                 () -> new UserNotFoundException(String.format("User %s not found", id)));
 
@@ -36,16 +38,17 @@ public class UserServiceImpl implements UserService {
                                 .build()
                 ).toList();
     }
-    public List<TaskResponse> getUserActiveTaskById(Long id) {
-        User childs = userRepository.findUserById(id).orElse(null);
 
-        return childs.getTasks().stream()
-                .filter(task -> task.getTaskStatus().equals(TASK_STATUS.ACTIVE))
-                .map((child) ->TaskResponse.builder()
-                        .taskStatus(child.getTaskStatus())
-                        .title(child.getTask().getTitle())
-                        .point(childs.getPoints()).build()
-        ).toList();
+    public List<NotificationResponse> getDeadlineOfAllTask(Long id) {
+        log.debug(String.format("Request getDeadlineOfAllTask by id %s", id));
+        User child = userRepository.findUserById(id).orElseThrow(
+                () -> new UserNotFoundException(String.format("User %s not found", id)));
+
+        return child.getTasks().stream()
+                .map(task -> NotificationResponse.builder()
+                        .localDateTime(task.getDeadline()).build()
+                ).toList();
+
     }
 
 }

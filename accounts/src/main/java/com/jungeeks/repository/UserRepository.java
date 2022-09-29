@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    public Optional<User> findUserById(Long id);
-    public Optional<List<User>> findAllByFamilyId( String familyId);
+    Optional<User> findUserById(Long id);
+
 }

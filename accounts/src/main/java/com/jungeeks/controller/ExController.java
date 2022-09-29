@@ -1,6 +1,6 @@
-package com.jungeeks.controllers;
+package com.jungeeks.controller;
 
-import com.jungeeks.exceptionhandler.UserNotFoundException;
+import com.jungeeks.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

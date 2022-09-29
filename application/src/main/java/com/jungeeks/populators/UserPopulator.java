@@ -6,7 +6,6 @@ import com.jungeeks.entitiy.SocialCredentials;
 import com.jungeeks.entitiy.User;
 import com.jungeeks.entitiy.enums.USER_ROLE;
 import com.jungeeks.entitiy.enums.USER_STATUS;
-import com.jungeeks.repository.FamilyRepository;
 import com.jungeeks.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
