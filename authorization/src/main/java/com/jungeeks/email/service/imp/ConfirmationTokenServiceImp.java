@@ -16,11 +16,12 @@ public class ConfirmationTokenServiceImp implements ConfirmationTokenService {
     private ConfirmationTokenRepository confirmationTokenRepository;
 
     @Override
-    public void saveConfirmationToken(String token) {
+    public void saveConfirmationToken(String token, String email) {
         ConfirmationToken confirmationToken = new ConfirmationToken(
                 token,
                 LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(15)
+                LocalDateTime.now().plusMinutes(15),
+                email
         );
         confirmationTokenRepository.save(confirmationToken);
 
@@ -35,5 +36,9 @@ public class ConfirmationTokenServiceImp implements ConfirmationTokenService {
     public int setConfirmedAt(String token) {
         return confirmationTokenRepository.updateConfirmedAt(
                 token, LocalDateTime.now());
+    }
+    @Override
+    public boolean isConfirmedAt(String email) {
+        return confirmationTokenRepository.isConfirmedAt(email) == 0;
     }
 }

@@ -28,7 +28,7 @@ public class UserAccountController {
     @PostMapping()
     public ResponseEntity<String> verifyEmail(@Valid @RequestBody EmailRequest email) {
         String token = UUID.randomUUID().toString();
-        confirmationTokenService.saveConfirmationToken(token);
+        confirmationTokenService.saveConfirmationToken(token, email.getEmail());
         String confirmLink = link + token;
         emailSender.send(email.getEmail(), confirmLink);
 

@@ -27,5 +27,6 @@ public class ConfirmationToken {
     private LocalDateTime createAt;
     private LocalDateTime expiresAt;
     private LocalDateTime confirmedAt;
+    private String email;
 
 }

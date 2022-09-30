@@ -25,16 +25,14 @@ public class ConfirmationToken {
     private LocalDateTime expiresAt;
     @NotBlank
     private LocalDateTime confirmedAt;
-
-    public LocalDateTime getExpiresAt() {
-        return expiresAt;
-    }
+    private String email;
 
     public ConfirmationToken(String token,
                              LocalDateTime createAt,
-                             LocalDateTime expiresAt) {
+                             LocalDateTime expiresAt, String email) {
         this.token = token;
         this.createAt = createAt;
         this.expiresAt = expiresAt;
+        this.email = email;
     }
 }
