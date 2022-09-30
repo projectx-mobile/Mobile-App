@@ -23,4 +23,7 @@ public interface ConfirmationTokenRepository
             "WHERE c.token = ?1")
     int updateConfirmedAt(String token,
                           LocalDateTime confirmedAt);
+    @Transactional
+    @Query("SELECT COUNT(c) FROM ConfirmationToken c WHERE c.email = ?1 AND c.confirmedAt IS NOT NULL")
+    int isConfirmedAt(String email);
 }
