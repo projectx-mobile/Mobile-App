@@ -9,7 +9,6 @@ import com.jungeeks.entitiy.enums.REQUEST_STATUS;
 import com.jungeeks.entitiy.enums.TASK_STATUS;
 import com.jungeeks.entitiy.enums.USER_ROLE;
 import com.jungeeks.service.dto.ParentService;
-import com.jungeeks.service.entity.UserServiceImp;
 import com.jungeeks.service.entity.imp.UserServiceImp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +24,16 @@ public class ParentServiceImp implements ParentService {
 
     private final UserServiceImp userServiceImp;
 
+    /**
+     * get data for the parent home page
+     **/
     @Override
     public ParentHomeDto getParentHomeDate(Long id) {
         log.debug(String.format("Request getParentHomeDate by id %s", id));
         User userById = userServiceImp.getUserById(id);
 
         List<User> childs = userServiceImp.getAllByFamilyIdAndUserRole(userById.getFamily().getId(), USER_ROLE.CHILD);
+        log.debug(String.format("Number of childs %s", childs.size()));
 
         List<ChildDto> childDtos = getChildDtoList(childs);
 
@@ -40,8 +43,12 @@ public class ParentServiceImp implements ParentService {
                 .build();
     }
 
+    /**
+     * mapping list of Users to list of ChildDto
+     **/
 
     private List<ChildDto> getChildDtoList(List<User> childs) {
+        log.debug("Mapping list child to list childDto");
         return childs.stream()
                 .map((x) -> {
                     String[] split = x.getPhoto().size() == 0 ? null : x.getPhoto().get(0).getPath().split("/");

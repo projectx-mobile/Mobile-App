@@ -2,7 +2,10 @@ package com.jungeeks.entitiy;
 
 import com.jungeeks.entitiy.enums.USER_ROLE;
 import com.jungeeks.entitiy.enums.USER_STATUS;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -45,7 +48,12 @@ public class User {
     @OneToOne(mappedBy = "user")
     private ConfirmationToken confirmationToken;
 
-    @OneToOne(mappedBy = "user", optional = false,cascade = CascadeType.PERSIST)
+    @OneToOne(mappedBy = "user", optional = false, cascade = CascadeType.PERSIST)
     private SocialCredentials socialCredentials;
 
+    public User(Long id, String name, USER_ROLE user_role) {
+        this.id = id;
+        this.name = name;
+        this.user_role = user_role;
+    }
 }

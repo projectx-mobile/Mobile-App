@@ -1,4 +1,4 @@
-package com.jungeeks.controllers;
+package com.jungeeks.controller;
 
 import com.jungeeks.dto.ParentHomeDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,6 @@ public class UserController {
 
     @GetMapping("/getParentHome")
     public ResponseEntity<ParentHomeDto> getParentHomePage() {
-        return new ResponseEntity<>(parentServiceImp.getParentHomeDate(1L), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(parentServiceImp.getParentHomeDate(1L), HttpStatus.OK);
     }
 }
