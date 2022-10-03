@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -23,10 +24,14 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
+
+    public User getUserById(Long id) {
+        return userRepository.findUserById(id).orElseThrow(
+                () -> new UserNotFoundException(String.format("User %s not found", id)));
+    }
     public List<TaskResponse> getUserTaskById(Long id) {
         log.debug(String.format("Request getUserTaskById by id %s", id));
-        User childs = userRepository.findUserById(id).orElseThrow(
-                () -> new UserNotFoundException(String.format("User %s not found", id)));
+        User childs = getUserById(id);
 
         return childs.getTasks().stream()
                 .map((child) ->
@@ -41,8 +46,7 @@ public class UserServiceImpl implements UserService {
 
     public List<NotificationResponse> getDeadlineOfAllTask(Long id) {
         log.debug(String.format("Request getDeadlineOfAllTask by id %s", id));
-        User child = userRepository.findUserById(id).orElseThrow(
-                () -> new UserNotFoundException(String.format("User %s not found", id)));
+        User child = getUserById(id);
 
         return child.getTasks().stream()
                 .map(task -> NotificationResponse.builder()

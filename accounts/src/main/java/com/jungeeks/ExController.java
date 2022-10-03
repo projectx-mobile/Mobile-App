@@ -1,4 +1,4 @@
-package com.jungeeks.controller;
+package com.jungeeks;
 
 import com.jungeeks.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;

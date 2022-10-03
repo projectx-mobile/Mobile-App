@@ -1,4 +1,4 @@
-package com.jungeeks.controller;
+package com.jungeeks;
 
 import com.jungeeks.response.NotificationResponse;
 import com.jungeeks.response.TaskResponse;

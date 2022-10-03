@@ -5,11 +5,11 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
+
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Builder
+@Data
 public class TaskResponse {
 
     private String title;

@@ -1,9 +1,11 @@
 package com.jungeeks.service;
 
+import com.jungeeks.entitiy.User;
 import com.jungeeks.response.NotificationResponse;
 import com.jungeeks.response.TaskResponse;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -26,6 +28,8 @@ public interface UserService {
      * @return TaskResponse list
      */
     List<TaskResponse> getUserTaskById(Long id);
+
+    User getUserById(Long id);
 
 
 }

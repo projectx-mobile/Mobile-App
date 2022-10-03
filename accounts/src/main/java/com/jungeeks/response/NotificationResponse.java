@@ -4,11 +4,10 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
 @Builder
 @AllArgsConstructor
-@Setter
 @NoArgsConstructor
+@Data
 public class NotificationResponse {
 
     private LocalDateTime localDateTime;
