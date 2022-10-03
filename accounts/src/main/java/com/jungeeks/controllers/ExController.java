@@ -1,5 +1,6 @@
-package com.jungeeks.controller;
+`package com.jungeeks.controllers;
 
+import com.jungeeks.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +13,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ExController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
-    protected ResponseEntity<Object> handleMethodRuntimeException(RuntimeException runtimeException) {
-        log.warn(String.format("Bad request by %s", runtimeException.getMessage()));
-        return new ResponseEntity<>(runtimeException.getMessage(), HttpStatus.BAD_REQUEST);
+    protected ResponseEntity<Object> handleMethodRuntimeException(UserNotFoundException userNotFoundException) {
+        log.warn(String.format("Bad request by %s", userNotFoundException.getMessage()));
+        return new ResponseEntity<>(userNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

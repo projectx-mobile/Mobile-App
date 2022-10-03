@@ -2,6 +2,7 @@ package com.jungeeks.entitiy;
 
 import com.jungeeks.entitiy.enums.TASK_STATUS;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity(name = "family_task")
 public class FamilyTask {
 
