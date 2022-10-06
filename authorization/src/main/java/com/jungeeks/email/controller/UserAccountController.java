@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("email")
+@RequestMapping("email/")
 public class UserAccountController {
 
     @Autowired
