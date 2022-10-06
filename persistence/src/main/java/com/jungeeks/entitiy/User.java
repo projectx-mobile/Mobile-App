@@ -3,8 +3,11 @@ package com.jungeeks.entitiy;
 import com.jungeeks.entitiy.enums.USER_ROLE;
 import com.jungeeks.entitiy.enums.USER_STATUS;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 @Builder
@@ -13,7 +16,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "sec_user")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,4 +51,38 @@ public class User {
     @OneToOne(mappedBy = "user", optional = false,cascade = CascadeType.PERSIST)
     private SocialCredentials socialCredentials;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }

@@ -2,7 +2,7 @@ package com.jungeeks.firebase;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserRecord;
-import com.jungeeks.email.entity.User;
+import com.jungeeks.entitiy.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

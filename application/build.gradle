@@ -6,6 +6,7 @@ plugins {
 }
 
 dependencies {
+    implementation project(':persistence')
     implementation project(':tasks')
     implementation project(':authorization')
     implementation project(':accounts')
