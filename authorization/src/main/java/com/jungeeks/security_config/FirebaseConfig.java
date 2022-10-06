@@ -1,4 +1,4 @@
-package com.jungeeks.firebase;
+package com.jungeeks.security_config;
 
 import java.io.IOException;
 import java.io.InputStream;
