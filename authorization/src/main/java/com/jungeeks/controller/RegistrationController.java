@@ -1,4 +1,4 @@
-package com.jungeeks.registration.controller;
+package com.jungeeks.controller;
 
 import com.jungeeks.registration.request.RegistrationRequest;
 import com.jungeeks.registration.service.imp.RegistrationServiceImp;

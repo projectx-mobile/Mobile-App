@@ -1,4 +1,4 @@
-package com.jungeeks.email.repo;
+package com.jungeeks.repository;
 
 import com.jungeeks.entitiy.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +9,8 @@ import java.util.Optional;
 
 @Repository("userRepository")
 public interface UserRepository extends JpaRepository<User, Long> {
-    UserDetails findByEmail(String email);
+
+    Optional<User> findByEmail(String email);
 
     Optional<User> findById(String id);
 }

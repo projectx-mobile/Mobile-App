@@ -1,4 +1,4 @@
-package com.jungeeks.email.controller;
+package com.jungeeks.controller;
 
 import com.jungeeks.email.controller.request.ResetRequest;
 import com.jungeeks.email.service.EmailService;

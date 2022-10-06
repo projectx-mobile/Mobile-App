@@ -1,7 +1,7 @@
 package com.jungeeks.email.service.imp;
 
 import com.jungeeks.email.entity.User;
-import com.jungeeks.email.repo.UserRepository;
+import com.jungeeks.repository.UserRepository;
 import com.jungeeks.email.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
