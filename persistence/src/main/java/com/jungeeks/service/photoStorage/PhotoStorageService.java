@@ -12,5 +12,5 @@ public interface PhotoStorageService {
 
     void delete(String fileName, PHOTO_TYPE photoType);
 
-    void update(String fileName, PHOTO_TYPE photoType);
+    void update(String path, MultipartFile file, PHOTO_TYPE photoType);
 }

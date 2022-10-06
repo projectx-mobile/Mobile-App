@@ -31,17 +31,17 @@ public class PersonalInfController {
      * get personal info
      **/
     @GetMapping()
-    public UserInfoDto getUserPersonalInfo(@RequestParam(required = true, name = "id") Long id) {
-        return userInfoService.getUserInfoByUserId(id);//add get user id with security credentials
+    public ResponseEntity<UserInfoDto> getUserPersonalInfo() {
+        return ResponseEntity.ok(userInfoService.getUserInfoByUserId(1L));//add get user id with security credentials
     }
 
     /**
-     * set user photo by path
+     * update user photo
      **/
     @PostMapping("/uploadPhoto")
     public ResponseEntity<String> uploadPhoto(@RequestParam(name = "photo") MultipartFile multipartFile) throws IOException {
-        uploadUserService.uploadPhoto(1L, multipartFile);//add get user id with security credentials
-        return ResponseEntity.ok().body("Photo unloaded");
+        uploadUserService.uploadPhoto(0L, multipartFile);
+        return ResponseEntity.ok().body("Photo uploaded");
     }
 
     /**

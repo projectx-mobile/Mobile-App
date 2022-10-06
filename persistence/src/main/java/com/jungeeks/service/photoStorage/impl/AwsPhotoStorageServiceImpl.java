@@ -40,6 +40,7 @@ public class AwsPhotoStorageServiceImpl implements PhotoStorageService {
                     log.error(e.getErrorMessage());
                 }
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -48,7 +49,6 @@ public class AwsPhotoStorageServiceImpl implements PhotoStorageService {
     @Override
     public File load(String fileName, PHOTO_TYPE photoType) {
         try {
-
             S3Object o = s3.getObject(bucketName, photoType.toString()+fileName);
             S3ObjectInputStream s3is = o.getObjectContent();
             File tmp = File.createTempFile("kidsAppTmpRead", "photo_tmp.jpg");
@@ -79,8 +79,8 @@ public class AwsPhotoStorageServiceImpl implements PhotoStorageService {
     }
 
     @Override
-    public void update(String fileName, PHOTO_TYPE photoType) {
-        delete(fileName,PHOTO_TYPE.USER);
-        load(fileName, PHOTO_TYPE.USER);
+    public void update(String path, MultipartFile multipartFile, PHOTO_TYPE photoType) {
+        delete(path,PHOTO_TYPE.USER);
+        store(multipartFile,path,photoType);
     }
 }

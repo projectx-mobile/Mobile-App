@@ -32,10 +32,10 @@ public class UploadUserServiceImpl implements UploadUserService {
     }
 
     @Override
-    public void uploadPhoto(@NonNull Long userId, @NonNull MultipartFile multipartFile) {
-        User user = userService.getUserById(userId);
-        String path = user.getPhoto().get(0).getPath();
-        photoStorageService.update(path, PHOTO_TYPE.USER);
+    public void uploadPhoto(Long photoId, @NonNull MultipartFile multipartFile) {
+        User user = userService.getUserById(1L);//fix get userId from Security
+        String path = user.getPhoto().get(Math.toIntExact(photoId)).getPath();
+        photoStorageService.update(path, multipartFile, PHOTO_TYPE.USER);
         log.debug("User photo uploaded");
     }
 }
