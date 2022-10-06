@@ -11,4 +11,5 @@ include 'authorization'
 include 'tasks'
 include 'accounts'
 include 'rewards'
+include 'persistence'
 
