@@ -1,6 +1,6 @@
 package com.jungeeks.utils;
 
-import com.jungeeks.auth.models.SecurityProperties;
+import com.jungeeks.entity.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
