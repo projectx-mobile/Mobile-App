@@ -1,4 +1,4 @@
-package com.jungeeks.auth.models;
+package com.jungeeks.entity;
 
 import lombok.Data;
 

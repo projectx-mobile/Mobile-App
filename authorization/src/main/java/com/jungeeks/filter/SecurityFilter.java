@@ -1,12 +1,13 @@
-package com.jungeeks.auth;
+package com.jungeeks.filter;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 
-import com.jungeeks.auth.models.Credentials;
-import com.jungeeks.auth.models.SecurityProperties;
-import com.jungeeks.auth.models.User;
+import com.jungeeks.entity.Credentials;
+import com.jungeeks.entity.SecurityProperties;
+import com.jungeeks.entity.User;
+import com.jungeeks.service.SecurityService;
 import com.jungeeks.utils.CookieUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

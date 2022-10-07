@@ -1,8 +1,8 @@
-package com.jungeeks.auth;
+package com.jungeeks.service;
 
-import com.jungeeks.auth.models.Credentials;
-import com.jungeeks.auth.models.SecurityProperties;
-import com.jungeeks.auth.models.User;
+import com.jungeeks.entity.Credentials;
+import com.jungeeks.entity.SecurityProperties;
+import com.jungeeks.entity.User;
 import com.jungeeks.utils.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
