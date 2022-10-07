@@ -7,12 +7,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -27,7 +29,7 @@ import java.util.Map;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig{
 
     @Autowired
     ObjectMapper objectMapper;
@@ -66,14 +68,46 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable().formLogin().disable()
-                .httpBasic().disable().exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint())
-                .and().authorizeRequests()
-                .antMatchers(restSecProps.getAllowedPublicApis().toArray(String[]::new)).permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated().and()
-                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable().formLogin().disable()
+//                .httpBasic().disable().exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint())
+//                .and().authorizeRequests()
+//                .antMatchers(restSecProps.getAllowedPublicApis().toArray(String[]::new)).permitAll()
+//                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated().and()
+//                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+//        authenticationManagerBuilder.userDetailsService(userDetailsService);
+//        authenticationManager = authenticationManagerBuilder.build();
+
+        http.csrf().disable()
+                .cors().configurationSource(corsConfigurationSource()).and()
+                        .formLogin().disable()
+                        .httpBasic().disable()
+                        .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint()).and()
+                        .authorizeRequests()
+                                .antMatchers("/swagger").permitAll()
+                        .antMatchers(restSecProps.getAllowedPublicApis().toArray(String[]::new)).permitAll()
+                        .antMatchers(HttpMethod.OPTIONS,"/**").permitAll().anyRequest().authenticated().and()
+                        .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+//        http.csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/api/registration/**").permitAll()
+//                .antMatchers("/email").permitAll()
+//                .antMatchers("/google").permitAll()
+//                .antMatchers("/test").authenticated()
+//                .anyRequest()
+//                .authenticated()
+//                .and()
+//                .formLogin();
+        return http.build();
     }
+
 }
