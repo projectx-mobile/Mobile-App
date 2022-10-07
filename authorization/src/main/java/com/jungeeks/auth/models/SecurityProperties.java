@@ -20,5 +20,4 @@ public class SecurityProperties {
     private List<String> exposedHeaders;
     private List<String> allowedMethods;
     private List<String> allowedPublicApis;
-
 }

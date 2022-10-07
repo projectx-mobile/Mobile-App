@@ -4,10 +4,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 
-import com.kunal52.springandfirebaseauth.auth.models.Credentials;
-import com.kunal52.springandfirebaseauth.auth.models.SecurityProperties;
-import com.kunal52.springandfirebaseauth.auth.models.User;
-import com.kunal52.springandfirebaseauth.utils.CookieUtils;
+import com.jungeeks.auth.models.Credentials;
+import com.jungeeks.auth.models.SecurityProperties;
+import com.jungeeks.auth.models.User;
+import com.jungeeks.utils.CookieUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,6 +35,9 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Autowired
     CookieUtils cookieUtils;
+
+    @Autowired
+    SecurityProperties securityProps;
 
 
     @Override

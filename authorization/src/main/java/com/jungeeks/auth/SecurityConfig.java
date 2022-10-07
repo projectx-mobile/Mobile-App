@@ -1,7 +1,7 @@
 package com.jungeeks.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kunal52.springandfirebaseauth.auth.models.SecurityProperties;
+import com.jungeeks.auth.models.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

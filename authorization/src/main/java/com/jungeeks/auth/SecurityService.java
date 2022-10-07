@@ -1,9 +1,9 @@
 package com.jungeeks.auth;
 
-import com.kunal52.springandfirebaseauth.auth.models.Credentials;
-import com.kunal52.springandfirebaseauth.auth.models.SecurityProperties;
-import com.kunal52.springandfirebaseauth.auth.models.User;
-import com.kunal52.springandfirebaseauth.utils.CookieUtils;
+import com.jungeeks.auth.models.Credentials;
+import com.jungeeks.auth.models.SecurityProperties;
+import com.jungeeks.auth.models.User;
+import com.jungeeks.utils.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
