@@ -1,10 +1,8 @@
 package service.entity.imp;
 
-import com.jungeeks.entitiy.User;
+import com.jungeeks.entity.User;
 import com.sun.istack.NotNull;
 import exception.UserNotFoundException;
-import io.swagger.annotations.Authorization;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.UserRepository;

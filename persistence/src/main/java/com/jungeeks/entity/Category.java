@@ -1,30 +1,27 @@
-package com.jungeeks.entitiy;
+package com.jungeeks.entity;
 
+import com.jungeeks.entity.enums.CATEGORY_TYPE;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @Data
-public class ConfirmationToken {
+@Entity
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String title;
+    private String description;
 
-    @OneToOne
-    private User user;
-
-    private String token;
-    private LocalDateTime createAt;
-    private LocalDateTime expiresAt;
-    private LocalDateTime confirmedAt;
+    @Enumerated(value = EnumType.STRING)
+    private CATEGORY_TYPE category_type;
 
 }

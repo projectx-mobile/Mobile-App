@@ -9,14 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/swagger")
 public class TestSwaggerController {
     @GetMapping
-    public ResponseEntity<String> test(){
-
-        return ResponseEntity.ok("OK");
+    public ResponseEntity<String> swaggerEndpoint(){
+        return ResponseEntity.ok("this is swagger");
     }
-    @GetMapping("tst")
-    public ResponseEntity<String> test1(){
-
-        return ResponseEntity.ok("OK");
-    }
-
 }

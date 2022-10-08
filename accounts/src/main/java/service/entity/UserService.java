@@ -1,6 +1,6 @@
 package service.entity;
 
-import com.jungeeks.entitiy.User;
+import com.jungeeks.entity.User;
 
 import java.util.List;
 

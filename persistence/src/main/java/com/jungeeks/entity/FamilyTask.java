@@ -1,6 +1,6 @@
-package com.jungeeks.entitiy;
+package com.jungeeks.entity;
 
-import com.jungeeks.entitiy.enums.TASK_STATUS;
+import com.jungeeks.entity.enums.TASK_STATUS;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

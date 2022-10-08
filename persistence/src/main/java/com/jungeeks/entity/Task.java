@@ -1,6 +1,6 @@
-package com.jungeeks.entitiy;
+package com.jungeeks.entity;
 
-import com.jungeeks.entitiy.enums.TASK_TYPE;
+import com.jungeeks.entity.enums.TASK_TYPE;
 import lombok.*;
 
 import javax.persistence.*;

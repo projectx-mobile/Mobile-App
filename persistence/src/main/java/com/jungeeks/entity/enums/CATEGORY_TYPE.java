@@ -1,4 +1,4 @@
-package com.jungeeks.entitiy.enums;
+package com.jungeeks.entity.enums;
 
 public enum CATEGORY_TYPE {
     CUSTOM,
