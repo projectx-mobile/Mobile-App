@@ -28,7 +28,7 @@ import java.util.Map;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
-public class SecurityConfig{
+public class SecurityConfig {
 
     @Autowired
     ObjectMapper objectMapper;
@@ -86,15 +86,16 @@ public class SecurityConfig{
 
         http.csrf().disable()
                 .cors().configurationSource(corsConfigurationSource()).and()
-                        .formLogin().disable()
-                        .httpBasic().disable()
-                        .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint()).and()
-                        .authorizeRequests()
-                                .antMatchers("/swagger").permitAll()
-                        .antMatchers(restSecProps.getAllowedPublicApis().toArray(String[]::new)).permitAll()
-                        .antMatchers(HttpMethod.OPTIONS,"/**").permitAll().anyRequest().authenticated().and()
-                        .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .formLogin().disable()
+                .httpBasic().disable()
+                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint()).and()
+                .authorizeRequests()
+                .antMatchers("/swagger").permitAll()
+                .antMatchers("/test/**").permitAll()
+                .antMatchers(restSecProps.getAllowedPublicApis().toArray(String[]::new)).permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated().and()
+                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 //        http.csrf().disable()
 //                .authorizeRequests()

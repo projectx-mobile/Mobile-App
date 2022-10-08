@@ -6,7 +6,7 @@ import com.google.firebase.auth.FirebaseToken;
 
 import com.jungeeks.entity.Credentials;
 import com.jungeeks.entity.SecurityProperties;
-import com.jungeeks.entity.User;
+import com.jungeeks.entity.SecurityUserFirebase;
 import com.jungeeks.service.SecurityService;
 import com.jungeeks.utils.CookieUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -72,27 +72,27 @@ public class SecurityFilter extends OncePerRequestFilter {
             e.printStackTrace();
             log.error("Firebase Exception:: ", e.getLocalizedMessage());
         }
-        User user = firebaseTokenToUserDto(decodedToken);
-        if (user != null) {
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user,
+        SecurityUserFirebase securityUserFirebase = firebaseTokenToUserDto(decodedToken);
+        if (securityUserFirebase != null) {
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(securityUserFirebase,
                     new Credentials(type, decodedToken, token, session), null);
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
     }
 
-    private User firebaseTokenToUserDto(FirebaseToken decodedToken) {
-        User user = null;
+    private SecurityUserFirebase firebaseTokenToUserDto(FirebaseToken decodedToken) {
+        SecurityUserFirebase securityUserFirebase = null;
         if (decodedToken != null) {
-            user = new User();
-            user.setUid(decodedToken.getUid());
-            user.setName(decodedToken.getName());
-            user.setEmail(decodedToken.getEmail());
-            user.setPicture(decodedToken.getPicture());
-            user.setIssuer(decodedToken.getIssuer());
-            user.setEmailVerified(decodedToken.isEmailVerified());
+            securityUserFirebase = new SecurityUserFirebase();
+            securityUserFirebase.setUid(decodedToken.getUid());
+            securityUserFirebase.setName(decodedToken.getName());
+            securityUserFirebase.setEmail(decodedToken.getEmail());
+            securityUserFirebase.setPicture(decodedToken.getPicture());
+            securityUserFirebase.setIssuer(decodedToken.getIssuer());
+            securityUserFirebase.setEmailVerified(decodedToken.isEmailVerified());
         }
-        return user;
+        return securityUserFirebase;
     }
 
 }

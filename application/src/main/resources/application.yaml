@@ -3,17 +3,40 @@ spring:
     url: jdbc:mysql://localhost:3306/kids_app_test
     username: root
     password: 12345678Root
-
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
-        ddl-auto: create-drop
-        show_sql: true
-        format_sql: true
+#  jpa:
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQL5Dialect
+#        ddl-auto: create-drop
+#        show_sql: true
+#        format_sql: true
+#    generate-ddl:
 
   liquibase:
     enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+
+
+#firebase:
+#  config:
+#    type: ${FIREBASE_CONFIG_TYPE}
+#    project_id:
+#    private_key_id:
+#    private_key:
+#    client_email:
+#    client_id:
+#    auth_uri:
+#    token_uri:
+#    auth_provider_x509_cert_url:
+#    client_x509_cert_url:
+
+
 
 
 security:

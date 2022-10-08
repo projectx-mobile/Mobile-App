@@ -1,4 +1,4 @@
-package com.jungeeks.entitiy.enums;
+package com.jungeeks.entity.enums;
 
 public enum REWARD_STATUS {
     UNLOCKED,

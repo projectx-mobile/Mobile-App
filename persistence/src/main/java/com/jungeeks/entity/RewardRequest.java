@@ -1,6 +1,6 @@
-package com.jungeeks.entitiy;
+package com.jungeeks.entity;
 
-import com.jungeeks.entitiy.enums.REQUEST_STATUS;
+import com.jungeeks.entity.enums.REQUEST_STATUS;
 import lombok.*;
 
 import javax.persistence.*;

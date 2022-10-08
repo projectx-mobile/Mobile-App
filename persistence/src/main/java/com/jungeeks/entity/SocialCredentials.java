@@ -1,4 +1,4 @@
-package com.jungeeks.entitiy;
+package com.jungeeks.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

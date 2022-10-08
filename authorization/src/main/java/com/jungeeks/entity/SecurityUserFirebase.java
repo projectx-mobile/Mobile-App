@@ -3,7 +3,7 @@ package com.jungeeks.entity;
 import lombok.Data;
 
 @Data
-public class User{
+public class SecurityUserFirebase {
 
     private String uid;
     private String name;

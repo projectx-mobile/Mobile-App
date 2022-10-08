@@ -2,7 +2,7 @@ package com.jungeeks.service;
 
 import com.jungeeks.entity.Credentials;
 import com.jungeeks.entity.SecurityProperties;
-import com.jungeeks.entity.User;
+import com.jungeeks.entity.SecurityUserFirebase;
 import com.jungeeks.utils.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
@@ -25,14 +25,14 @@ public class SecurityService {
     @Autowired
     SecurityProperties securityProps;
 
-    public User getUser() {
-        User userPrincipal = null;
+    public SecurityUserFirebase getUser() {
+        SecurityUserFirebase securityUserFirebasePrincipal = null;
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Object principal = securityContext.getAuthentication().getPrincipal();
-        if (principal instanceof User) {
-            userPrincipal = ((User) principal);
+        if (principal instanceof SecurityUserFirebase) {
+            securityUserFirebasePrincipal = ((SecurityUserFirebase) principal);
         }
-        return userPrincipal;
+        return securityUserFirebasePrincipal;
     }
 
     public Credentials getCredentials() {
