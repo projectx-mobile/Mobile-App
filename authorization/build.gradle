@@ -5,13 +5,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-mail:2.7.4'
 
 
     implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'com.google.firebase:firebase-admin:9.0.0'
-//    implementation 'com.google.firebase:firebase-auth:21.0.8'
     runtimeOnly 'mysql:mysql-connector-java'
 
     implementation project(':persistence')

@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.jungeeks.entity.FirebaseConfigProperties;
 import com.jungeeks.entity.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -38,16 +38,17 @@ public class FirebaseConfig {
         }
         try {
 
-//            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-//            String s = ow.writeValueAsString(firebaseConfigProperties);
-//            InputStream targetStream = new ByteArrayInputStream(s.getBytes());
+            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+            String s = ow.writeValueAsString(firebaseConfigProperties).replace("\\\\","\\");
+
+            InputStream targetStream = new ByteArrayInputStream(s.getBytes());
 
 //            FirebaseOptions options = new FirebaseOptions.Builder()
 //                    .setCredentials(GoogleCredentials.fromStream(inputStream))
 //                    .build();
 
             FirebaseOptions options = FirebaseOptions.builder()
-                    .setCredentials(GoogleCredentials.fromStream(inputStream))
+                    .setCredentials(GoogleCredentials.fromStream(targetStream))
                     .build();
 
             if (FirebaseApp.getApps().isEmpty()) {

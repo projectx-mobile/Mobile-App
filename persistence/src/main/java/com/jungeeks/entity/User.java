@@ -16,12 +16,13 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "sec_user")
-public class User implements UserDetails{
+public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String firebaseId;
     private String email;
     private Long points;
     private String name;
@@ -48,41 +49,7 @@ public class User implements UserDetails{
     @OneToOne(mappedBy = "user")
     private ConfirmationToken confirmationToken;
 
-    @OneToOne(mappedBy = "user", optional = false,cascade = CascadeType.PERSIST)
+    @OneToOne(mappedBy = "user", /*optional = false,*/cascade = CascadeType.PERSIST)
     private SocialCredentials socialCredentials;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
 }

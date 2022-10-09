@@ -24,7 +24,6 @@ public class CookieUtils {
     @Autowired
     private SecurityProperties restSecProps;
 
-
     public Cookie getCookie(String name) {
         return WebUtils.getCookie(httpServletRequest, name);
     }

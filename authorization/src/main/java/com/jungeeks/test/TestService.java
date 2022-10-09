@@ -27,7 +27,7 @@ public class TestService {
         body.put("returnSecureToken",true);
 
         Map<String ,Object> params = new HashMap<>();
-        params.put("key","AIzaSyCIMiR045t2Z_F-FhVPhpcfodQ3fSTZiXU");
+        params.put("key","AIzaSyBezDfgxaB1ECLfMV53mX7y_dXZae-HfCU");
 
         HttpEntity<Map<String, Object>> mapHttpEntity = new HttpEntity<>(body, httpHeaders);
 
@@ -49,7 +49,7 @@ public class TestService {
         body.put("returnSecureToken",true);
 
         Map<String ,Object> params = new HashMap<>();
-        params.put("key","AIzaSyCIMiR045t2Z_F-FhVPhpcfodQ3fSTZiXU");
+        params.put("key","AIzaSyBezDfgxaB1ECLfMV53mX7y_dXZae-HfCU");
 
         HttpEntity<Map<String, Object>> mapHttpEntity = new HttpEntity<>(body, httpHeaders);
 

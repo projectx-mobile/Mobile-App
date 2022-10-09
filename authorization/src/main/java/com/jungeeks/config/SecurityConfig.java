@@ -67,22 +67,8 @@ public class SecurityConfig {
         return source;
     }
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable().formLogin().disable()
-//                .httpBasic().disable().exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint())
-//                .and().authorizeRequests()
-//                .antMatchers(restSecProps.getAllowedPublicApis().toArray(String[]::new)).permitAll()
-//                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated().and()
-//                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-//        authenticationManagerBuilder.userDetailsService(userDetailsService);
-//        authenticationManager = authenticationManagerBuilder.build();
 
         http.csrf().disable()
                 .cors().configurationSource(corsConfigurationSource()).and()
@@ -92,21 +78,12 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/swagger").permitAll()
                 .antMatchers("/test/**").permitAll()
+                .antMatchers("/registration/**").permitAll()
                 .antMatchers(restSecProps.getAllowedPublicApis().toArray(String[]::new)).permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated().and()
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-//        http.csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers("/api/registration/**").permitAll()
-//                .antMatchers("/email").permitAll()
-//                .antMatchers("/google").permitAll()
-//                .antMatchers("/test").authenticated()
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                .formLogin();
         return http.build();
     }
 

@@ -1,4 +1,4 @@
-package com.jungeeks.config;
+package com.jungeeks.entity;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

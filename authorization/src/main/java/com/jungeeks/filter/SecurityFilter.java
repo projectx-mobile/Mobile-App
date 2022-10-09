@@ -8,6 +8,8 @@ import com.jungeeks.entity.Credentials;
 import com.jungeeks.entity.SecurityProperties;
 import com.jungeeks.entity.SecurityUserFirebase;
 import com.jungeeks.service.SecurityService;
+import com.jungeeks.service.UserService;
+import com.jungeeks.service.impl.SecurityServiceImpl;
 import com.jungeeks.utils.CookieUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,30 +34,33 @@ public class SecurityFilter extends OncePerRequestFilter {
     private SecurityService securityService;
 
     @Autowired
-    SecurityProperties restSecProps;
+    private SecurityProperties restSecProps;
 
     @Autowired
-    CookieUtils cookieUtils;
+    private UserService userService;
 
     @Autowired
-    SecurityProperties securityProps;
+    private CookieUtils cookieUtils;
 
+    @Autowired
+    private SecurityProperties securityProps;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
         verifyToken(request);
         filterChain.doFilter(request, response);
     }
 
     private void verifyToken(HttpServletRequest request) {
+
         String session = null;
         FirebaseToken decodedToken = null;
         Credentials.CredentialType type = null;
         boolean strictServerSessionEnabled = securityProps.getFirebaseProps().isEnableStrictServerSession();
         Cookie sessionCookie = cookieUtils.getCookie("session");
         String token = securityService.getBearerToken(request);
-        logger.info(token);
         try {
             if (sessionCookie != null) {
                 session = sessionCookie.getValue();
@@ -78,6 +83,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                     new Credentials(type, decodedToken, token, session), null);
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            userService.checkUser(securityUserFirebase);
         }
     }
 

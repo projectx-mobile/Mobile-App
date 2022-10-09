@@ -7,26 +7,34 @@ import com.jungeeks.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.Objects;
+
 @Service
 public class UserServiceImpl implements UserService {
 
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     @Override
-    public void save(User user) {
-        userRepository.save(user);
-    }
+    public void checkUser(SecurityUserFirebase user) {
+        User userDB = userRepository.findByFirebaseId(user.getUid());
 
-    @Override
-    public void createUser(SecurityUserFirebase securityUserFirebase) {
-        User user = User.builder()
-                .build();
-        save(user);
-
+        if (Objects.isNull(userDB)){
+            userDB=User.builder()
+                    .firebaseId(user.getUid())
+                    .email(user.getEmail())
+                    .build();
+            userRepository.save(userDB);
+        }else {
+            if (!userDB.getEmail().equals(user.getEmail())){
+                userDB.setEmail(user.getEmail());
+            }
+        }
     }
 }
