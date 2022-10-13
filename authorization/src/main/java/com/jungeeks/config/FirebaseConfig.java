@@ -21,16 +21,15 @@ import java.io.InputStream;
 public class FirebaseConfig {
 
     @Autowired
-    private SecurityProperties secProps;
-
-    @Autowired
     private FirebaseConfigProperties firebaseConfigProperties;
 
 
     @Primary
     @Bean
     public void firebaseInit() {
+
         try {
+
             ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
             String s = ow.writeValueAsString(firebaseConfigProperties).replace("\\\\","\\");
 
