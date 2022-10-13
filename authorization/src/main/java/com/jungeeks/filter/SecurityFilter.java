@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseToken;
 import com.jungeeks.entity.Credentials;
 import com.jungeeks.entity.SecurityProperties;
 import com.jungeeks.entity.SecurityUserFirebase;
+import com.jungeeks.exception.RegistrationFailedException;
 import com.jungeeks.service.SecurityService;
 import com.jungeeks.service.UserService;
 import com.jungeeks.service.impl.SecurityServiceImpl;
@@ -25,6 +26,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 @Component
 @Slf4j
@@ -78,11 +80,13 @@ public class SecurityFilter extends OncePerRequestFilter {
         }
         SecurityUserFirebase securityUserFirebase = firebaseTokenToUserDto(decodedToken);
         if (securityUserFirebase != null) {
+
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(securityUserFirebase,
                     new Credentials(type, decodedToken, token, session), null);
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             userService.checkUser(securityUserFirebase);
+
         }
     }
 

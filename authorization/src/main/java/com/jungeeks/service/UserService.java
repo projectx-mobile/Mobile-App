@@ -6,6 +6,6 @@ import com.jungeeks.entity.SecurityUserFirebase;
 public interface UserService {
 
     void checkUser(SecurityUserFirebase user);
-
-    User findByFirebaseId(String firebaseId);
+    void updateAppRegistrationToken(String registrationToken);
+    boolean checkUserByContainsRegistrationToken();
 }

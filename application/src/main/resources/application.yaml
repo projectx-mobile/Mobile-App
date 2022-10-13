@@ -1,8 +1,8 @@
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/kids_app_test
-    username: root
-    password: 12344321
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/kids_app_test
+#    username: root
+#    password: 12345678Root
 
   liquibase:
     enabled: false
@@ -16,16 +16,12 @@ spring:
 
   thymeleaf:
     cache: false
-    prefix: classpath:/templates/
+    prefix: classpath:/templates/html/
     suffix: .html
     enable-spring-el-compiler: true
     mode: HTML
+
   mail:
-    host: smtp.yandex.ru
-    port: 465
-    username: KidsAppTestAcc@yandex.by
-    password: fzdvpfqdpoxolwvp
-    protocol: smtp
     properties:
       mail:
         smtp:
@@ -35,25 +31,9 @@ spring:
           ssl:
             enable: true
 
-#firebase:
-#  config:
-#    type: ${FIREBASE_CONFIG_TYPE}
-#    project_id: ${FIREBASE_PROJECT_ID}
-#    private_key_id: ${FIREBASE_PRIVATE_KEY_ID}
-#    private_key: ${FIREBASE_PRIVATE_KEY}
-#    client_email: ${FIREBASE_CLIENT_EMAIL}
-#    client_id: ${FIREBASE_CLIENT_ID}
-#    auth_uri: ${FIREBASE_CLIENT_URI}
-#    token_uri: ${FIREBASE_TOKEN_URI}
-#    auth_provider_x509_cert_url: ${FIREBASE_PROVIDER_X509_CERT_IRL}
-#    client_x509_cert_url: ${FIREBASE_CLIENT_X509_CERT_URL}
-
-
-
-
 security:
   firebase-props:
-    database-url: ${spring.datasource.url}
+    database-url: ${FIREBASE_DATABASE}
     enable-strict-server-session: false
     enable-check-session-revoked: false
     enable-logout-everywhere: false

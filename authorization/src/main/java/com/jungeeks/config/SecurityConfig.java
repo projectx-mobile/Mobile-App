@@ -1,6 +1,8 @@
 package com.jungeeks.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jungeeks.entity.NoSecureUrl;
+import com.jungeeks.exception.RegistrationFailedException;
 import com.jungeeks.filter.SecurityFilter;
 import com.jungeeks.entity.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -22,6 +26,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -31,13 +36,24 @@ import java.util.Map;
 public class SecurityConfig {
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Autowired
-    SecurityProperties restSecProps;
+    private SecurityProperties restSecProps;
 
     @Autowired
     public SecurityFilter tokenAuthenticationFilter;
+
+    @Bean
+    public NoSecureUrl noSecureUrl() {
+        return NoSecureUrl.builder()
+                .url(List.of(
+                        "/swagger",
+                        "/test/**",
+                        "/registration/email/**"
+                ))
+                .build();
+    }
 
     @Bean
     public AuthenticationEntryPoint restAuthenticationEntryPoint() {
@@ -69,19 +85,40 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+
+//        http.csrf().disable()
+//                .cors().configurationSource(corsConfigurationSource()).and()
+//                .formLogin().disable()
+//                .httpBasic().disable()
+//                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint()).and()
+//                .authorizeRequests()
+//                .antMatchers("/swagger").permitAll()
+//                .antMatchers("/test/**").permitAll()
+//                .antMatchers("/registration/email/**").permitAll()
+//                .antMatchers(restSecProps.getAllowedPublicApis().toArray(String[]::new)).permitAll()
+//                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated().and()
+//                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry = http.csrf().disable()
                 .cors().configurationSource(corsConfigurationSource()).and()
                 .formLogin().disable()
                 .httpBasic().disable()
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint()).and()
-                .authorizeRequests()
-                .antMatchers("/swagger").permitAll()
-                .antMatchers("/test/**").permitAll()
-                .antMatchers("/registration/**").permitAll()
+                .authorizeRequests();
+
+        List<String> permitAllUrl = noSecureUrl().getUrl();
+
+        for (String url : permitAllUrl) {
+            expressionInterceptUrlRegistry = expressionInterceptUrlRegistry.antMatchers(url).permitAll();
+        }
+
+        expressionInterceptUrlRegistry
                 .antMatchers(restSecProps.getAllowedPublicApis().toArray(String[]::new)).permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated().and()
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         return http.build();
     }
 
