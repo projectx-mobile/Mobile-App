@@ -2,44 +2,70 @@ package com.jungeeks.service.impl;
 
 import com.jungeeks.entity.User;
 import com.jungeeks.entity.SecurityUserFirebase;
-import com.jungeeks.repository.JpaUserRepository;
+import com.jungeeks.exception.RegistrationFailedException;
+import com.jungeeks.repository.UserRepository;
+import com.jungeeks.service.SecurityService;
 import com.jungeeks.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
 import java.util.Objects;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
-    private JpaUserRepository jpaUserRepository;
+    private UserRepository userRepository;
+    private SecurityService securityService;
 
     @Autowired
-    public void setUserRepository(JpaUserRepository jpaUserRepository) {
-        this.jpaUserRepository = jpaUserRepository;
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    @Override
-    public User findByFirebaseId(String firebaseId) {
-        return jpaUserRepository.findByFirebaseId(firebaseId).orElse(null);
+    @Autowired
+    public void setSecurityService(SecurityService securityService) {
+        this.securityService = securityService;
     }
 
     @Transactional
     @Override
     public void checkUser(SecurityUserFirebase user) {
-        User userDB = findByFirebaseId(user.getUid());
+        User userDB = userRepository.findByFirebaseId(user.getUid());
 
-        if (userDB == null){
-            userDB=User.builder()
+        if (Objects.isNull(userDB)) {
+            userDB = User.builder()
                     .firebaseId(user.getUid())
                     .email(user.getEmail())
                     .build();
-            jpaUserRepository.save(userDB);
-        }else {
-            if (!userDB.getEmail().equals(user.getEmail())){
+            userRepository.save(userDB);
+            log.debug("USer with Uid:" + userDB.getFirebaseId() + " added to db");
+        } else {
+            if (!userDB.getEmail().equals(user.getEmail())) {
                 userDB.setEmail(user.getEmail());
+                log.debug("User email updated");
             }
         }
+    }
+
+    @Transactional
+    @Override
+    public void updateAppRegistrationToken(String registrationToken) {
+        User userDb = userRepository.findByFirebaseId(securityService.getUser().getUid());
+        if (Objects.nonNull(userDb)) {
+            userDb.setAppRegistrationToken(registrationToken);
+            log.debug("User app registration token updated");
+        } else {
+            log.error("User not found");
+            throw new RegistrationFailedException("User not found");
+        }
+    }
+
+    @Override
+    public boolean checkUserByContainsRegistrationToken() {
+        User userDb = userRepository.findByFirebaseId(securityService.getUser().getUid());
+        return Objects.nonNull(userDb.getAppRegistrationToken());
     }
 }
