@@ -20,12 +20,8 @@ spring:
     suffix: .html
     enable-spring-el-compiler: true
     mode: HTML
+
   mail:
-    host: smtp.yandex.ru
-    port: 465
-    username: KidsAppTestAcc@yandex.by
-    password: fzdvpfqdpoxolwvp
-    protocol: smtp
     properties:
       mail:
         smtp:
@@ -35,24 +31,7 @@ spring:
           ssl:
             enable: true
 
-#firebase:
-#  config:
-#    type: ${FIREBASE_CONFIG_TYPE}
-#    project_id:
-#    private_key_id:
-#    private_key:
-#    client_email:
-#    client_id:
-#    auth_uri:
-#    token_uri:
-#    auth_provider_x509_cert_url:
-#    client_x509_cert_url:
-
-
-
-
 security:
-
   firebase-props:
     database-url: ${FIREBASE_DATABASE}
     enable-strict-server-session: false

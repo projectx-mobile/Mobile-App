@@ -23,6 +23,7 @@ public class User{
     private Long id;
 
     private String firebaseId;
+    private String appRegistrationToken;
     private String email;
     private Long points;
     private String name;
@@ -46,10 +47,12 @@ public class User{
             @AttributeOverride(name = "path", column = @Column(name = "path"))})
     private List<Photo> photo;
 
-    @OneToOne(mappedBy = "user")
-    private ConfirmationToken confirmationToken;
+//    @OneToOne(mappedBy = "user")
+//    private ConfirmationToken confirmationToken;
+//
+//    @OneToOne(mappedBy = "user", /*optional = false,*/cascade = CascadeType.PERSIST)
+//    private SocialCredentials socialCredentials;
 
-    @OneToOne(mappedBy = "user", /*optional = false,*/cascade = CascadeType.PERSIST)
-    private SocialCredentials socialCredentials;
+
 
 }

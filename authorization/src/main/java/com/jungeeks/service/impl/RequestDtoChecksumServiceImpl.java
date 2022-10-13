@@ -1,7 +1,11 @@
 package com.jungeeks.service.impl;
 
 import com.jungeeks.service.RequestDtoChecksumService;
+import org.apache.commons.codec.digest.XXHash32;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.zip.Checksum;
 
 @Service
 public class RequestDtoChecksumServiceImpl implements RequestDtoChecksumService {
@@ -12,8 +16,10 @@ public class RequestDtoChecksumServiceImpl implements RequestDtoChecksumService 
 
     @Override
     public String getChecksum(String token, String email) {
-        long i = (long) (token.length() + email.length() * 145L - 15L);//TODO: modify logic calculate checksum
-        return Long.toString(i);
+        Checksum checksum = new XXHash32();
+        byte[] bytes = (token + email).getBytes();
+        checksum.update(bytes,0,bytes.length);
+        return Long.toString(checksum.getValue());
     }
 
 }
