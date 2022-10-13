@@ -34,27 +34,26 @@ public class SecurityFilter extends OncePerRequestFilter {
     private SecurityService securityService;
 
     @Autowired
-    private SecurityProperties restSecProps;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
     private CookieUtils cookieUtils;
 
-    @Autowired
     private SecurityProperties securityProps;
+
+    @Autowired
+    public void setSecurityProps(SecurityProperties securityProps) {
+        this.securityProps = securityProps;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
         verifyToken(request);
         filterChain.doFilter(request, response);
     }
 
     private void verifyToken(HttpServletRequest request) {
-
         String session = null;
         FirebaseToken decodedToken = null;
         Credentials.CredentialType type = null;
@@ -90,13 +89,14 @@ public class SecurityFilter extends OncePerRequestFilter {
     private SecurityUserFirebase firebaseTokenToUserDto(FirebaseToken decodedToken) {
         SecurityUserFirebase securityUserFirebase = null;
         if (decodedToken != null) {
-            securityUserFirebase = new SecurityUserFirebase();
-            securityUserFirebase.setUid(decodedToken.getUid());
-            securityUserFirebase.setName(decodedToken.getName());
-            securityUserFirebase.setEmail(decodedToken.getEmail());
-            securityUserFirebase.setPicture(decodedToken.getPicture());
-            securityUserFirebase.setIssuer(decodedToken.getIssuer());
-            securityUserFirebase.setEmailVerified(decodedToken.isEmailVerified());
+            securityUserFirebase = SecurityUserFirebase.builder()
+                    .uid(decodedToken.getUid())
+                    .name(decodedToken.getName())
+                    .email(decodedToken.getEmail())
+                    .picture(decodedToken.getPicture())
+                    .issuer(decodedToken.getIssuer())
+                    .isEmailVerified(decodedToken.isEmailVerified())
+                    .build();
         }
         return securityUserFirebase;
     }

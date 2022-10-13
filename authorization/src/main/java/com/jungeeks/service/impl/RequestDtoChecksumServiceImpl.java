@@ -12,8 +12,7 @@ public class RequestDtoChecksumServiceImpl implements RequestDtoChecksumService 
 
     @Override
     public String getChecksum(String token, String email) {
-        long i = (long) (token.length() + email.length() * 145L - 15L);//TODO: modify logic calculate checksum
+        long i = (long) (token.length() + email.length() * 145L - 15L);
         return Long.toString(i);
     }
-
 }

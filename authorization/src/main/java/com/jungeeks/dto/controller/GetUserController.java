@@ -1,4 +1,4 @@
-package com.jungeeks.controller;
+package com.jungeeks.dto.controller;
 
 import com.jungeeks.entity.SecurityUserFirebase;
 import com.jungeeks.service.SecurityService;

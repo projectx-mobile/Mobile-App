@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SignUpResponseDTO {
-    private String  idToken;
+    private String idToken;
     private String email;
     private String refreshToken;
     private String expiresIn;

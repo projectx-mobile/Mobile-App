@@ -18,13 +18,13 @@ import javax.servlet.http.HttpServletRequest;
 public class SecurityServiceImpl implements SecurityService {
 
     @Autowired
-    HttpServletRequest httpServletRequest;
+    private HttpServletRequest httpServletRequest;
 
     @Autowired
-    CookieUtils cookieUtils;
+    private CookieUtils cookieUtils;
 
     @Autowired
-    SecurityProperties securityProps;
+    private SecurityProperties securityProps;
 
     public SecurityUserFirebase getUser() {
         SecurityUserFirebase securityUserFirebasePrincipal = null;

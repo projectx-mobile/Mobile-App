@@ -1,4 +1,4 @@
-package com.jungeeks.controller;
+package com.jungeeks.dto.controller;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
@@ -30,7 +30,6 @@ public class EmailRegistrationController {
     @ResponseBody
     @PostMapping("/verify")
     public ResponseEntity<String> verify(@RequestBody VerifyRequestDto verifyRequestDto) {
-
         emailService.send(verifyRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
@@ -38,7 +37,7 @@ public class EmailRegistrationController {
     @GetMapping(value = "/verify", params = {"registration_token", "checksum", "email"})
     public ModelAndView verifyLink(@RequestParam(name = "registration_token") String token,
                                    @RequestParam(name = "checksum") String checksum,
-                                   @RequestParam(name = "email") String email) {
+                                       @RequestParam(name = "email") String email) {
 
         boolean validate = requestDtoChecksumService.validate(token, email, checksum);
 
@@ -48,7 +47,6 @@ public class EmailRegistrationController {
                     .putData("verify", "true")
                     .setToken(token)
                     .build();
-
             try {
                 FirebaseMessaging.getInstance().send(message);
             } catch (FirebaseMessagingException fme) {
@@ -62,5 +60,4 @@ public class EmailRegistrationController {
         model.put("validate", validate);
         return new ModelAndView("emailVerify", model);
     }
-
 }
