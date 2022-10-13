@@ -1,8 +1,10 @@
 package com.jungeeks.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class SecurityUserFirebase {
 
     private String uid;

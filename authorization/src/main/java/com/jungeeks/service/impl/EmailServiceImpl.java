@@ -26,24 +26,29 @@ public class EmailServiceImpl implements EmailService {
     private String domain;
 
     @Override
-    public void send(VerifyRequestDto verifyRequestDto) {
-        String email = verifyRequestDto.getEmail();
-        String registration_token = verifyRequestDto.getRegistration_token();
-        String checksum = checksumService.getChecksum(registration_token, email);
+    public boolean send(VerifyRequestDto verifyRequestDto) {
+        String checksum = checksumService.getChecksum(verifyRequestDto.getRegistration_token(), verifyRequestDto.getEmail());
+
         String link = domain + "/registration/email/verify?" +
-                "email=" + email + "&" +
-                "registration_token=" + registration_token + "&" +
+                "email=" + verifyRequestDto.getEmail() + "&" +
+                "registration_token=" + verifyRequestDto.getRegistration_token() + "&" +
                 "checksum=" + checksum;
 
+        SimpleMailMessage message = setMessageFields(verifyRequestDto.getEmail(), link);
+
+        emailSender.send(message);
+        log.debug("Verify email send from:" + message.getFrom() + " " +
+                "to: " + message.getTo() + " " +
+                "link: " + link);
+        return true;
+    }
+
+    private SimpleMailMessage setMessageFields(String email, String link) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(template.getFrom());
         message.setTo(email);
         message.setSubject(template.getSubject());
         message.setText(String.format(template.getText(), link));
-        emailSender.send(message);
-        log.debug("Verify email send from:" + message.getFrom() + " " +
-                "to: " + message.getTo() + " " +
-                "link: " + link);
-
+        return message;
     }
 }

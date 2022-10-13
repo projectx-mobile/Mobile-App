@@ -7,4 +7,5 @@ public interface UserService {
 
     void checkUser(SecurityUserFirebase user);
 
+    User findByFirebaseId(String firebaseId);
 }

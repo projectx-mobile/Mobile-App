@@ -1,4 +1,4 @@
-package com.jungeeks.controller;
+package com.jungeeks.dto.controller;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import com.jungeeks.entity.SecurityUserFirebase;
@@ -25,18 +25,15 @@ public class TestController {
 
     @PostMapping("/sign_up")
     public ResponseEntity<SignUpResponseDTO> signUp(String email,String password) throws FirebaseAuthException {
-
         SignUpResponseDTO signUpResponseDTO = testService.signUp(email, password);
-
         return ResponseEntity.status(HttpStatus.OK).body(signUpResponseDTO);
     }
 
     @PostMapping("/sign_in")
     public ResponseEntity<SignInResponseDTO> signIn(String email,String password){
-        SecurityUserFirebase user = securityService.getUser();
+            SecurityUserFirebase user = securityService.getUser();
         SignInResponseDTO signInResponseDTO = testService.signIn(email, password);
 
         return ResponseEntity.status(HttpStatus.OK).body(signInResponseDTO);
     }
-
 }
