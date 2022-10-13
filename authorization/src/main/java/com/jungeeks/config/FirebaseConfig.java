@@ -21,31 +21,19 @@ import java.io.InputStream;
 public class FirebaseConfig {
 
     @Autowired
-    private SecurityProperties secProps;
-
-    @Autowired
     private FirebaseConfigProperties firebaseConfigProperties;
 
 
     @Primary
     @Bean
     public void firebaseInit() {
-        InputStream inputStream = null;
-        try {
-            inputStream = new ClassPathResource("firebase_config.json").getInputStream();//TODO:set credentials: https://medium.com/google-cloud/kubernetes-configmaps-and-secrets-with-firebase-426e5f4c8a36
-        } catch (IOException e3) {
-            e3.printStackTrace();
-        }
+
         try {
 
             ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
             String s = ow.writeValueAsString(firebaseConfigProperties).replace("\\\\","\\");
 
             InputStream targetStream = new ByteArrayInputStream(s.getBytes());
-
-//            FirebaseOptions options = new FirebaseOptions.Builder()
-//                    .setCredentials(GoogleCredentials.fromStream(inputStream))
-//                    .build();
 
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(targetStream))
