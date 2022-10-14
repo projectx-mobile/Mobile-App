@@ -23,7 +23,6 @@ public class User{
     private Long id;
 
     private String firebaseId;
-    private String appRegistrationToken;
     private String email;
     private Long points;
     private String name;
@@ -48,6 +47,6 @@ public class User{
     private List<Photo> photo;
 
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
-    private List<ClientApp> clientApps = new java.util.ArrayList<>();
+    private List<ClientApp> clientApps;
 
 }

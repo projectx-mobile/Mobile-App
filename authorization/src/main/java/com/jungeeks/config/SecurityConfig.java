@@ -49,7 +49,8 @@ public class SecurityConfig {
                 .url(List.of(
                         "/swagger",
                         "/test/**",
-                        "/registration/email/**"
+                        "/registration/email/**",
+                        "favicon.ico"
                 ))
                 .build();
     }
@@ -84,20 +85,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-//        http.csrf().disable()
-//                .cors().configurationSource(corsConfigurationSource()).and()
-//                .formLogin().disable()
-//                .httpBasic().disable()
-//                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint()).and()
-//                .authorizeRequests()
-//                .antMatchers("/swagger").permitAll()
-//                .antMatchers("/test/**").permitAll()
-//                .antMatchers("/registration/email/**").permitAll()
-//                .antMatchers(restSecProps.getAllowedPublicApis().toArray(String[]::new)).permitAll()
-//                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated().and()
-//                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry = http.csrf().disable()
                 .cors().configurationSource(corsConfigurationSource()).and()
