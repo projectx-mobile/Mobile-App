@@ -47,12 +47,7 @@ public class User{
             @AttributeOverride(name = "path", column = @Column(name = "path"))})
     private List<Photo> photo;
 
-//    @OneToOne(mappedBy = "user")
-//    private ConfirmationToken confirmationToken;
-//
-//    @OneToOne(mappedBy = "user", /*optional = false,*/cascade = CascadeType.PERSIST)
-//    private SocialCredentials socialCredentials;
-
-
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
+    private List<ClientApp> clientApps = new java.util.ArrayList<>();
 
 }

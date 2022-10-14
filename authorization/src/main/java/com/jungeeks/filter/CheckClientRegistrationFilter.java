@@ -2,21 +2,17 @@ package com.jungeeks.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jungeeks.entity.NoSecureUrl;
-import com.jungeeks.exception.RegistrationFailedException;
 import com.jungeeks.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
-import java.net.http.HttpResponse;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
@@ -66,6 +62,8 @@ public class CheckClientRegistrationFilter implements Filter {
             }else {
                 chain.doFilter(request,response);
             }
+        }else {
+            chain.doFilter(request,response);
         }
     }
 
