@@ -46,7 +46,7 @@ public class User{
             @AttributeOverride(name = "path", column = @Column(name = "path"))})
     private List<Photo> photo;
 
-    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
     private List<ClientApp> clientApps;
 
 }

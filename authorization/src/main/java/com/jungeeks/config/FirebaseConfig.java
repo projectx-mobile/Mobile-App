@@ -29,7 +29,6 @@ public class FirebaseConfig {
     public void firebaseInit() {
 
         try {
-
             ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
             String s = ow.writeValueAsString(firebaseConfigProperties).replace("\\\\","\\");
 
