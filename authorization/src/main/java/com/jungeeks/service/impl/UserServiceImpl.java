@@ -1,5 +1,6 @@
 package com.jungeeks.service.impl;
 
+import com.jungeeks.entity.ClientApp;
 import com.jungeeks.entity.User;
 import com.jungeeks.entity.SecurityUserFirebase;
 import com.jungeeks.exception.RegistrationFailedException;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Service
@@ -55,7 +57,10 @@ public class UserServiceImpl implements UserService {
     public void updateAppRegistrationToken(String registrationToken) {
         User userDb = userRepository.findByFirebaseId(securityService.getUser().getUid());
         if (Objects.nonNull(userDb)) {
-            userDb.setAppRegistrationToken(registrationToken);
+            userDb.getClientApps().add(ClientApp.builder()
+                            .appId(registrationToken)
+                            .updated(LocalDateTime.now())
+                    .build());
             log.debug("User app registration token updated");
         } else {
             log.error("User not found");
@@ -66,6 +71,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkUserByContainsRegistrationToken() {
         User userDb = userRepository.findByFirebaseId(securityService.getUser().getUid());
-        return Objects.nonNull(userDb.getAppRegistrationToken());
+        return Objects.nonNull(userDb.getClientApps());
     }
 }
