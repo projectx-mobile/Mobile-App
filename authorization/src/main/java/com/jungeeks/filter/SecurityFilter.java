@@ -80,13 +80,11 @@ public class SecurityFilter extends OncePerRequestFilter {
         }
         SecurityUserFirebase securityUserFirebase = firebaseTokenToUserDto(decodedToken);
         if (securityUserFirebase != null) {
-
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(securityUserFirebase,
                     new Credentials(type, decodedToken, token, session), null);
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             userService.checkUser(securityUserFirebase);
-
         }
     }
 

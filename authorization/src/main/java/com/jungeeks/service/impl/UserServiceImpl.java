@@ -1,8 +1,8 @@
 package com.jungeeks.service.impl;
 
 import com.jungeeks.entity.ClientApp;
-import com.jungeeks.entity.User;
 import com.jungeeks.entity.SecurityUserFirebase;
+import com.jungeeks.entity.User;
 import com.jungeeks.exception.RegistrationFailedException;
 import com.jungeeks.repository.UserRepository;
 import com.jungeeks.service.SecurityService;
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void checkUser(SecurityUserFirebase user) {
-        User userDB = userRepository.findByFirebaseId(user.getUid());
+        User userDB = userRepository.findByFirebaseId(user.getUid()).orElse(null);
 
         if (Objects.isNull(userDB)) {
             userDB = User.builder()
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
                     .email(user.getEmail())
                     .build();
             userRepository.save(userDB);
-            log.debug("USer with Uid:" + userDB.getFirebaseId() + " added to db");
+            log.debug("User with Uid:" + userDB.getFirebaseId() + " added to db");
         } else {
             if (!userDB.getEmail().equals(user.getEmail())) {
                 userDB.setEmail(user.getEmail());
@@ -54,23 +54,20 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updateAppRegistrationToken(String registrationToken) {
-        User userDb = userRepository.findByFirebaseId(securityService.getUser().getUid());
-        if (Objects.nonNull(userDb)) {
-            userDb.getClientApps().add(ClientApp.builder()
-                            .appId(registrationToken)
-                            .updated(LocalDateTime.now())
-                    .build());
-            log.debug("User app registration token updated");
-        } else {
-            log.error("User not found");
-            throw new RegistrationFailedException("User not found");
-        }
+    public boolean updateAppRegistrationToken(String registrationToken) {
+        User userDb = userRepository.findByFirebaseId(securityService.getUser().getUid()).orElseThrow(
+                () -> new RegistrationFailedException("User not found"));
+        userDb.getClientApps().add(ClientApp.builder()
+                .appId(registrationToken)
+                .updated(LocalDateTime.now())
+                .build());
+        log.debug("User app registration token updated");
+        return true;
     }
 
     @Override
     public boolean checkUserByContainsRegistrationToken() {
-        User userDb = userRepository.findByFirebaseId(securityService.getUser().getUid());
+        User userDb = userRepository.findByFirebaseId(securityService.getUser().getUid()).orElse(null);
         return Objects.nonNull(userDb.getClientApps());
     }
 }

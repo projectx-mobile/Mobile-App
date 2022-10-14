@@ -3,10 +3,13 @@ package com.jungeeks.service.impl;
 import com.jungeeks.dto.VerifyRequestDto;
 import com.jungeeks.service.EmailService;
 import com.jungeeks.service.RequestDtoChecksumService;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.ParameterResolutionDelegate;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -18,12 +21,14 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private JavaMailSender emailSender;
     @Autowired
-    private SimpleMailMessage template;
-    @Autowired
     private RequestDtoChecksumService checksumService;
-
     @Value("${EMAIL_LINK_VERIFY_DOMAIN}")
+    @Setter
     private String domain;
+    @Value("${spring.mail.username}")
+    @Setter
+    private String username;
+
 
     @Override
     public boolean send(VerifyRequestDto verifyRequestDto) {
@@ -45,10 +50,13 @@ public class EmailServiceImpl implements EmailService {
 
     private SimpleMailMessage setMessageFields(String email, String link) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(template.getFrom());
+        message.setFrom(username);
         message.setTo(email);
-        message.setSubject(template.getSubject());
-        message.setText(String.format(template.getText(), link));
+        message.setSubject("email verification");
+        message.setText(String.format("""
+                Follow the link to confirm your email
+                %s
+                """, link));
         return message;
     }
 }

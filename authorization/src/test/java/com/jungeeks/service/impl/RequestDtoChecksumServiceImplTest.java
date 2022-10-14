@@ -12,32 +12,32 @@ class RequestDtoChecksumServiceImplTest {
     @InjectMocks
     RequestDtoChecksumServiceImpl requestDtoChecksumService;
 
-    private static final String token = "PGwLFCXcP4b6HjGOXQkaxv3tJwn2";
-    private static final String checkSum = "3493";
+    private static final String registration_token = "12344321";
+    private static final String checkSum = "3702039452";
     private static final String wrongCheckSum = "0";
     private static final String email = "kidsapptestacc@gmail.com";
 
     @Test
     void validatePositive() {
-        boolean validate = requestDtoChecksumService.validate(token, email, checkSum);
+        boolean validate = requestDtoChecksumService.validate(registration_token, email, checkSum);
         assertTrue(validate);
     }
 
     @Test
     void validateNegative() {
-        boolean validate = requestDtoChecksumService.validate(token, email, wrongCheckSum);
+        boolean validate = requestDtoChecksumService.validate(registration_token, email, wrongCheckSum);
         assertFalse(validate);
     }
 
     @Test
     void getChecksumPositive() {
-        String newCheckSum = requestDtoChecksumService.getChecksum(token, email);
+        String newCheckSum = requestDtoChecksumService.getChecksum(registration_token, email);
         assertEquals(newCheckSum, checkSum);
     }
 
     @Test
     void getChecksumNegative() {
-        String newCheckSum = requestDtoChecksumService.getChecksum(token, email);
+        String newCheckSum = requestDtoChecksumService.getChecksum(registration_token, email);
         assertNotEquals(newCheckSum, wrongCheckSum);
     }
 }
