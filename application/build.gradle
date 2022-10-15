@@ -12,8 +12,6 @@ dependencies {
     implementation project(':accounts')
     implementation project(':rewards')
     implementation 'mysql:mysql-connector-java:8.0.30'
-    compileOnly 'org.projectlombok:lombok:1.18.24'
-    annotationProcessor 'org.projectlombok:lombok:1.18.24'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.liquibase:liquibase-core:4.15.0'
@@ -28,7 +26,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-mail:2.7.4'
     testImplementation 'com.google.firebase:firebase-admin:9.0.0'
     testImplementation 'com.h2database:h2:2.1.214'
-
+    testAnnotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
 
 configurations {
