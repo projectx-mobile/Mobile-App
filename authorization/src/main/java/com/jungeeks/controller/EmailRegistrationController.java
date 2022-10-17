@@ -1,4 +1,4 @@
-package com.jungeeks.dto.controller;
+package com.jungeeks.controller;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;

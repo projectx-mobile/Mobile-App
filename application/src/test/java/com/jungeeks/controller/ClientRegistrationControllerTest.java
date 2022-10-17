@@ -1,11 +1,10 @@
 package com.jungeeks.controller;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
 import com.jungeeks.entity.ClientApp;
 import com.jungeeks.entity.SecurityUserFirebase;
 import com.jungeeks.entity.User;
+import com.jungeeks.entity.enums.USER_ROLE;
+import com.jungeeks.entity.enums.USER_STATUS;
 import com.jungeeks.filter.SecurityFilter;
 import com.jungeeks.repository.UserRepository;
 import com.jungeeks.service.SecurityService;
@@ -13,7 +12,6 @@ import com.jungeeks.service.UserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,13 +23,10 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.time.Month;
+import java.util.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -110,26 +105,114 @@ public class ClientRegistrationControllerTest {
     }
 
 
+//    @Test
+////    @Sql(value = {"/integration/integration-test-users-data-for-security.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+////    @Sql(value = {"/integration/integration-test-users-data-for-security-after-test.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+//    void registerNewRegistrationTokenWithBarerToken() throws Exception {
+//        SignUpResponseDto responseFromFirebase = getResponseFromFirebase();
+//        String idTokenFromFirebase = responseFromFirebase.getIdToken();
+//
+//        User savedUser = userRepository.save(User.builder()
+//                .email("kidsapptestacc@gmail.com")
+//                .firebaseId("UDlRPKRG8AaQfqXL3IL3mwXxtl32")
+//                .name("testUser")
+//                .points(12L)
+//                .user_role(USER_ROLE.PARENT)
+//                .user_status(USER_STATUS.ACTIVE)
+//                .clientApps(List.of(
+//                        ClientApp.builder()
+//                                .appId("eferwferc3627348")
+//                                .updated(LocalDateTime.of(2020, Month.AUGUST,12,10,30,10,32))
+//                                .build(),
+//                        ClientApp.builder()
+//                                .appId("fnhdjhdcdfe3fnjs")
+//                                .updated(LocalDateTime.of(2020, Month.AUGUST,12,10,30,10,32))
+//                                .build()
+//                ))
+//                .build());
+//
+//        this.mockMvc.perform(post("/registration/client/register")
+//                        .header("Authorization", "Bearer " + idTokenFromFirebase)
+//                        .param("registration_token", REGISTRATION_TOKEN))
+//                .andDo(print())
+//                .andExpect(status().isOk());
+//
+//        User user = userRepository.findByFirebaseId(FIREBASE_USER_ID).orElse(null);
+//        List<ClientApp> list = Objects.requireNonNull(user).getClientApps();
+//        assertEquals(list.get(4).getAppId(), REGISTRATION_TOKEN);
+//        userRepository.deleteAll();
+//    }
+
     @Test
-    @Sql(value = {"/integration/integration-test-users-data-for-security.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void registerClientWithBarerToken() throws Exception {
-        String idTokenFromFirebase = getIdTokenFromFirebase();
+//    @Sql(value = {"/integration/integration-test-users-data-for-security.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+//    @Sql(value = {"/integration/integration-test-users-data-for-security-after-test.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    void updateRegistrationTokenWithBarerToken() throws Exception {
+
+        try {
+        SignUpResponseDto idTokenFromFirebase1 = getResponseFromFirebase();
+        String idTokenFromFirebase = idTokenFromFirebase1.getIdToken();
+        String newRegistrationToken = "ewf3443wefdd34rssdf";
+
+        String firebaseId = "UDlRPKRG8AaQfqXL3IL3mwXxtl32";
+
+        User savedUser = userRepository.save(User.builder()
+                        .email("kidsapptestacc@gmail.com")
+                        .firebaseId(firebaseId)
+                        .name("testUser")
+                        .points(12L)
+                        .user_role(USER_ROLE.PARENT)
+                        .user_status(USER_STATUS.ACTIVE)
+                        .clientApps(List.of(
+                                ClientApp.builder()
+                                        .appId("eferwferc3627348")
+                                        .updated(LocalDateTime.of(2020, Month.AUGUST,12,10,30,10,32))
+                                .build(),
+                                ClientApp.builder()
+                                        .appId("fnhdjhdcdfe3fnjs")
+                                        .updated(LocalDateTime.of(2020, Month.AUGUST,12,10,30,10,32))
+                                        .build()
+                                ))
+                .build());
 
         this.mockMvc.perform(post("/registration/client/register")
                         .header("Authorization", "Bearer " + idTokenFromFirebase)
-                        .param("registration_token", REGISTRATION_TOKEN))
+                        .param("registration_token", newRegistrationToken))
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        User user = userRepository.findByFirebaseId(FIREBASE_USER_ID).orElse(null);
-        List<ClientApp> list = Objects.requireNonNull(user).getClientApps();
-        assertEquals(list.get(4).getAppId(), REGISTRATION_TOKEN);
+        User userAfterAddNewToken = userRepository.findByFirebaseId(firebaseId).orElse(null);
+        assertNotNull(userAfterAddNewToken);
+        ClientApp clientApp1 = userAfterAddNewToken.getClientApps()
+                .stream().filter(x -> x.getAppId().equals(newRegistrationToken)).findFirst().orElse(null);
+        assertNotNull(clientApp1);
+        LocalDateTime updated = clientApp1.getUpdated();
+
+        this.mockMvc.perform(post("/registration/client/register")
+                        .header("Authorization", "Bearer " + idTokenFromFirebase)
+                        .param("registration_token", newRegistrationToken))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        User userAfterUpdateToken = userRepository.findByFirebaseId(firebaseId).orElse(null);
+        assertNotNull(userAfterUpdateToken);
+
+        ClientApp clientAppAfterUpdate = userAfterUpdateToken.getClientApps()
+                .stream().filter(x -> x.getAppId().equals(newRegistrationToken)).findFirst().orElse(null);
+        assertNotNull(clientAppAfterUpdate);
+
+        LocalDateTime updatedDate = clientAppAfterUpdate.getUpdated();
+        assertTrue(updatedDate.isAfter(updated));
+        assertEquals(savedUser.getClientApps().size()+1,userAfterUpdateToken.getClientApps().size());
+
+        }finally {
+            userRepository.deleteAll();
+        }
     }
 
 
 
 
-    private String getIdTokenFromFirebase() {
+    private SignUpResponseDto getResponseFromFirebase() {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -146,6 +229,6 @@ public class ClientRegistrationControllerTest {
 
         SignUpResponseDto signUpResponseDto = restTemplate.postForObject(SIGN_UP_FIREBASE_URL,
                 mapHttpEntity, SignUpResponseDto.class, params);
-        return signUpResponseDto.getIdToken();
+        return signUpResponseDto;
     }
 }
