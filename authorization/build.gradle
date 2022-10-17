@@ -1,32 +1,21 @@
 dependencies {
+    implementation project(':persistence')
     compileOnly 'org.projectlombok:lombok:1.18.24'
-    annotationProcessor 'org.projectlombok:lombok:1.18.24'
-    annotationProcessor 'org.slf4j:slf4j-simple:2.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'org.springframework.boot:spring-boot-starter-mail:2.7.3'
-    runtimeOnly 'com.h2database:h2'
-
-    implementation 'com.auth0:java-jwt:4.0.0'
-    implementation 'com.auth0:jwks-rsa:0.21.1'
-    implementation 'org.springframework.security:spring-security-oauth2-authorization-server:0.3.1'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.7.3'
-    implementation 'org.apache.logging.log4j:log4j-api:2.18.0'
-    implementation 'org.apache.logging.log4j:log4j-core:2.18.0'
-
+    implementation 'org.springframework.boot:spring-boot-starter-mail:2.7.4'
     implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
-
-    implementation 'org.springframework.boot:spring-boot-starter-mail:2.7.3'
-    implementation 'com.google.api-client:google-api-client:2.0.0'
-    implementation 'com.google.http-client:google-http-client-jackson2:1.42.2'
-
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.1.RELEASE'
     implementation 'com.google.firebase:firebase-admin:9.0.0'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-    runtimeOnly 'mysql:mysql-connector-java'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation project(':persistence')
 
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
 }
