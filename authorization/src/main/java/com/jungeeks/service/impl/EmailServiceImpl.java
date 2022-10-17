@@ -48,7 +48,6 @@ public class EmailServiceImpl implements EmailService {
         return true;
     }
 
-
     private SimpleMailMessage setMessageFields(String email, String link) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(username);

@@ -22,11 +22,12 @@ import java.util.Map;
 @Controller
 @RequestMapping("/registration/email")
 @Slf4j
-@RequiredArgsConstructor
 public class EmailRegistrationController {
 
-    private final EmailService emailService;
-    private final RequestDtoChecksumService requestDtoChecksumService;
+    @Autowired
+    private EmailService emailService;
+    @Autowired
+    private RequestDtoChecksumService requestDtoChecksumService;
 
     @ResponseBody
     @PostMapping("/verify")

@@ -87,7 +87,6 @@ public class SecurityFilter extends OncePerRequestFilter {
         }
     }
 
-
     private SecurityUserFirebase firebaseTokenToUserDto(FirebaseToken decodedToken) {
         SecurityUserFirebase securityUserFirebase = null;
         if (decodedToken != null) {

@@ -35,7 +35,6 @@ class UserServiceImplTest {
 
     private static final String FIREBASE_ID = "test";
 
-
     @BeforeAll
     static void setUp() {
         user = User.builder()
