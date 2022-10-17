@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-//@Entity
 @Data
 public class ConfirmationToken {
 
@@ -26,5 +25,4 @@ public class ConfirmationToken {
     private LocalDateTime createAt;
     private LocalDateTime expiresAt;
     private LocalDateTime confirmedAt;
-
 }

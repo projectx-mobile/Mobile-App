@@ -7,6 +7,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.jungeeks.entity.FirebaseConfigProperties;
 import com.jungeeks.entity.SecurityProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,11 +19,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Configuration
+@Slf4j
 public class FirebaseConfig {
 
     @Autowired
     private FirebaseConfigProperties firebaseConfigProperties;
-
 
     @Primary
     @Bean
@@ -40,7 +41,7 @@ public class FirebaseConfig {
             if (FirebaseApp.getApps().isEmpty()) {
                 FirebaseApp.initializeApp(options);
             }
-            System.out.println("Firebase Initialize");
+            log.debug("Firebase Initialize");
         } catch (IOException e) {
             e.printStackTrace();
         }

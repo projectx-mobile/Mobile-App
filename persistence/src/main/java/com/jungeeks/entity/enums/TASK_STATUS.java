@@ -1,6 +1,7 @@
 package com.jungeeks.entity.enums;
 
 public enum TASK_STATUS {
+
     ACTIVE,
     COMPLETED,
     OVERDUE,

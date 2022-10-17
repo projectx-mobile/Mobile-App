@@ -31,30 +31,26 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 @SpringBootTest
 @AutoConfigureMockMvc
 public class EmailRegistrationControllerTest {
-    private MockMvc mockMvc;
+
     @Autowired
     EmailRegistrationController emailRegistrationController;
     @Autowired
     private SecurityFilter securityFilter;
-
     @Mock
     private EmailService emailService;
-
     @Mock
     private RequestDtoChecksumServiceImpl requestDtoChecksumService;
-
     @Mock
     private FirebaseMessaging firebaseMessaging;
+    private MockMvc mockMvc;
 
     private static SimpleMailMessage message;
     private static Message messageForFirebase;
     private static String link;
     private static VerifyRequestDto verifyRequestDto;
 
-
     public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
-
     private static final String REQUEST_EMAIL = "kidsapptestacc@gmail.com";
     private static final String REQUEST_REGISTRATION_TOKEN = "12344321";
     private static final String CHECK_SUM = "3702039452";
@@ -95,7 +91,6 @@ public class EmailRegistrationControllerTest {
                 .build();
     }
 
-
     @Test
     public void verify() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
@@ -114,7 +109,7 @@ public class EmailRegistrationControllerTest {
     }
 
     @Test
-    public void vefiryLinkWithCorrectChecksum() throws Exception {
+    public void verifyLinkWithCorrectChecksum() throws Exception {
         Mockito.when(firebaseMessaging.send(messageForFirebase)).thenReturn("false");
 
         this.mockMvc.perform(get(URL_VERIFY)

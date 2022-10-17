@@ -9,5 +9,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class NoSecureUrl {
+
     private List<String> url;
 }

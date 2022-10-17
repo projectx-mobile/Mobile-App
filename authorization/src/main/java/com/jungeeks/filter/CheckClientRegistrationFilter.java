@@ -25,16 +25,16 @@ public class CheckClientRegistrationFilter implements Filter {
 
     @Autowired
     private ObjectMapper objectMapper;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private NoSecureUrl noSecureUrl;
 
+    private static final String ERROR_MESSAGE =  "App not registered";
+    private static final String CONTENT_TYPE =  "application/json;charset=UTF-8";
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-
         String s = ((HttpServletRequest) request).getRequestURL().toString();
 
         boolean exist = false;
@@ -52,11 +52,11 @@ public class CheckClientRegistrationFilter implements Filter {
                 HttpServletResponse httpResponse = (HttpServletResponse) response;
                 Map<String, Object> errorObject = new HashMap<>();
                 int errorCode = 401;
-                errorObject.put("message", "App not registered");
+                errorObject.put("message", ERROR_MESSAGE);
                 errorObject.put("error", HttpStatus.UNAUTHORIZED);
                 errorObject.put("code", errorCode);
                 errorObject.put("timestamp", new Timestamp(new Date().getTime()));
-                httpResponse.setContentType("application/json;charset=UTF-8");
+                httpResponse.setContentType(CONTENT_TYPE);
                 httpResponse.setStatus(errorCode);
                 httpResponse.getWriter().write(objectMapper.writeValueAsString(errorObject));
             }else {

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class CookieProperties {
+
     String domain;
     String path;
     boolean httpOnly;
