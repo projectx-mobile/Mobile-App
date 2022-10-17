@@ -45,7 +45,7 @@ public class ClientRegistrationControllerTest {
     @Value("${FIREBASE_PROJECT_ID}")
     private String firebaseProjectId;
 
-    private static List<ClientApp> list;
+//    private static List<ClientApp> list;//TODO: убрал лист
 
     private static final String FIREBASE_USER_ID = "UDlRPKRG8AaQfqXL3IL3mwXxtl32";
     private static final String NEW_REGISTRATION_TOKEN = "ewf3443wefdd34rssdf";
@@ -58,19 +58,19 @@ public class ClientRegistrationControllerTest {
         this.mockMvc = standaloneSetup(clientRegistrationController).addFilters(securityFilter).build();
     }
 
-    @BeforeAll
-    static void setUp() {
-        list = List.of(
-                ClientApp.builder()
-                        .appId("eferwferc3627348")
-                        .updated(LocalDateTime.of(2020, Month.AUGUST, 12, 10, 30, 10, 32))
-                        .build(),
-                ClientApp.builder()
-                        .appId("fnhdjhdcdfe3fnjs")
-                        .updated(LocalDateTime.of(2020, Month.AUGUST, 12, 10, 30, 10, 32))
-                        .build()
-        );
-    }
+//    @BeforeAll
+//    static void setUp() {
+//        list = List.of(
+//                ClientApp.builder()
+//                        .appId("eferwferc3627348")
+//                        .updated(LocalDateTime.of(2020, Month.AUGUST, 12, 10, 30, 10, 32))
+//                        .build(),
+//                ClientApp.builder()
+//                        .appId("fnhdjhdcdfe3fnjs")
+//                        .updated(LocalDateTime.of(2020, Month.AUGUST, 12, 10, 30, 10, 32))
+//                        .build()
+//        );
+//    }//TODO: убрал @BeforeAll
 
     @Test
     @Sql(value = {"/integration/integration-test-users-data-for-security.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -88,14 +88,14 @@ public class ClientRegistrationControllerTest {
         User userAfterAddNewToken = userRepository.findByFirebaseId(FIREBASE_USER_ID).orElse(null);
         assertNotNull(userAfterAddNewToken);
 
-        ClientApp clientApp1 = userAfterAddNewToken.getClientApps()
+        ClientApp clientAppsAfterAddNewToken = userAfterAddNewToken.getClientApps()
                 .stream()
                 .filter(x -> x.getAppId().equals(NEW_REGISTRATION_TOKEN))
                 .findFirst()
                 .orElse(null);
-        assertNotNull(clientApp1);
+        assertNotNull(clientAppsAfterAddNewToken);
 
-        LocalDateTime updated = clientApp1.getUpdated();
+        LocalDateTime updated = clientAppsAfterAddNewToken.getUpdated();
 
         this.mockMvc.perform(post("/registration/client/register")
                         .header("Authorization", "Bearer " + idTokenFromFirebase)
@@ -115,7 +115,7 @@ public class ClientRegistrationControllerTest {
 
         LocalDateTime updatedDate = clientAppAfterUpdate.getUpdated();
         assertTrue(updatedDate.isAfter(updated));
-        assertEquals(list.size() + 1, userAfterUpdateToken.getClientApps().size());
+        assertEquals(userAfterAddNewToken.getClientApps().size(), userAfterUpdateToken.getClientApps().size());//TODO: убрал лист
     }
 
 

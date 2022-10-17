@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 public class EmailRegistrationControllerTest {
 
     @Autowired
-    EmailRegistrationController emailRegistrationController;
+    private EmailRegistrationController emailRegistrationController;
     @Autowired
     private SecurityFilter securityFilter;
     @Mock

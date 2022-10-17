@@ -2,6 +2,8 @@ package com.jungeeks.service.impl;
 
 import com.jungeeks.dto.VerifyRequestDto;
 import com.jungeeks.service.RequestDtoChecksumService;
+import org.apache.http.util.Asserts;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -9,8 +11,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailMessage;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+
+import javax.mail.internet.MimeMessage;
 
 import static org.mockito.ArgumentMatchers.any;
 
@@ -18,7 +25,7 @@ import static org.mockito.ArgumentMatchers.any;
 class EmailServiceImplTest {
 
     @InjectMocks
-    EmailServiceImpl emailService;
+    private EmailServiceImpl emailService;
     @Mock
     private JavaMailSender emailSender;
     @Mock
@@ -72,5 +79,24 @@ class EmailServiceImplTest {
                 .getChecksum(verifyRequestDto.getRegistration_token(), verifyRequestDto.getEmail());
 
         Mockito.verify(emailSender, Mockito.times(1)).send(message);
+    }
+
+    @Test
+    void sendBadEmail() {
+        Mockito.when(checksumService.getChecksum(any(), any())).thenReturn(CHECK_SUM);
+
+        emailService.setDomain(domain);
+        emailService.setUsername(username);
+        emailService.send(verifyRequestDto);
+
+        Mockito.verify(checksumService, Mockito.times(1))
+                .getChecksum(verifyRequestDto.getRegistration_token(), verifyRequestDto.getEmail());
+
+        Mockito.doThrow(new MailSendException("")).when(emailSender).send(any(SimpleMailMessage.class));
+
+        Assertions.assertThrows(MailSendException.class, () -> emailService.send(VerifyRequestDto.builder()
+                .email("")
+                .registration_token(REQUEST_REGISTRATION_TOKEN)
+                .build()));
     }
 }

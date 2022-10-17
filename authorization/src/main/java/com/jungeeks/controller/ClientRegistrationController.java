@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/registration/client")
-@RequiredArgsConstructor
 public class ClientRegistrationController {
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerClient(@RequestParam(name = "registration_token") String registration_token) {

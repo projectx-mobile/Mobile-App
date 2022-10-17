@@ -13,5 +13,4 @@ public class SecurityUserFirebase {
     private boolean isEmailVerified;
     private String issuer;
     private String picture;
-
 }
