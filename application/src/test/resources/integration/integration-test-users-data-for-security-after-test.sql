@@ -1,5 +1,3 @@
--- DELETE FROM sec_user_client_apps WHERE user_id=1;
--- -- DELETE FROM sec_user WHERE id=1;
--- -- DELETE FROM sec_user WHERE id=2;
--- -- DELETE FROM sec_user WHERE id=3;
--- -- DELETE FROM client_app;
+DELETE FROM sec_user_client_apps;
+DELETE FROM client_app;
+DELETE FROM sec_user;

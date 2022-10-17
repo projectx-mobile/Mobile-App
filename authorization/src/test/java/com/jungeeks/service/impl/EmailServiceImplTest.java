@@ -16,16 +16,15 @@ import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest(classes = EmailServiceImplTest.class)
 class EmailServiceImplTest {
+
     @InjectMocks
     EmailServiceImpl emailService;
     @Mock
     private JavaMailSender emailSender;
     @Mock
     private RequestDtoChecksumService checksumService;
-
     @Value("${EMAIL_LINK_VERIFY_DOMAIN}")
     private String domain;
-
     @Value("${spring.mail.username}")
     private String username;
 

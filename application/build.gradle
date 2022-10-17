@@ -15,26 +15,25 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.liquibase:liquibase-core:4.15.0'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:3.0.2'
     liquibaseRuntime 'info.picocli:picocli:4.6.3'
     liquibaseRuntime group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
     liquibaseRuntime sourceSets.main.output
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.7.3'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-mail:2.7.4'
     testImplementation 'com.google.firebase:firebase-admin:9.0.0'
     testImplementation 'com.h2database:h2:2.1.214'
     testAnnotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    testCompileOnly 'org.projectlombok:lombok:1.18.24'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
 }
 
 configurations {
     liquibaseRuntime.extendsFrom runtimeClasspath
 }
-
 
 liquibase {
     activities {
@@ -48,7 +47,6 @@ liquibase {
     }
 }
 
-
 tasks.jar {
     enabled = false
 }
@@ -56,9 +54,6 @@ tasks.jar {
 tasks.bootJar {
     getArchiveBaseName().set 'app-boot-service'
 }
-
-
-
 
 configurations {
     compileOnly {

@@ -55,5 +55,4 @@ public class FamilyTask {
     @ManyToOne
     @JoinColumn(name = "family_id")
     private Family family;
-
 }

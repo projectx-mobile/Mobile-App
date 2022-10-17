@@ -58,7 +58,11 @@ public class UserServiceImpl implements UserService {
     public boolean updateAppRegistrationToken(String registrationToken) {
         User userDb = userRepository.findByFirebaseId(securityService.getUser().getUid()).orElseThrow(
                 () -> new RegistrationFailedException("User not found"));
-        Optional<ClientApp> first = userDb.getClientApps().stream().filter(x -> x.getAppId().equals(registrationToken)).findFirst();
+
+        Optional<ClientApp> first = userDb.getClientApps().stream()
+                .filter(x -> x.getAppId().equals(registrationToken))
+                .findFirst();
+
         if (first.isPresent()){
             ClientApp clientApp = first.orElse(null);
             clientApp.setUpdated(LocalDateTime.now());

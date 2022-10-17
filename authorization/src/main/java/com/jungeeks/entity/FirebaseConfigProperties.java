@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "firebase.config")
 @Data
 public class FirebaseConfigProperties {
+
     private String type;
     private String project_id;
     private String private_key_id;

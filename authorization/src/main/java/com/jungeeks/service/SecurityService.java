@@ -6,6 +6,7 @@ import com.jungeeks.entity.SecurityUserFirebase;
 import javax.servlet.http.HttpServletRequest;
 
 public interface SecurityService {
+
     SecurityUserFirebase getUser();
     Credentials getCredentials();
     boolean isPublic();

@@ -17,10 +17,8 @@ public class CookieUtils {
 
     @Autowired
     private HttpServletRequest httpServletRequest;
-
     @Autowired
     private HttpServletResponse httpServletResponse;
-
     @Autowired
     private SecurityProperties restSecProps;
 
@@ -74,5 +72,4 @@ public class CookieUtils {
         cookie.setMaxAge(expiresInSeconds);
         httpServletResponse.addCookie(cookie);
     }
-
 }

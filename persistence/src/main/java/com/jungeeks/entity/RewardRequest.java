@@ -27,5 +27,4 @@ public class RewardRequest {
     @Enumerated(EnumType.STRING)
     @Column(name = "request_status")
     private REQUEST_STATUS requestStatus;
-
 }

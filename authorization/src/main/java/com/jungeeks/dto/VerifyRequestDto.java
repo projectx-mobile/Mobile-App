@@ -13,6 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VerifyRequestDto {
+
     @Email
     private String email;
     private String registration_token;

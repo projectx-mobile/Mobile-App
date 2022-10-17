@@ -9,6 +9,7 @@ import java.util.zip.Checksum;
 
 @Service
 public class RequestDtoChecksumServiceImpl implements RequestDtoChecksumService {
+
     @Override
     public boolean validate(String token, String email, String checksum) {
         return getChecksum(token,email).equals(checksum);
@@ -21,5 +22,4 @@ public class RequestDtoChecksumServiceImpl implements RequestDtoChecksumService 
         checksum.update(bytes,0,bytes.length);
         return Long.toString(checksum.getValue());
     }
-
 }

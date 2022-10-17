@@ -22,13 +22,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserServiceImplTest {
 
     @InjectMocks
-    UserServiceImpl userService;
-
+    private UserServiceImpl userService;
     @Mock
-    UserRepository userRepository;
-
+    private UserRepository userRepository;
     @Mock
-    SecurityService securityService;
+    private SecurityService securityService;
 
     private static User user;
     private static User userWithoutClientApps;

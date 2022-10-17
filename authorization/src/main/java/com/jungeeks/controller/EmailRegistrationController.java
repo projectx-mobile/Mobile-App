@@ -7,6 +7,7 @@ import com.google.firebase.messaging.Message;
 import com.jungeeks.dto.VerifyRequestDto;
 import com.jungeeks.service.EmailService;
 import com.jungeeks.service.RequestDtoChecksumService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,12 +22,11 @@ import java.util.Map;
 @Controller
 @RequestMapping("/registration/email")
 @Slf4j
+@RequiredArgsConstructor
 public class EmailRegistrationController {
 
-    @Autowired
-    private EmailService emailService;
-    @Autowired
-    private RequestDtoChecksumService requestDtoChecksumService;
+    private final EmailService emailService;
+    private final RequestDtoChecksumService requestDtoChecksumService;
 
     @ResponseBody
     @PostMapping("/verify")
@@ -38,8 +38,7 @@ public class EmailRegistrationController {
     @GetMapping(value = "/verify", params = {"registration_token", "checksum", "email"})
     public ModelAndView verifyLink(@RequestParam(name = "registration_token") String token,
                                    @RequestParam(name = "checksum") String checksum,
-                                       @RequestParam(name = "email") String email) {
-
+                                   @RequestParam(name = "email") String email) {
         boolean validate = requestDtoChecksumService.validate(token, email, checksum);
 
         if (validate) {
@@ -50,6 +49,7 @@ public class EmailRegistrationController {
                     .build();
             try {
                 FirebaseMessaging.getInstance().send(message);
+                log.debug(String.format("Notification sent to %s", email));
             } catch (FirebaseMessagingException fme) {
                 log.error("Notification not sent:" + fme.getLocalizedMessage() +
                         " code:" + fme.getMessagingErrorCode());

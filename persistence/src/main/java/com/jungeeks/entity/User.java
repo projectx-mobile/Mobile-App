@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,7 +22,6 @@ public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String firebaseId;
     private String email;
     private Long points;
@@ -48,5 +48,4 @@ public class User{
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
     private List<ClientApp> clientApps;
-
 }

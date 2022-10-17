@@ -19,10 +19,8 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Autowired
     private HttpServletRequest httpServletRequest;
-
     @Autowired
     private CookieUtils cookieUtils;
-
     @Autowired
     private SecurityProperties securityProps;
 
