@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Message;
 import com.jungeeks.dto.VerifyRequestDto;
-import com.jungeeks.dto.controller.EmailRegistrationController;
 import com.jungeeks.filter.SecurityFilter;
 import com.jungeeks.service.EmailService;
 import com.jungeeks.service.impl.RequestDtoChecksumServiceImpl;
@@ -20,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.nio.charset.StandardCharsets;
 

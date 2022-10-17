@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -57,10 +58,16 @@ public class UserServiceImpl implements UserService {
     public boolean updateAppRegistrationToken(String registrationToken) {
         User userDb = userRepository.findByFirebaseId(securityService.getUser().getUid()).orElseThrow(
                 () -> new RegistrationFailedException("User not found"));
-        userDb.getClientApps().add(ClientApp.builder()
-                .appId(registrationToken)
-                .updated(LocalDateTime.now())
-                .build());
+        Optional<ClientApp> first = userDb.getClientApps().stream().filter(x -> x.getAppId().equals(registrationToken)).findFirst();
+        if (first.isPresent()){
+            ClientApp clientApp = first.orElse(null);
+            clientApp.setUpdated(LocalDateTime.now());
+        }else {
+            userDb.getClientApps().add(ClientApp.builder()
+                    .appId(registrationToken)
+                    .updated(LocalDateTime.now())
+                    .build());
+        }
         log.debug("User app registration token updated");
         return true;
     }

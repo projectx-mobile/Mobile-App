@@ -6,7 +6,7 @@ spring:
     password: 1
   h2:
     console:
-      enable: true
+      enabled: true
       path: /db
   liquibase:
     enabled: false
