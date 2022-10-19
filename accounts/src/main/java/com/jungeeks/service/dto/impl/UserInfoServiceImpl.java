@@ -33,13 +33,13 @@ public class UserInfoServiceImpl implements UserInfoService {
         List<FamilyMemberDto> familyMembers = familyMemberService.getFamilyMembers(user.getFamily().getId());
         return UserInfoDto.builder()
                 .username(user.getName())
-                .email(user.getEmail())
-                .userStatus(user.getUser_status())
-                .signUpType(
-                        SIGN_UP_TYPE.APPLE//FIX this (get this value from SpringSecurity)
-                )
+//                .email(user.getEmail())
+//                .userStatus(user.getUser_status())
+//                .signUpType(
+//                        SIGN_UP_TYPE.APPLE//FIX this (get this value from SpringSecurity)
+//                )
                 .familyMembers(familyMembers)
-                .photoPath(user.getPhoto().get(0).getPath())
+//                .photoPath(user.getPhoto().get(0).getPath())
                 .build();
     }
 

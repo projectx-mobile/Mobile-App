@@ -29,7 +29,7 @@ public class FamilyMemberServiceImpl implements FamilyMemberService {
                         FamilyMemberDto.builder()
                                 .id(x.getId())
                                 .username(x.getName())
-                                .photoPath(x.getPhoto().get(0).getPath())
+//                                .photoPath(x.getPhoto().get(0).getPath())
                                 .build())
                 )
                 .toList();
