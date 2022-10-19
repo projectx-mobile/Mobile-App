@@ -18,11 +18,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.charset.StandardCharsets;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -43,6 +45,8 @@ public class EmailRegistrationControllerTest {
     private RequestDtoChecksumServiceImpl requestDtoChecksumService;
     @Mock
     private FirebaseMessaging firebaseMessaging;
+    @Mock
+    private JavaMailSender emailSender;
     private MockMvc mockMvc;
 
     private static Message messageForFirebase;
@@ -84,6 +88,7 @@ public class EmailRegistrationControllerTest {
 
         when(requestDtoChecksumService.getChecksum(any(), any())).thenReturn(CHECK_SUM);
         when(emailService.send(verifyRequestDto)).thenReturn(true);
+        doNothing().when(emailSender).send((SimpleMailMessage) any());
 
         this.mockMvc.perform(post(URL_VERIFY)
                         .contentType(APPLICATION_JSON_UTF8)

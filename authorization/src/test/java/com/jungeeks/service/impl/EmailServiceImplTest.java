@@ -70,7 +70,7 @@ class EmailServiceImplTest {
     @Test
     void send() {
         when(checksumService.getChecksum(any(), any())).thenReturn(CHECK_SUM);
-        doNothing().when(emailSender).send(message);
+        doNothing().when(emailSender).send((SimpleMailMessage) any());
 
         emailService.setDomain(domain);
         emailService.setUsername(username);
