@@ -19,7 +19,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 import javax.mail.internet.MimeMessage;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = EmailServiceImplTest.class)
 class EmailServiceImplTest {
@@ -37,7 +39,6 @@ class EmailServiceImplTest {
 
     private static VerifyRequestDto verifyRequestDto;
     private static SimpleMailMessage message;
-    private static String link;
 
     private static final String DOMAIN = "http://localhost:8095";
     private static final String REQUEST_EMAIL = "kidsapptestacc@gmail.com";
@@ -53,7 +54,7 @@ class EmailServiceImplTest {
                 .registration_token(REQUEST_REGISTRATION_TOKEN)
                 .build();
 
-        link = String.format("%s/registration/email/verify?email=%s&registration_token=%s&checksum=%s",
+        String link = String.format("%s/registration/email/verify?email=%s&registration_token=%s&checksum=%s",
                 DOMAIN, verifyRequestDto.getEmail(), verifyRequestDto.getRegistration_token(), CHECK_SUM);
 
         message = new SimpleMailMessage();
@@ -68,33 +69,33 @@ class EmailServiceImplTest {
 
     @Test
     void send() {
-        Mockito.when(checksumService.getChecksum(any(), any())).thenReturn(CHECK_SUM);
-        Mockito.doNothing().when(emailSender).send(message);
+        when(checksumService.getChecksum(any(), any())).thenReturn(CHECK_SUM);
+        doNothing().when(emailSender).send(message);
 
         emailService.setDomain(domain);
         emailService.setUsername(username);
         emailService.send(verifyRequestDto);
 
-        Mockito.verify(checksumService, Mockito.times(1))
+        verify(checksumService, times(1))
                 .getChecksum(verifyRequestDto.getRegistration_token(), verifyRequestDto.getEmail());
 
-        Mockito.verify(emailSender, Mockito.times(1)).send(message);
+        verify(emailSender, times(1)).send(message);
     }
 
     @Test
     void sendBadEmail() {
-        Mockito.when(checksumService.getChecksum(any(), any())).thenReturn(CHECK_SUM);
+        when(checksumService.getChecksum(any(), any())).thenReturn(CHECK_SUM);
 
         emailService.setDomain(domain);
         emailService.setUsername(username);
         emailService.send(verifyRequestDto);
 
-        Mockito.verify(checksumService, Mockito.times(1))
+        verify(checksumService, times(1))
                 .getChecksum(verifyRequestDto.getRegistration_token(), verifyRequestDto.getEmail());
 
-        Mockito.doThrow(new MailSendException("")).when(emailSender).send(any(SimpleMailMessage.class));
+        doThrow(new MailSendException("")).when(emailSender).send(any(SimpleMailMessage.class));
 
-        Assertions.assertThrows(MailSendException.class, () -> emailService.send(VerifyRequestDto.builder()
+        assertThrows(MailSendException.class, () -> emailService.send(VerifyRequestDto.builder()
                 .email("")
                 .registration_token(REQUEST_REGISTRATION_TOKEN)
                 .build()));

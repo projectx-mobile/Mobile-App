@@ -45,8 +45,6 @@ public class ClientRegistrationControllerTest {
     @Value("${FIREBASE_PROJECT_ID}")
     private String firebaseProjectId;
 
-//    private static List<ClientApp> list;//TODO: убрал лист
-
     private static final String FIREBASE_USER_ID = "UDlRPKRG8AaQfqXL3IL3mwXxtl32";
     private static final String NEW_REGISTRATION_TOKEN = "ewf3443wefdd34rssdf";
     private static final String EMAIL = "kidsapptestacc@gmail.com";
@@ -57,20 +55,6 @@ public class ClientRegistrationControllerTest {
     public void setMockMvc() {
         this.mockMvc = standaloneSetup(clientRegistrationController).addFilters(securityFilter).build();
     }
-
-//    @BeforeAll
-//    static void setUp() {
-//        list = List.of(
-//                ClientApp.builder()
-//                        .appId("eferwferc3627348")
-//                        .updated(LocalDateTime.of(2020, Month.AUGUST, 12, 10, 30, 10, 32))
-//                        .build(),
-//                ClientApp.builder()
-//                        .appId("fnhdjhdcdfe3fnjs")
-//                        .updated(LocalDateTime.of(2020, Month.AUGUST, 12, 10, 30, 10, 32))
-//                        .build()
-//        );
-//    }//TODO: убрал @BeforeAll
 
     @Test
     @Sql(value = {"/integration/integration-test-users-data-for-security.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -115,7 +99,7 @@ public class ClientRegistrationControllerTest {
 
         LocalDateTime updatedDate = clientAppAfterUpdate.getUpdated();
         assertTrue(updatedDate.isAfter(updated));
-        assertEquals(userAfterAddNewToken.getClientApps().size(), userAfterUpdateToken.getClientApps().size());//TODO: убрал лист
+        assertEquals(userAfterAddNewToken.getClientApps().size(), userAfterUpdateToken.getClientApps().size());
     }
 
 
