@@ -1,11 +1,9 @@
 package com.jungeeks.controller;
 
 import com.jungeeks.entity.ClientApp;
-import com.jungeeks.entity.SecurityUserFirebase;
 import com.jungeeks.entity.User;
 import com.jungeeks.filter.SecurityFilter;
 import com.jungeeks.repository.UserRepository;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,9 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,7 +32,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 public class ClientRegistrationControllerTest {
 
     @Autowired
-    ClientRegistrationController clientRegistrationController;
+    private ClientRegistrationController clientRegistrationController;
     @Autowired
     private SecurityFilter securityFilter;
     private MockMvc mockMvc;

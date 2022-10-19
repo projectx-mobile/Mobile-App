@@ -11,8 +11,8 @@ import com.jungeeks.service.EmailService;
 import com.jungeeks.service.impl.RequestDtoChecksumServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +35,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 @AutoConfigureMockMvc
 public class EmailRegistrationControllerTest {
 
+    @InjectMocks
     @Autowired
     private EmailRegistrationController emailRegistrationController;
     @Autowired
@@ -87,8 +88,8 @@ public class EmailRegistrationControllerTest {
         String requestJson = ow.writeValueAsString(verifyRequestDto);
 
         when(requestDtoChecksumService.getChecksum(any(), any())).thenReturn(CHECK_SUM);
-        when(emailService.send(verifyRequestDto)).thenReturn(true);
-        doNothing().when(emailSender).send((SimpleMailMessage) any());
+        when(emailService.send(any())).thenReturn(true);
+        doNothing().when(emailSender).send(any(SimpleMailMessage.class));
 
         this.mockMvc.perform(post(URL_VERIFY)
                         .contentType(APPLICATION_JSON_UTF8)

@@ -85,6 +85,7 @@ class EmailServiceImplTest {
     @Test
     void sendBadEmail() {
         when(checksumService.getChecksum(any(), any())).thenReturn(CHECK_SUM);
+        doNothing().when(emailSender).send((SimpleMailMessage) any());
 
         emailService.setDomain(domain);
         emailService.setUsername(username);
