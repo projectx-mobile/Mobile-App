@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.nio.charset.StandardCharsets;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -44,9 +45,7 @@ public class EmailRegistrationControllerTest {
     private FirebaseMessaging firebaseMessaging;
     private MockMvc mockMvc;
 
-    private static SimpleMailMessage message;
     private static Message messageForFirebase;
-    private static String link;
     private static VerifyRequestDto verifyRequestDto;
 
     public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),
@@ -56,9 +55,6 @@ public class EmailRegistrationControllerTest {
     private static final String CHECK_SUM = "3702039452";
     private static final String WRONG_CHECK_SUM = "0";
     private static final String URL_VERIFY = "/registration/email/verify";
-    private static final String DOMAIN = "http://localhost:8095";
-    private static final String EMAIL_FROM = "KidsAppTestAcc@yandex.by";
-    private static final String SUBJECT = "email verification";
 
     @Autowired
     public void setMockMvc() {
@@ -71,18 +67,6 @@ public class EmailRegistrationControllerTest {
                 .email(REQUEST_EMAIL)
                 .registration_token(REQUEST_REGISTRATION_TOKEN)
                 .build();
-
-        link = String.format("%s/registration/email/verify?email=%s&registration_token=%s&checksum=%s",
-                DOMAIN, verifyRequestDto.getEmail(), verifyRequestDto.getRegistration_token(), CHECK_SUM);
-
-        message = new SimpleMailMessage();
-        message.setFrom(EMAIL_FROM);
-        message.setTo(verifyRequestDto.getEmail());
-        message.setSubject(SUBJECT);
-        message.setText(String.format("""
-                Follow the link to confirm your email
-                %s
-                """, link));
 
         messageForFirebase = Message.builder()
                 .putData("email", REQUEST_EMAIL)
@@ -98,8 +82,8 @@ public class EmailRegistrationControllerTest {
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         String requestJson = ow.writeValueAsString(verifyRequestDto);
 
-        Mockito.when(requestDtoChecksumService.getChecksum(any(), any())).thenReturn(CHECK_SUM);
-        Mockito.when(emailService.send(verifyRequestDto)).thenReturn(true);
+        when(requestDtoChecksumService.getChecksum(any(), any())).thenReturn(CHECK_SUM);
+        when(emailService.send(verifyRequestDto)).thenReturn(true);
 
         this.mockMvc.perform(post(URL_VERIFY)
                         .contentType(APPLICATION_JSON_UTF8)
@@ -110,7 +94,7 @@ public class EmailRegistrationControllerTest {
 
     @Test
     public void verifyLinkWithCorrectChecksum() throws Exception {
-        Mockito.when(firebaseMessaging.send(messageForFirebase)).thenReturn("false");
+        when(firebaseMessaging.send(messageForFirebase)).thenReturn("false");
 
         this.mockMvc.perform(get(URL_VERIFY)
                     .param("registration_token", REQUEST_REGISTRATION_TOKEN)
@@ -123,7 +107,7 @@ public class EmailRegistrationControllerTest {
     }
 
     @Test
-    public void vefiryLinkWithInCorrectChecksum() throws Exception {
+    public void verifyLinkWithInCorrectChecksum() throws Exception {
         this.mockMvc.perform(get(URL_VERIFY)
                         .param("registration_token", REQUEST_REGISTRATION_TOKEN)
                         .param("checksum", WRONG_CHECK_SUM)

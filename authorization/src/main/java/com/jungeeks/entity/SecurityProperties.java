@@ -14,7 +14,7 @@ public class SecurityProperties {
 
     private CookieProperties cookieProps;
     private FirebaseProperties firebaseProps;
-    boolean allowCredentials;
+    private boolean allowCredentials;
     private List<String> allowedOrigins;
     private List<String> allowedHeaders;
     private List<String> exposedHeaders;

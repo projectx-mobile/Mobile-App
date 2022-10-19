@@ -66,5 +66,4 @@ public class CheckClientRegistrationFilter implements Filter {
             chain.doFilter(request,response);
         }
     }
-
 }

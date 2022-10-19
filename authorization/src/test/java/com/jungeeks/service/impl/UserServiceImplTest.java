@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = UserServiceImplTest.class)
 class UserServiceImplTest {
@@ -60,46 +61,46 @@ class UserServiceImplTest {
 
     @Test
     void checkUserWithSameEmails() {
-        Mockito.when(userRepository.findByFirebaseId(any())).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findByFirebaseId(any())).thenReturn(Optional.ofNullable(user));
 
         userService.checkUser(securityUserFirebaseWithSameEmail);
 
-        Mockito.verify(userRepository, Mockito.times(1)).findByFirebaseId(FIREBASE_ID);
-        Mockito.verify(userRepository, Mockito.times(0)).save(user);
+        verify(userRepository, times(1)).findByFirebaseId(FIREBASE_ID);
+        verify(userRepository, times(0)).save(user);
     }
 
     @Test
     void checkUserWithAnotherEmails() {
-        Mockito.when(userRepository.findByFirebaseId(any())).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findByFirebaseId(any())).thenReturn(Optional.ofNullable(user));
 
         userService.checkUser(securityUserFirebaseWithAnotherEmail);
 
-        Mockito.verify(userRepository, Mockito.times(1)).findByFirebaseId(FIREBASE_ID);
+        verify(userRepository, times(1)).findByFirebaseId(FIREBASE_ID);
 
         user.setEmail(securityUserFirebaseWithAnotherEmail.getEmail());
-        Mockito.verify(userRepository, Mockito.times(0)).save(user);
+        verify(userRepository, times(0)).save(user);
     }
 
     @Test
     void checkWithNullUserFromDb() {
-        Mockito.when(userRepository.findByFirebaseId(any())).thenReturn(Optional.empty());
+        when(userRepository.findByFirebaseId(any())).thenReturn(Optional.empty());
 
         userService.checkUser(securityUserFirebaseWithSameEmail);
 
-        Mockito.verify(userRepository, Mockito.times(1)).findByFirebaseId(FIREBASE_ID);
+        verify(userRepository, times(1)).findByFirebaseId(FIREBASE_ID);
 
         User userToSave = User.builder()
                 .email(securityUserFirebaseWithSameEmail.getEmail())
                 .firebaseId(securityUserFirebaseWithSameEmail.getUid())
                 .build();
 
-        Mockito.verify(userRepository, Mockito.times(1)).save(userToSave);
+        verify(userRepository, times(1)).save(userToSave);
     }
 
     @Test
     void updateAppRegistrationTokenExistsUser() {
-        Mockito.when(userRepository.findByFirebaseId(any())).thenReturn(Optional.ofNullable(user));
-        Mockito.when(securityService.getUser()).thenReturn(securityUserFirebaseWithSameEmail);
+        when(userRepository.findByFirebaseId(any())).thenReturn(Optional.ofNullable(user));
+        when(securityService.getUser()).thenReturn(securityUserFirebaseWithSameEmail);
 
         boolean update = userService.updateAppRegistrationToken("newToken");
 
@@ -108,16 +109,16 @@ class UserServiceImplTest {
 
     @Test
     void updateAppRegistrationTokenNotExistsUser() {
-        Mockito.when(userRepository.findByFirebaseId(any())).thenReturn(Optional.empty());
-        Mockito.when(securityService.getUser()).thenReturn(securityUserFirebaseWithSameEmail);
+        when(userRepository.findByFirebaseId(any())).thenReturn(Optional.empty());
+        when(securityService.getUser()).thenReturn(securityUserFirebaseWithSameEmail);
 
         assertThrows(RegistrationFailedException.class, () -> userService.updateAppRegistrationToken("0"));
     }
 
     @Test
     void checkUserByContainsRegistrationTokenExistsUser() {
-        Mockito.when(userRepository.findByFirebaseId(any())).thenReturn(Optional.ofNullable(user));
-        Mockito.when(securityService.getUser()).thenReturn(securityUserFirebaseWithSameEmail);
+        when(userRepository.findByFirebaseId(any())).thenReturn(Optional.ofNullable(user));
+        when(securityService.getUser()).thenReturn(securityUserFirebaseWithSameEmail);
 
         boolean clientApps = userService.checkUserByContainsRegistrationToken();
 
@@ -126,8 +127,8 @@ class UserServiceImplTest {
 
     @Test
     void checkUserByContainsRegistrationTokenNotExistsUser() {
-        Mockito.when(userRepository.findByFirebaseId(any())).thenReturn(Optional.ofNullable(userWithoutClientApps));
-        Mockito.when(securityService.getUser()).thenReturn(securityUserFirebaseWithSameEmail);
+        when(userRepository.findByFirebaseId(any())).thenReturn(Optional.ofNullable(userWithoutClientApps));
+        when(securityService.getUser()).thenReturn(securityUserFirebaseWithSameEmail);
 
         boolean clientApps = userService.checkUserByContainsRegistrationToken();
 
