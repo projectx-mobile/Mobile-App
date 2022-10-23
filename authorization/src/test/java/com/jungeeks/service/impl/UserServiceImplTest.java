@@ -6,6 +6,7 @@ import com.jungeeks.exception.RegistrationFailedException;
 import com.jungeeks.repository.UserRepository;
 import com.jungeeks.service.SecurityService;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = UserServiceImplTest.class)
+@Tag("unit")
 class UserServiceImplTest {
 
     @InjectMocks

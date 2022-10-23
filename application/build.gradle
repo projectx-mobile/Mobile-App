@@ -37,7 +37,7 @@ tasks.jar {
 }
 
 tasks.bootJar {
-    getArchiveBaseName().set 'app-boot-service'
+    getArchiveBaseName().set 'kidsApp'
 }
 
 configurations {
@@ -51,5 +51,15 @@ configurations {
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        includeTags "unit"
+    }
+}
+
+tasks.register('integrationTest', Test) {
+    description = 'Runs integration tests.'
+    group = 'verification'
+    useJUnitPlatform {
+        includeTags "integration"
+    }
 }

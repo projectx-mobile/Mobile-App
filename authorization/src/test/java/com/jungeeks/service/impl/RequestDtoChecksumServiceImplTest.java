@@ -1,5 +1,6 @@
 package com.jungeeks.service.impl;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = RequestDtoChecksumServiceImplTest.class)
+@Tag("unit")
 class RequestDtoChecksumServiceImplTest {
 
     @InjectMocks

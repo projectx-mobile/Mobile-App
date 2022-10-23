@@ -4,7 +4,12 @@ import com.jungeeks.entity.ClientApp;
 import com.jungeeks.entity.User;
 import com.jungeeks.filter.SecurityFilter;
 import com.jungeeks.repository.UserRepository;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,15 +25,14 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Tag("integration")
 public class ClientRegistrationControllerTest {
 
     @Autowired
@@ -59,43 +63,43 @@ public class ClientRegistrationControllerTest {
         SignUpResponseDto idTokenFromFirebase1 = getResponseFromFirebase();
         String idTokenFromFirebase = idTokenFromFirebase1.getIdToken();
 
-        this.mockMvc.perform(post("/registration/client/register")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/registration/client/register")
                         .header("Authorization", "Bearer " + idTokenFromFirebase)
                         .param("registration_token", NEW_REGISTRATION_TOKEN))
-                .andDo(print())
-                .andExpect(status().isOk());
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
         User userAfterAddNewToken = userRepository.findByFirebaseId(FIREBASE_USER_ID).orElse(null);
-        assertNotNull(userAfterAddNewToken);
+        Assertions.assertNotNull(userAfterAddNewToken);
 
         ClientApp clientAppsAfterAddNewToken = userAfterAddNewToken.getClientApps()
                 .stream()
                 .filter(x -> x.getAppId().equals(NEW_REGISTRATION_TOKEN))
                 .findFirst()
                 .orElse(null);
-        assertNotNull(clientAppsAfterAddNewToken);
+        Assertions.assertNotNull(clientAppsAfterAddNewToken);
 
         LocalDateTime updated = clientAppsAfterAddNewToken.getUpdated();
 
-        this.mockMvc.perform(post("/registration/client/register")
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/registration/client/register")
                         .header("Authorization", "Bearer " + idTokenFromFirebase)
                         .param("registration_token", NEW_REGISTRATION_TOKEN))
-                .andDo(print())
-                .andExpect(status().isOk());
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
         User userAfterUpdateToken = userRepository.findByFirebaseId(FIREBASE_USER_ID).orElse(null);
-        assertNotNull(userAfterUpdateToken);
+        Assertions.assertNotNull(userAfterUpdateToken);
 
         ClientApp clientAppAfterUpdate = userAfterUpdateToken.getClientApps()
                 .stream()
                 .filter(x -> x.getAppId().equals(NEW_REGISTRATION_TOKEN))
                 .findFirst()
                 .orElse(null);
-        assertNotNull(clientAppAfterUpdate);
+        Assertions.assertNotNull(clientAppAfterUpdate);
 
         LocalDateTime updatedDate = clientAppAfterUpdate.getUpdated();
-        assertTrue(updatedDate.isAfter(updated));
-        assertEquals(userAfterAddNewToken.getClientApps().size(), userAfterUpdateToken.getClientApps().size());
+        Assertions.assertTrue(updatedDate.isAfter(updated));
+        Assertions.assertEquals(userAfterAddNewToken.getClientApps().size(), userAfterUpdateToken.getClientApps().size());
     }
 
 

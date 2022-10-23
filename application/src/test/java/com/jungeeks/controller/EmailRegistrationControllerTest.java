@@ -10,9 +10,12 @@ import com.jungeeks.filter.SecurityFilter;
 import com.jungeeks.service.EmailService;
 import com.jungeeks.service.impl.RequestDtoChecksumServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +23,10 @@ import org.springframework.http.MediaType;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.nio.charset.StandardCharsets;
 
@@ -33,6 +40,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Tag("integration")
 public class EmailRegistrationControllerTest {
 
     @InjectMocks
@@ -63,7 +71,7 @@ public class EmailRegistrationControllerTest {
 
     @Autowired
     public void setMockMvc() {
-        this.mockMvc = standaloneSetup(emailRegistrationController).addFilters(securityFilter).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(emailRegistrationController).addFilters(securityFilter).build();
     }
 
     @BeforeAll
@@ -87,41 +95,41 @@ public class EmailRegistrationControllerTest {
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         String requestJson = ow.writeValueAsString(verifyRequestDto);
 
-        when(requestDtoChecksumService.getChecksum(any(), any())).thenReturn(CHECK_SUM);
-        when(emailService.send(any())).thenReturn(true);
-        doNothing().when(emailSender).send(any(SimpleMailMessage.class));
+        Mockito.when(requestDtoChecksumService.getChecksum(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(CHECK_SUM);
+        Mockito.when(emailService.send(ArgumentMatchers.any())).thenReturn(true);
+        Mockito.doNothing().when(emailSender).send(ArgumentMatchers.any(SimpleMailMessage.class));
 
-        this.mockMvc.perform(post(URL_VERIFY)
+        this.mockMvc.perform(MockMvcRequestBuilders.post(URL_VERIFY)
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(requestJson))
-                .andDo(print())
-                .andExpect(status().isOk());
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     public void verifyLinkWithCorrectChecksum() throws Exception {
-        when(firebaseMessaging.send(messageForFirebase)).thenReturn("false");
+        Mockito.when(firebaseMessaging.send(messageForFirebase)).thenReturn("false");
 
-        this.mockMvc.perform(get(URL_VERIFY)
+        this.mockMvc.perform(MockMvcRequestBuilders.get(URL_VERIFY)
                     .param("registration_token", REQUEST_REGISTRATION_TOKEN)
                     .param("checksum", CHECK_SUM)
                     .param("email", REQUEST_EMAIL))
-                .andDo(print())
-                .andExpect(model().attribute("email", REQUEST_EMAIL))
-                .andExpect(model().attribute("validate", true))
-                .andExpect(view().name("emailVerify"));
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.model().attribute("email", REQUEST_EMAIL))
+                .andExpect(MockMvcResultMatchers.model().attribute("validate", true))
+                .andExpect(MockMvcResultMatchers.view().name("emailVerify"));
     }
 
     @Test
     public void verifyLinkWithInCorrectChecksum() throws Exception {
-        this.mockMvc.perform(get(URL_VERIFY)
+        this.mockMvc.perform(MockMvcRequestBuilders.get(URL_VERIFY)
                         .param("registration_token", REQUEST_REGISTRATION_TOKEN)
                         .param("checksum", WRONG_CHECK_SUM)
                         .param("email", REQUEST_EMAIL))
-                .andDo(print())
-                .andExpect(model().attribute("email", REQUEST_EMAIL))
-                .andExpect(model().attribute("validate", false))
-                .andExpect(view().name("emailVerify"));
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.model().attribute("email", REQUEST_EMAIL))
+                .andExpect(MockMvcResultMatchers.model().attribute("validate", false))
+                .andExpect(MockMvcResultMatchers.view().name("emailVerify"));
     }
 }
 

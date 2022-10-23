@@ -5,6 +5,7 @@ import com.jungeeks.service.RequestDtoChecksumService;
 import org.apache.http.util.Asserts;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -24,6 +25,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = EmailServiceImplTest.class)
+@Tag("unit")
 class EmailServiceImplTest {
 
     @InjectMocks
@@ -32,10 +34,6 @@ class EmailServiceImplTest {
     private JavaMailSender emailSender;
     @Mock
     private RequestDtoChecksumService checksumService;
-    @Value("${EMAIL_LINK_VERIFY_DOMAIN}")
-    private String domain;
-    @Value("${spring.mail.username}")
-    private String username;
 
     private static VerifyRequestDto verifyRequestDto;
     private static SimpleMailMessage message;
@@ -72,8 +70,8 @@ class EmailServiceImplTest {
         when(checksumService.getChecksum(any(), any())).thenReturn(CHECK_SUM);
         doNothing().when(emailSender).send((SimpleMailMessage) any());
 
-        emailService.setDomain(domain);
-        emailService.setUsername(username);
+        emailService.setDomain(DOMAIN);
+        emailService.setUsername(EMAIL_FROM);
         emailService.send(verifyRequestDto);
 
         verify(checksumService, times(1))
@@ -87,8 +85,8 @@ class EmailServiceImplTest {
         when(checksumService.getChecksum(any(), any())).thenReturn(CHECK_SUM);
         doNothing().when(emailSender).send((SimpleMailMessage) any());
 
-        emailService.setDomain(domain);
-        emailService.setUsername(username);
+        emailService.setDomain(DOMAIN);
+        emailService.setUsername(EMAIL_FROM);
         emailService.send(verifyRequestDto);
 
         verify(checksumService, times(1))
