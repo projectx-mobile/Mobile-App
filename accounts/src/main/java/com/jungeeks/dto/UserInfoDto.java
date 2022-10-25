@@ -1,8 +1,6 @@
 package com.jungeeks.dto;
 
-import com.jungeeks.dto.enums.SIGN_UP_TYPE;
-import com.jungeeks.entitiy.enums.USER_ROLE;
-import com.jungeeks.entitiy.enums.USER_STATUS;
+import com.jungeeks.entity.enums.USER_ROLE;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

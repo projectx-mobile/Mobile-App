@@ -1,6 +1,6 @@
 package com.jungeeks.service.entity.impl;
 
-import com.jungeeks.entitiy.User;
+import com.jungeeks.entity.User;
 import com.jungeeks.exception.PathNotFoundException;
 import com.jungeeks.exception.UserNotFoundException;
 import com.jungeeks.repository.UserRepository;

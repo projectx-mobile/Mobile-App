@@ -1,6 +1,6 @@
 package com.jungeeks.service.busines.impl;
 
-import com.jungeeks.entitiy.User;
+import com.jungeeks.entity.User;
 import com.jungeeks.service.busines.UploadUserService;
 import com.jungeeks.service.entity.UserService;
 import com.jungeeks.service.photoStorage.PhotoStorageService;
@@ -10,8 +10,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Optional;
 
 @Service
 @Log4j2

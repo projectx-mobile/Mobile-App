@@ -1,11 +1,11 @@
 package com.jungeeks.populators;
 
-import com.jungeeks.entitiy.Family;
-import com.jungeeks.entitiy.Photo;
-import com.jungeeks.entitiy.SocialCredentials;
-import com.jungeeks.entitiy.User;
-import com.jungeeks.entitiy.enums.USER_ROLE;
-import com.jungeeks.entitiy.enums.USER_STATUS;
+import com.jungeeks.entity.Family;
+import com.jungeeks.entity.Photo;
+import com.jungeeks.entity.SocialCredentials;
+import com.jungeeks.entity.User;
+import com.jungeeks.entity.enums.USER_ROLE;
+import com.jungeeks.entity.enums.USER_STATUS;
 import com.jungeeks.repository.FamilyRepository;
 import com.jungeeks.repository.UserRepository;
 import com.jungeeks.service.RandomString;

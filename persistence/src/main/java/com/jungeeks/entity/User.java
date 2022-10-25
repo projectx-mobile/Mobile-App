@@ -1,7 +1,7 @@
-package com.jungeeks.entitiy;
+package com.jungeeks.entity;
 
-import com.jungeeks.entitiy.enums.USER_ROLE;
-import com.jungeeks.entitiy.enums.USER_STATUS;
+import com.jungeeks.entity.enums.USER_ROLE;
+import com.jungeeks.entity.enums.USER_STATUS;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,8 +1,8 @@
 package com.jungeeks.service.dto.impl;
 
 import com.jungeeks.dto.FamilyMemberDto;
-import com.jungeeks.entitiy.Photo;
-import com.jungeeks.entitiy.User;
+import com.jungeeks.entity.Photo;
+import com.jungeeks.entity.User;
 import com.jungeeks.service.entity.UserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ class FamilyMemberServiceImplTest {
                         .build(),*/
                 FamilyMemberDto.builder()
                         .id(2L)
-                        .photoPath("photo2")
+//                        .photoPath("photo2")
                         .username("Dev2")
                         .build());
 

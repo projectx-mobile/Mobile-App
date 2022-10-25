@@ -2,8 +2,7 @@ package com.jungeeks.service.dto.impl;
 
 import com.jungeeks.dto.FamilyMemberDto;
 import com.jungeeks.dto.UserInfoDto;
-import com.jungeeks.dto.enums.SIGN_UP_TYPE;
-import com.jungeeks.entitiy.User;
+import com.jungeeks.entity.User;
 import com.jungeeks.service.dto.FamilyMemberService;
 import com.jungeeks.service.dto.UserInfoService;
 import com.jungeeks.service.entity.UserService;

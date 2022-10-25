@@ -1,4 +1,4 @@
-package com.jungeeks.entitiy;
+package com.jungeeks.entity;
 
 import lombok.*;
 

@@ -1,14 +1,13 @@
 package com.jungeeks.service.entity.impl;
 
-import com.jungeeks.entitiy.*;
-import com.jungeeks.entitiy.enums.TASK_STATUS;
-import com.jungeeks.entitiy.enums.USER_ROLE;
-import com.jungeeks.entitiy.enums.USER_STATUS;
+import com.jungeeks.entity.*;
+import com.jungeeks.entity.enums.TASK_STATUS;
+import com.jungeeks.entity.enums.USER_ROLE;
+import com.jungeeks.entity.enums.USER_STATUS;
 import com.jungeeks.exception.PathNotFoundException;
 import com.jungeeks.exception.UserNotFoundException;
 import com.jungeeks.repository.UserRepository;
 import com.jungeeks.service.photoStorage.PhotoStorageService;
-import com.jungeeks.service.photoStorage.impl.AwsPhotoStorageServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

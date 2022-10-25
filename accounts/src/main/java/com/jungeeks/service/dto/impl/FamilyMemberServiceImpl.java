@@ -1,7 +1,7 @@
 package com.jungeeks.service.dto.impl;
 
 import com.jungeeks.dto.FamilyMemberDto;
-import com.jungeeks.entitiy.User;
+import com.jungeeks.entity.User;
 import com.jungeeks.service.dto.FamilyMemberService;
 import com.jungeeks.service.entity.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

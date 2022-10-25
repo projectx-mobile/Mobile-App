@@ -1,7 +1,7 @@
-package com.jungeeks.entitiy;
+package com.jungeeks.entity;
 
-import com.jungeeks.entitiy.enums.REWARD_STATUS;
-import com.jungeeks.entitiy.enums.REWARD_TYPE;
+import com.jungeeks.entity.enums.REWARD_STATUS;
+import com.jungeeks.entity.enums.REWARD_TYPE;
 import lombok.*;
 
 import javax.persistence.*;
