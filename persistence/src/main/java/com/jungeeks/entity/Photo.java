@@ -12,5 +12,4 @@ public class Photo {
 
     private String path;
     private LocalDateTime creationDate;
-
 }

@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  projectx-mobile: 
+    build: 
+      context: "../."
+      dockerfile: docker/Dockerfile
+    ports:
+      - 8092:8092
+    logging:
+      options:
+        max-size: 10m
+    environment:
+      SERVER_PORT: 8082
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql-db:3306/kids_app?useUnicode=true&characterEncoding=UTF8"
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: "12344321"
+    depends_on:
+      - mysql-db
+    restart: always
+
+  mysql-db:
+    image: mysql:8.0
+    ports:
+      - 3306:3306
+    logging:
+      options:
+        max-size: 10m
+    environment:
+      MYSQL_DATABASE: kids_app
+      MYSQL_ROOT_PASSWORD: "12344321"
+    restart: always

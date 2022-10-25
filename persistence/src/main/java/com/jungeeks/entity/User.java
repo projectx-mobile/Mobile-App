@@ -3,8 +3,12 @@ package com.jungeeks.entity;
 import com.jungeeks.entity.enums.USER_ROLE;
 import com.jungeeks.entity.enums.USER_STATUS;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Builder
@@ -13,12 +17,12 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "sec_user")
-public class User {
+public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    private String firebaseId;
     private String email;
     private Long points;
     private String name;
@@ -42,10 +46,13 @@ public class User {
             @AttributeOverride(name = "path", column = @Column(name = "path"))})
     private List<Photo> photo;
 
-    @OneToOne(mappedBy = "user")
-    private ConfirmationToken confirmationToken;
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id")
+    private List<ClientApp> clientApps;
 
-    @OneToOne(mappedBy = "user", optional = false,cascade = CascadeType.PERSIST)
-    private SocialCredentials socialCredentials;
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    private ParentNotification parentNotifications;
 
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    private ChildNotification childNotifications;
 }

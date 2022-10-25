@@ -4,6 +4,7 @@ import com.jungeeks.entity.enums.REQUEST_STATUS;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -28,4 +29,10 @@ public class RewardRequest {
     @Column(name = "request_status")
     private REQUEST_STATUS requestStatus;
 
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "reward_request_photo", joinColumns = @JoinColumn(name = "reward_request_id"))
+    @AttributeOverrides({
+            @AttributeOverride(name = "path", column = @Column(name = "path"))
+    })
+    private List<Photo> photos;
 }

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Data
@@ -24,15 +25,24 @@ public class FamilyTask {
     @JoinColumn(name = "task_id")
     private Task task;
 
+    private LocalDateTime creation;
     private LocalDateTime deadline;
-    private Long points;
+
+    @Column(name = "reward_points")
+    private Long rewardPoints;
+
+    @Column(name = "penalty_points")
+    private Long penaltyPoints;
+
+    @Column(name = "photo_report")
+    private boolean photoReport;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "task_status")
     private TASK_STATUS taskStatus;
 
-    @Column(name = "is_daily")
-    private boolean daily;
+    @Column(name = "repeatable")
+    private boolean repeatable;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "family_task_photo", joinColumns = @JoinColumn(name = "family_task_id"))
@@ -55,5 +65,4 @@ public class FamilyTask {
     @ManyToOne
     @JoinColumn(name = "family_id")
     private Family family;
-
 }
