@@ -1,6 +1,6 @@
 package com.jungeeks.response;
 
-import com.jungeeks.entitiy.enums.TASK_STATUS;
+import com.jungeeks.entity.enums.TASK_STATUS;
 import lombok.*;
 
 import java.time.LocalDateTime;
