@@ -2,12 +2,11 @@ package com.jungeeks.populators;
 
 import com.jungeeks.entity.Family;
 import com.jungeeks.entity.Photo;
-import com.jungeeks.entity.SocialCredentials;
 import com.jungeeks.entity.User;
 import com.jungeeks.entity.enums.USER_ROLE;
 import com.jungeeks.entity.enums.USER_STATUS;
-import com.jungeeks.repository.FamilyRepository;
-import com.jungeeks.repository.UserRepository;
+import com.jungeeks.accounts.repository.FamilyRepository;
+import com.jungeeks.accounts.repository.UserRepository;
 import com.jungeeks.service.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,7 +41,6 @@ public class UserPopulator {
                         .family(savedFamily)
                         .user_role(USER_ROLE.ADMIN)
                         .user_status(USER_STATUS.ACTIVE)
-                        .socialCredentials(SocialCredentials.builder().build())
                         .build());
     }
 }

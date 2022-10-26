@@ -3,7 +3,7 @@ package com.jungeeks.controller;
 import com.jungeeks.entity.ClientApp;
 import com.jungeeks.entity.User;
 import com.jungeeks.filter.SecurityFilter;
-import com.jungeeks.repository.UserRepository;
+import com.jungeeks.accounts.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

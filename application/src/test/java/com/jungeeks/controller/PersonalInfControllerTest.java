@@ -1,18 +1,12 @@
 package com.jungeeks.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.jungeeks.dto.UserInfoDto;
-import com.jungeeks.dto.enums.SIGN_UP_TYPE;
-import com.jungeeks.entity.enums.USER_STATUS;
+import com.jungeeks.accounts.controller.PersonalInfController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 //@ExtendWith(SpringExtension.class)
