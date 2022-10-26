@@ -1,5 +1,5 @@
 alter table confirmation_token
-    drop foreign key confirmation_token_sec_users_id_fk;
+    drop foreign key confirmation_token_sec_user_id_fk;
 
 alter table family_rewards_requests
     drop foreign key family_rewards_requests_family_id_fk;
@@ -40,11 +40,11 @@ alter table reward_request
 alter table reward_photo
     drop foreign key reward_photo_reward_id_fk;
 
-alter table sec_users
+alter table sec_user
     drop foreign key sec_users_family_id_fk;
 
 alter table task
     drop foreign key task_category_id_fk;
 
 alter table social_credentials
-    drop foreign key social_credentials_sec_users_id_fk;
+    drop foreign key social_credentials_sec_user_id_fk;
