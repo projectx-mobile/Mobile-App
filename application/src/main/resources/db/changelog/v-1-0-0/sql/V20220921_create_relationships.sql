@@ -9,7 +9,7 @@ create index family_rewards_family_id_index
     on family_rewards (family_id);
 
 alter table confirmation_token
-    add constraint confirmation_token_sec_users_id_fk
+    add constraint confirmation_token_sec_user_id_fk
         foreign key (user_id) references sec_user (id);
 
 alter table family_rewards_requests
@@ -72,7 +72,7 @@ alter table sec_user
         foreign key (family_id) references family (id);
 
 alter table social_credentials
-    add constraint social_credentials_sec_users_id_fk
+    add constraint social_credentials_sec_user_id_fk
         foreign key (user_id) references sec_user (id);
 
 alter table task
