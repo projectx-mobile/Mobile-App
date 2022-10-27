@@ -1,6 +1,6 @@
 package com.jungeeks.service;
 
-import com.jungeeks.entitiy.User;
+import com.jungeeks.entity.User;
 import com.jungeeks.response.NotificationResponse;
 import com.jungeeks.response.TaskResponse;
 

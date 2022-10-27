@@ -1,23 +1,22 @@
 package com.jungeeks.service.impl;
 
-import com.jungeeks.entitiy.*;
-import com.jungeeks.entitiy.enums.TASK_STATUS;
-import com.jungeeks.entitiy.enums.USER_ROLE;
+import com.jungeeks.entity.Family;
+import com.jungeeks.entity.FamilyTask;
+import com.jungeeks.entity.Task;
+import com.jungeeks.entity.User;
+import com.jungeeks.entity.enums.TASK_STATUS;
+import com.jungeeks.entity.enums.USER_ROLE;
 import com.jungeeks.exception.UserNotFoundException;
 import com.jungeeks.repository.UserRepository;
 import com.jungeeks.response.NotificationResponse;
 import com.jungeeks.response.TaskResponse;
-import com.jungeeks.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import javax.persistence.criteria.CriteriaBuilder;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest(classes = UserServiceImplTest.class)
+@Tag("unit")
 class UserServiceImplTest {
 
     @Mock
@@ -54,29 +54,29 @@ class UserServiceImplTest {
                         .build())
                 .tasks(List.of(
                         FamilyTask.builder()
-                                .daily(true)
+                                .repeatable(true)
                                 .deadline(LocalDateTime.of(2000, Month.DECEMBER, 1, 2, 3, 4, 5))
-                                .points(676L)
+                                .rewardPoints(676L)
                                 .id(1L)
                                 .task(Task.builder().title("test1").build())
                                 .taskStatus(TASK_STATUS.ACTIVE)
                                 .build(),
                         FamilyTask.builder()
-                                .daily(false)
+                                .repeatable(false)
                                 .deadline(LocalDateTime.of(2000, Month.DECEMBER, 1, 2, 3, 4, 5))
-                                .points(633L)
+                                .rewardPoints(633L)
                                 .task(Task.builder().title("test2").build())
                                 .id(2L)
                                 .taskStatus(TASK_STATUS.ACTIVE)
                                 .build()))
-                .confirmationToken(ConfirmationToken.builder()
-                        .id(1L)
-                        .confirmedAt(LocalDateTime.now())
-                        .token("TestToken")
-                        .confirmedAt(LocalDateTime.of(2000, Month.DECEMBER, 1, 2, 3, 4, 5))
-                        .createAt(LocalDateTime.of(2000, Month.MARCH, 2, 3, 4, 5, 6))
-                        .expiresAt(LocalDateTime.of(2001, Month.APRIL, 3, 4, 5, 6, 7))
-                        .build())
+//                .confirmationToken(ConfirmationToken.builder()
+//                        .id(1L)
+//                        .confirmedAt(LocalDateTime.now())
+//                        .token("TestToken")
+//                        .confirmedAt(LocalDateTime.of(2000, Month.DECEMBER, 1, 2, 3, 4, 5))
+//                        .createAt(LocalDateTime.of(2000, Month.MARCH, 2, 3, 4, 5, 6))
+//                        .expiresAt(LocalDateTime.of(2001, Month.APRIL, 3, 4, 5, 6, 7))
+//                        .build())
 
                 .build();
 

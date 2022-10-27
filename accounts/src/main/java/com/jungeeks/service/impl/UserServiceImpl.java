@@ -1,9 +1,9 @@
 package com.jungeeks.service.impl;
 
+import com.jungeeks.entity.User;
 import com.jungeeks.exception.UserNotFoundException;
 import com.jungeeks.response.NotificationResponse;
 import com.jungeeks.response.TaskResponse;
-import com.jungeeks.entitiy.User;
 import com.jungeeks.repository.UserRepository;
 import com.jungeeks.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -38,7 +37,7 @@ public class UserServiceImpl implements UserService {
                         TaskResponse.builder()
                                 .taskStatus(child.getTaskStatus())
                                 .title(child.getTask().getTitle())
-                                .point(child.getPoints())
+                                .point(child.getRewardPoints())
                                 .localDateTime(child.getDeadline())
                                 .build()
                 ).toList();

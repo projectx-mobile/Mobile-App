@@ -1,4 +1,4 @@
-package com.jungeeks.service.storage;
+package com.jungeeks.aws.service.storage;
 
 import org.springframework.web.multipart.MultipartFile;
 

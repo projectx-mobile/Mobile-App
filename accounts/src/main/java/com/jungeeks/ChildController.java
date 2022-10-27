@@ -5,6 +5,7 @@ import com.jungeeks.response.TaskResponse;
 import com.jungeeks.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +21,12 @@ import java.util.List;
 @RequestMapping("/account/inf")
 @RestController
 @Log4j2
-@RequiredArgsConstructor
 public class ChildController {
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
-    @GetMapping("/{id}")
+    @GetMapping("q/{id}")
     public ResponseEntity<List<NotificationResponse>> getDeadlineOfTask(@PathVariable() Long id) {
         return new ResponseEntity<>(userService.getDeadlineOfAllTask(id), HttpStatus.ACCEPTED);
     }
