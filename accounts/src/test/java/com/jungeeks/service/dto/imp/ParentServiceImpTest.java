@@ -37,6 +37,7 @@ class ParentServiceImpTest {
     private static User child;
     private static List<User> users;
     private static ParentHomeDto parentHomeDto;
+    private static ParentHomeDto parentHomeDtoWithOutChilds;
     private static List<User> childs;
 
 
@@ -193,6 +194,10 @@ class ParentServiceImpTest {
                                 .build()
                 ))
                 .build();
+        parentHomeDtoWithOutChilds = ParentHomeDto.builder()
+                .familyId(user.getFamily().getId())
+                .childDtos(List.of())
+                .build();
         childs = List.of(child);
     }
 
@@ -211,8 +216,7 @@ class ParentServiceImpTest {
         when(userServiceImp.getAllByFamilyIdAndUserRole(user.getFamily().getId(), USER_ROLE.CHILD)).thenReturn(new ArrayList<>());
 
         ParentHomeDto parentHomeDto1 = parentServiceImp.getParentHomeDate(user);
-        parentHomeDto.setChildDtos(new ArrayList<>());
 
-        assertEquals(parentHomeDto1, parentHomeDto);
+        assertEquals(parentHomeDto1, parentHomeDtoWithOutChilds);
     }
 }
