@@ -6,11 +6,9 @@ import com.google.firebase.auth.FirebaseToken;
 
 import com.jungeeks.entity.Credentials;
 import com.jungeeks.entity.SecurityProperties;
-import com.jungeeks.entity.SecurityUserFirebase;
-import com.jungeeks.exception.RegistrationFailedException;
+import com.jungeeks.security.entity.SecurityUserFirebase;
 import com.jungeeks.service.SecurityService;
 import com.jungeeks.service.UserService;
-import com.jungeeks.service.impl.SecurityServiceImpl;
 import com.jungeeks.utils.CookieUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

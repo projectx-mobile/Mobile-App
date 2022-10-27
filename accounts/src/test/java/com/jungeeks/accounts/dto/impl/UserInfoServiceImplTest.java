@@ -8,6 +8,7 @@ import com.jungeeks.entity.enums.USER_STATUS;
 import com.jungeeks.accounts.service.dto.FamilyMemberService;
 import com.jungeeks.accounts.service.entity.UserService;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -20,6 +21,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
+@Tag("unit")
 @SpringBootTest(classes = UserInfoServiceImplTest.class)
 class UserInfoServiceImplTest {
 

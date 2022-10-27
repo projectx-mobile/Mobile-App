@@ -1,9 +1,8 @@
 package com.jungeeks.accounts.controller;
 
-import com.jungeeks.service.photoStorage.enums.PHOTO_TYPE;
-import com.jungeeks.service.photoStorage.PhotoStorageService;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import lombok.extern.log4j.Log4j2;
+import com.jungeeks.aws.service.photoStorage.enums.PHOTO_TYPE;
+import com.jungeeks.aws.service.photoStorage.PhotoStorageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
@@ -13,10 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-
+@Slf4j
 @RequestMapping("/tst")
 @RestController
-@Log4j2
 public class TestController {
 
     @Autowired

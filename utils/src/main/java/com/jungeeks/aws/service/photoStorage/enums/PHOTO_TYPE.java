@@ -1,4 +1,4 @@
-package com.jungeeks.service.photoStorage.enums;
+package com.jungeeks.aws.service.photoStorage.enums;
 
 public enum PHOTO_TYPE {
 

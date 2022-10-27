@@ -8,8 +8,9 @@ import com.jungeeks.entity.enums.USER_STATUS;
 import com.jungeeks.accounts.exception.PathNotFoundException;
 import com.jungeeks.accounts.exception.UserNotFoundException;
 import com.jungeeks.accounts.repository.UserRepository;
-import com.jungeeks.service.photoStorage.PhotoStorageService;
+import com.jungeeks.aws.service.photoStorage.PhotoStorageService;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -19,13 +20,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
+@Tag("unit")
 @SpringBootTest(classes = UserServiceImplTest.class)
 class UserServiceImplTest {
 

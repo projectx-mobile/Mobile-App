@@ -1,6 +1,6 @@
-package com.jungeeks.service.photoStorage;
+package com.jungeeks.aws.service.photoStorage;
 
-import com.jungeeks.service.photoStorage.enums.PHOTO_TYPE;
+import com.jungeeks.aws.service.photoStorage.enums.PHOTO_TYPE;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;

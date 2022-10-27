@@ -1,12 +1,13 @@
-package com.jungeeks.service.photoStorage.impl;
+package com.jungeeks.aws.service.photoStorage.impl;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.jungeeks.service.photoStorage.enums.PHOTO_TYPE;
-import com.jungeeks.service.photoStorage.PhotoStorageService;
+import com.jungeeks.aws.service.photoStorage.PhotoStorageService;
+import com.jungeeks.aws.service.photoStorage.enums.PHOTO_TYPE;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,14 +16,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 
 @Service
-@Log4j2
+@Slf4j
 public class AwsPhotoStorageServiceImpl implements PhotoStorageService {
 
     @Autowired
     private AmazonS3 s3;
     @Value("${PHOTO_BUCKET_NAME}")
     private String bucketName;
-
 
     @Override
     public void store(MultipartFile file, String fileName, PHOTO_TYPE photoType) {
@@ -51,7 +51,7 @@ public class AwsPhotoStorageServiceImpl implements PhotoStorageService {
         try {
             S3Object o = s3.getObject(bucketName, photoType.toString()+fileName);
             S3ObjectInputStream s3is = o.getObjectContent();
-            File tmp = File.createTempFile("kidsAppTmpRead", "photo_tmp.jpg");
+            File tmp = File.createTempFile("kidsAppTmpRead", fileName+".jpg");
             FileOutputStream fos = new FileOutputStream(tmp);
             byte[] read_buf = new byte[1024];
             int read_len = 0;
@@ -74,7 +74,7 @@ public class AwsPhotoStorageServiceImpl implements PhotoStorageService {
         try {
             s3.deleteObject(bucketName, photoType.toString()+fileName);
         } catch (AmazonServiceException e) {
-            System.err.println(e.getErrorMessage());
+            log.error(e.getErrorMessage());
         }
     }
 

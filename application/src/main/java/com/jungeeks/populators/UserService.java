@@ -3,7 +3,7 @@ package com.jungeeks.populators;
 import com.jungeeks.entity.Photo;
 import com.jungeeks.entity.User;
 import com.jungeeks.accounts.repository.UserRepository;
-import com.jungeeks.service.photoStorage.PhotoStorageService;
+import com.jungeeks.aws.service.photoStorage.PhotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

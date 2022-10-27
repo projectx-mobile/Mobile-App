@@ -13,10 +13,7 @@ import java.util.List;
 @Builder
 public class UserInfoDto {
     private String username;
-//    private String email;
-//    private USER_STATUS userStatus;
-//    private SIGN_UP_TYPE signUpType;
     private USER_ROLE user_role;
     private List<FamilyMemberDto> familyMembers;
-//    private String photoPath;
+    private String photoPath;
 }

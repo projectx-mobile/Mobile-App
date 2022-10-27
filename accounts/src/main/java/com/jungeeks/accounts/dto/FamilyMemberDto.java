@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class FamilyMemberDto {
     private Long id;
     private String username;
-//    private String photoPath;
+    private String photoPath;
 }

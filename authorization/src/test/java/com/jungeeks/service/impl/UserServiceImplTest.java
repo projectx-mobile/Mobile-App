@@ -1,9 +1,9 @@
 package com.jungeeks.service.impl;
 
-import com.jungeeks.entity.SecurityUserFirebase;
 import com.jungeeks.entity.User;
 import com.jungeeks.exception.RegistrationFailedException;
 import com.jungeeks.repository.UserRepository;
+import com.jungeeks.security.entity.SecurityUserFirebase;
 import com.jungeeks.service.SecurityService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;

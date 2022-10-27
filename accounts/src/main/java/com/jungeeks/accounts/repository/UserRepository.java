@@ -10,5 +10,8 @@ import java.util.Optional;
 @Repository("accountsUserRepository")
 public interface UserRepository extends JpaRepository<User, Long> {
     public Optional<User> findUserById(Long id);
-    public Optional<List<User>> findAllByFamilyId( String familyId);
+
+    public Optional<List<User>> findAllByFamilyId(String familyId);
+
+    Optional<User> findUserByFirebaseId(String firebaseId);
 }

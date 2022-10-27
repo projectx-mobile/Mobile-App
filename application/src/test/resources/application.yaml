@@ -17,7 +17,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
     show-sql: true
-
   thymeleaf:
     cache: false
     prefix: classpath:/templates/html/
@@ -36,7 +35,10 @@ spring:
           ssl:
             enable: true
     username: "KidsAppTestAcc@yandex.by "
-
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 security:
   firebase-props:
     database-url: ${spring.datasource.url}
@@ -82,3 +84,7 @@ security:
     - /public/**
   exposed-headers:
     - X-Xsrf-Token
+springdoc:
+  swagger-ui:
+    config-url: /swagger
+    enabled: true

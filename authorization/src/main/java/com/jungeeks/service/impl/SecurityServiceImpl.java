@@ -2,7 +2,7 @@ package com.jungeeks.service.impl;
 
 import com.jungeeks.entity.Credentials;
 import com.jungeeks.entity.SecurityProperties;
-import com.jungeeks.entity.SecurityUserFirebase;
+import com.jungeeks.security.entity.SecurityUserFirebase;
 import com.jungeeks.service.SecurityService;
 import com.jungeeks.utils.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;

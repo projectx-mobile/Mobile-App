@@ -7,7 +7,7 @@ import com.jungeeks.entity.enums.USER_ROLE;
 import com.jungeeks.entity.enums.USER_STATUS;
 import com.jungeeks.accounts.repository.FamilyRepository;
 import com.jungeeks.accounts.repository.UserRepository;
-import com.jungeeks.service.RandomString;
+import com.jungeeks.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

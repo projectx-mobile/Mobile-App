@@ -2,23 +2,25 @@ package com.jungeeks.accounts.service.busines.impl;
 
 import com.jungeeks.accounts.service.entity.UserService;
 import com.jungeeks.entity.User;
-import com.jungeeks.accounts.service.busines.UploadUserService;
-import com.jungeeks.service.photoStorage.PhotoStorageService;
-import com.jungeeks.service.photoStorage.enums.PHOTO_TYPE;
+import com.jungeeks.accounts.service.busines.EditUserService;
+import com.jungeeks.aws.service.photoStorage.PhotoStorageService;
+import com.jungeeks.aws.service.photoStorage.enums.PHOTO_TYPE;
+import com.jungeeks.security.service.AuthorizationService;
 import lombok.NonNull;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @Service
-@Log4j2
-public class UploadUserServiceImpl implements UploadUserService {
+public class EditUserServiceImpl implements EditUserService {
 
     private UserService userService;
 
     private PhotoStorageService photoStorageService;
+    private AuthorizationService authorizationService;
 
     @Autowired
     @Qualifier("accountsUserService")
@@ -31,9 +33,15 @@ public class UploadUserServiceImpl implements UploadUserService {
         this.photoStorageService = photoStorageService;
     }
 
+    @Autowired
+    public void setAuthorizationService(AuthorizationService authorizationService) {
+        this.authorizationService = authorizationService;
+    }
+
     @Override
-    public void uploadPhoto(Long photoId, @NonNull MultipartFile multipartFile) {
-        User user = userService.getUserById(1L);//fix get userId from Security
+    public void storeUserPhoto(Long photoId, @NonNull MultipartFile multipartFile) {
+        String uid = authorizationService.getUser().getUid();
+        User user = userService.getUserByUid(uid);
         String path = user.getPhoto().get(Math.toIntExact(photoId)).getPath();
         photoStorageService.update(path, multipartFile, PHOTO_TYPE.USER);
         log.debug("User photo uploaded");

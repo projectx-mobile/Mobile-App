@@ -1,7 +1,7 @@
 package com.jungeeks.service;
 
 import com.jungeeks.entity.Credentials;
-import com.jungeeks.entity.SecurityUserFirebase;
+import com.jungeeks.security.entity.SecurityUserFirebase;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -6,6 +6,7 @@ import com.jungeeks.entity.Photo;
 import com.jungeeks.entity.User;
 import com.jungeeks.accounts.service.entity.UserService;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -17,6 +18,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 
+@Tag("unit")
 @SpringBootTest(classes = FamilyMemberServiceImplTest.class)
 class FamilyMemberServiceImplTest {
 
@@ -31,14 +33,14 @@ class FamilyMemberServiceImplTest {
 
     @BeforeAll
     static void prepareTestData() {
-        familyMembersTD = List.of(/*FamilyMemberDto.builder()
+        familyMembersTD = List.of(FamilyMemberDto.builder()
                         .id(1L)
                         .photoPath("photo1")
                         .username("Dev1")
-                        .build(),*/
+                        .build(),
                 FamilyMemberDto.builder()
                         .id(2L)
-//                        .photoPath("photo2")
+                        .photoPath("photo2")
                         .username("Dev2")
                         .build());
 
