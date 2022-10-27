@@ -14,7 +14,7 @@ public class ExController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
     protected ResponseEntity<Object> handleMethodRuntimeException(UserNotFoundException userNotFoundException) {
-        log.warn(String.format("Bad request by %s", userNotFoundException.getMessage()));
+        log.warn("Bad request by {}", userNotFoundException.getMessage());
         return new ResponseEntity<>(userNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

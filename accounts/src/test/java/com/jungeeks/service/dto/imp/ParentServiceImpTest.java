@@ -2,30 +2,36 @@ package com.jungeeks.service.dto.imp;
 
 import com.jungeeks.dto.ChildDto;
 import com.jungeeks.dto.ParentHomeDto;
-import com.jungeeks.entitiy.*;
-import com.jungeeks.entitiy.enums.*;
+import com.jungeeks.entity.*;
+import com.jungeeks.entity.enums.*;
+import com.jungeeks.repository.AccountsUserRepository;
 import com.jungeeks.service.entity.imp.UserServiceImp;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = ParentServiceImpTest.class)
+@Tag("unit")
 class ParentServiceImpTest {
 
     @InjectMocks
     private ParentServiceImp parentServiceImp;
-
     @Mock
     private UserServiceImp userServiceImp;
+    @Mock
+    private AccountsUserRepository accountsUserRepository;
 
     private static User user;
     private static User child;
@@ -101,8 +107,8 @@ class ParentServiceImpTest {
                                 .id(1L)
                                 .taskStatus(TASK_STATUS.PENDING)
                                 .deadline(LocalDateTime.now())
-                                .points(198L)
-                                .daily(true)
+                                .rewardPoints(198L)
+                                .repeatable(true)
                                 .photos(List.of(
                                         Photo.builder()
                                                 .creationDate(LocalDateTime.now())
@@ -117,8 +123,8 @@ class ParentServiceImpTest {
                                 .id(2L)
                                 .taskStatus(TASK_STATUS.ACTIVE)
                                 .deadline(LocalDateTime.now())
-                                .points(198L)
-                                .daily(true)
+                                .rewardPoints(198L)
+                                .repeatable(true)
                                 .photos(List.of(
                                         Photo.builder()
                                                 .creationDate(LocalDateTime.now())
@@ -133,8 +139,8 @@ class ParentServiceImpTest {
                                 .id(3L)
                                 .taskStatus(TASK_STATUS.COMPLETED)
                                 .deadline(LocalDateTime.now())
-                                .points(198L)
-                                .daily(true)
+                                .rewardPoints(198L)
+                                .repeatable(true)
                                 .photos(List.of(
                                         Photo.builder()
                                                 .creationDate(LocalDateTime.now())
@@ -193,10 +199,19 @@ class ParentServiceImpTest {
 
     @Test
     void getParentHomeDatePositive() {
-        Mockito.when(userServiceImp.getUserById(any())).thenReturn(user);
-        Mockito.when(userServiceImp.getAllByFamilyIdAndUserRole(user.getFamily().getId(), USER_ROLE.CHILD)).thenReturn(childs);
+        when(userServiceImp.getAllByFamilyIdAndUserRole(user.getFamily().getId(), USER_ROLE.CHILD)).thenReturn(childs);
 
-        ParentHomeDto parentHomeDto1 = parentServiceImp.getParentHomeDate(1L);
+        ParentHomeDto parentHomeDto1 = parentServiceImp.getParentHomeDate(user);
+
+        assertEquals(parentHomeDto1, parentHomeDto);
+    }
+
+    @Test
+    void getParentHomeDateWithEmptyChildList() {
+        when(userServiceImp.getAllByFamilyIdAndUserRole(user.getFamily().getId(), USER_ROLE.CHILD)).thenReturn(new ArrayList<>());
+
+        ParentHomeDto parentHomeDto1 = parentServiceImp.getParentHomeDate(user);
+        parentHomeDto.setChildDtos(new ArrayList<>());
 
         assertEquals(parentHomeDto1, parentHomeDto);
     }

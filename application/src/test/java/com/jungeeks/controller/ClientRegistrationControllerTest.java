@@ -3,7 +3,7 @@ package com.jungeeks.controller;
 import com.jungeeks.entity.ClientApp;
 import com.jungeeks.entity.User;
 import com.jungeeks.filter.SecurityFilter;
-import com.jungeeks.repository.UserRepository;
+import com.jungeeks.repository.AccountsUserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ public class ClientRegistrationControllerTest {
     private SecurityFilter securityFilter;
     private MockMvc mockMvc;
     @Autowired
-    private UserRepository userRepository;
+    private AccountsUserRepository accountsUserRepository;
     @Value("${FIREBASE_PROJECT_ID}")
     private String firebaseProjectId;
 
@@ -69,7 +69,7 @@ public class ClientRegistrationControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
-        User userAfterAddNewToken = userRepository.findByFirebaseId(FIREBASE_USER_ID).orElse(null);
+        User userAfterAddNewToken = accountsUserRepository.findByFirebaseId(FIREBASE_USER_ID).orElse(null);
         Assertions.assertNotNull(userAfterAddNewToken);
 
         ClientApp clientAppsAfterAddNewToken = userAfterAddNewToken.getClientApps()
@@ -87,7 +87,7 @@ public class ClientRegistrationControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
-        User userAfterUpdateToken = userRepository.findByFirebaseId(FIREBASE_USER_ID).orElse(null);
+        User userAfterUpdateToken = accountsUserRepository.findByFirebaseId(FIREBASE_USER_ID).orElse(null);
         Assertions.assertNotNull(userAfterUpdateToken);
 
         ClientApp clientAppAfterUpdate = userAfterUpdateToken.getClientApps()

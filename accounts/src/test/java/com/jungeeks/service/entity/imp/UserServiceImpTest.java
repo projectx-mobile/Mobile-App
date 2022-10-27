@@ -1,199 +1,115 @@
 package com.jungeeks.service.entity.imp;
 
-import com.jungeeks.entitiy.*;
-import com.jungeeks.entitiy.enums.TASK_STATUS;
-import com.jungeeks.entitiy.enums.USER_ROLE;
-import com.jungeeks.entitiy.enums.USER_STATUS;
+import com.jungeeks.entity.Family;
+import com.jungeeks.entity.User;
+import com.jungeeks.entity.enums.USER_ROLE;
 import com.jungeeks.exception.UserNotFoundException;
-import com.jungeeks.repository.UserRepository;
-import com.jungeeks.service.entity.imp.UserServiceImp;
+import com.jungeeks.repository.AccountsUserRepository;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDateTime;
-import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = UserServiceImp.class)
+@SpringBootTest(classes = UserServiceImpTest.class)
+@Tag("unit")
 class UserServiceImpTest {
 
     @InjectMocks
-    UserServiceImp userService;
+    private UserServiceImp userServiceImp;
 
     @Mock
-    UserRepository userRepository;
+    private AccountsUserRepository accountsUserRepository;
 
-    static User user;
+    private static User user;
 
-    static User child;
-    static List<User> users;
-    static List<User> childs;
+    private static List<User> users;
 
     @BeforeAll
-    static void prepareTestData() {
+    static void setUp() {
         user = User.builder()
                 .id(1L)
-                .email("testEmail")
-                .confirmationToken(ConfirmationToken.builder()
-                        .id(2L)
-                        .confirmedAt(LocalDateTime.now())
-                        .token("TestToken")
-                        .confirmedAt(LocalDateTime.of(2000, Month.DECEMBER, 1, 2, 3, 4, 5))
-                        .createAt(LocalDateTime.of(2000, Month.MARCH, 2, 3, 4, 5, 6))
-                        .expiresAt(LocalDateTime.of(2001, Month.APRIL, 3, 4, 5, 6, 7))
-                        .build())
-                .user_role(USER_ROLE.ADMIN)
-                .user_status(USER_STATUS.ACTIVE)
-                .photo(List.of(
-                        Photo.builder()
-                                .creationDate(LocalDateTime.now())
-                                .path("photo1")
-                                .build(),
-                        Photo.builder()
-                                .creationDate(LocalDateTime.now())
-                                .path("photo2")
-                                .build()))
-                .points(13L)
-                .name("Dev")
                 .family(Family.builder()
-                        .id("qwerty123")
+                        .id("1L")
                         .build())
-                .tasks(List.of(
-                        FamilyTask.builder()
-                                .daily(true)
-                                .deadline(LocalDateTime.now())
-                                .points(676L)
-                                .id(1L)
-                                .taskStatus(TASK_STATUS.COMPLETED)
-                                .build(),
-                        FamilyTask.builder()
-                                .daily(false)
-                                .deadline(LocalDateTime.now())
-                                .points(633L)
-                                .id(2L)
-                                .taskStatus(TASK_STATUS.PENDING)
-                                .build()))
+                .email("test@gmail.com")
+                .user_role(USER_ROLE.PARENT)
                 .build();
-        User user2 = User.builder()
-                .id(4L)
-                .email("testEmail1")
-                .confirmationToken(ConfirmationToken.builder()
-                        .id(3L)
-                        .confirmedAt(LocalDateTime.now())
-                        .token("TestToken1")
-                        .confirmedAt(LocalDateTime.of(2001, Month.DECEMBER, 1, 2, 3, 4, 5))
-                        .createAt(LocalDateTime.of(2001, Month.MARCH, 2, 3, 4, 5, 6))
-                        .expiresAt(LocalDateTime.of(2002, Month.APRIL, 3, 4, 5, 6, 7))
-                        .build())
-                .user_role(USER_ROLE.ADMIN)
-                .user_status(USER_STATUS.ACTIVE)
-                .photo(List.of(
-                        Photo.builder()
-                                .creationDate(LocalDateTime.now())
-                                .path("photo3")
-                                .build(),
-                        Photo.builder()
-                                .creationDate(LocalDateTime.now())
-                                .path("photo4")
-                                .build()))
-                .points(13L)
-                .name("Dev1")
-                .family(Family.builder()
-                        .id("qwerty1234")
-                        .build())
-                .tasks(List.of(
-                        FamilyTask.builder()
-                                .daily(true)
-                                .deadline(LocalDateTime.now())
-                                .points(676L)
-                                .id(1L)
-                                .taskStatus(TASK_STATUS.COMPLETED)
-                                .build(),
-                        FamilyTask.builder()
-                                .daily(false)
-                                .deadline(LocalDateTime.now())
-                                .points(633L)
-                                .id(2L)
-                                .taskStatus(TASK_STATUS.PENDING)
-                                .build()))
-                .build();
-        child = User.builder()
-                .id(4L)
-                .email("childEmail1")
-                .user_role(USER_ROLE.CHILD)
-                .user_status(USER_STATUS.ACTIVE)
-                .photo(List.of(
-                        Photo.builder()
-                                .creationDate(LocalDateTime.now())
-                                .path("photo3")
-                                .build(),
-                        Photo.builder()
-                                .creationDate(LocalDateTime.now())
-                                .path("photo4")
-                                .build()))
-                .family(user.getFamily())
-                .tasks(user.getTasks())
-                .points(13L)
-                .name("child1")
-                .build();
-        users = List.of(user, user2);
-        childs = List.of(child);
+        users = new ArrayList<>(List.of(user));
     }
 
     @Test
     void getUserByIdPositive() {
-        Mockito.when(userRepository.findUserById(1L)).thenReturn(Optional.ofNullable(user));
+        when(accountsUserRepository.findUserById(any())).thenReturn(Optional.ofNullable(user));
 
-        User userById = userService.getUserById(1L);
-
-        assertEquals(user, userById);
+        User userById = userServiceImp.getUserById(any());
+        assertEquals(userById, user);
+        assertEquals(userById.getId(), user.getId());
     }
 
     @Test
     void getUserByIdNegative() {
-        Mockito.when(userRepository.findUserById(any())).thenReturn(Optional.empty());
+        when(accountsUserRepository.findUserById(any())).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> userService.getUserById(0L));
+        assertThrows(UserNotFoundException.class, () -> userServiceImp.getUserById(any()));
     }
 
     @Test
     void getAllByFamilyIdPositive() {
-        Mockito.when(userRepository.findAllByFamilyId(any())).thenReturn(Optional.of(users));
+        when(accountsUserRepository.findAllByFamilyId(any())).thenReturn(Optional.ofNullable(users));
 
-        List<User> allByFamilyId = userService.getAllByFamilyId("123");
-
-        assertEquals(users, allByFamilyId);
+        List<User> familyList = userServiceImp.getAllByFamilyId("1L");
+        assertEquals(familyList, users);
+        assertEquals(familyList.get(0).getFamily().getId(), users.get(0).getFamily().getId());
     }
 
     @Test
     void getAllByFamilyIdNegative() {
-        Mockito.when(userRepository.findAllByFamilyId(any())).thenReturn(Optional.empty());
+        when(accountsUserRepository.findAllByFamilyId(any())).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> userService.getAllByFamilyId("123"));
+        assertThrows(UserNotFoundException.class, () -> userServiceImp.getAllByFamilyId("1L"));
     }
 
     @Test
     void getAllByFamilyIdAndUserRolePositive() {
-        Mockito.when(userRepository.findAllByFamilyIdAndUser_role(any(), any())).thenReturn(Optional.ofNullable(childs));
+        when(accountsUserRepository.findAllByFamilyIdAndUser_role(any(), any())).thenReturn(Optional.ofNullable(users));
 
-        List<User> allByFamilyIdAndUserRole = userService.getAllByFamilyIdAndUserRole("qwerty123", USER_ROLE.CHILD);
-
-        assertEquals(childs, allByFamilyIdAndUserRole);
+        List<User> allByFamilyIdAndUserRole = userServiceImp.getAllByFamilyIdAndUserRole("1L", USER_ROLE.PARENT);
+        assertEquals(allByFamilyIdAndUserRole, users);
+        assertEquals(allByFamilyIdAndUserRole.get(0).getUser_role(), USER_ROLE.PARENT);
     }
 
     @Test
     void getAllByFamilyIdAndUserRoleNegative() {
-        Mockito.when(userRepository.findAllByFamilyIdAndUser_role(any(), any())).thenReturn(Optional.empty());
+        when(accountsUserRepository.findAllByFamilyIdAndUser_role(any(), any())).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> userService.getAllByFamilyIdAndUserRole("1", USER_ROLE.CHILD));
+        assertThrows(UserNotFoundException.class, () -> userServiceImp.getAllByFamilyIdAndUserRole("1L", USER_ROLE.PARENT));
+    }
+
+    @Test
+    void getUserByFirebaseIdPositive() {
+        when(accountsUserRepository.findByFirebaseId(any())).thenReturn(Optional.ofNullable(user));
+
+        User userByFirebaseId = userServiceImp.getUserByFirebaseId(any());
+
+        assertEquals(userByFirebaseId, user);
+        assertEquals(userByFirebaseId.getFirebaseId(), user.getFirebaseId());
+    }
+
+    @Test
+    void getUserByFirebaseIdNegative() {
+        when(accountsUserRepository.findByFirebaseId(any())).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> userServiceImp.getUserByFirebaseId(any()));
+
     }
 }
