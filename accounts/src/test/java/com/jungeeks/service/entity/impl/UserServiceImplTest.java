@@ -1,4 +1,4 @@
-package com.jungeeks.service.impl;
+package com.jungeeks.service.entity.impl;
 
 import com.jungeeks.entity.Family;
 import com.jungeeks.entity.FamilyTask;
@@ -10,21 +10,20 @@ import com.jungeeks.exception.UserNotFoundException;
 import com.jungeeks.repository.UserRepository;
 import com.jungeeks.response.NotificationResponse;
 import com.jungeeks.response.TaskResponse;
-import com.jungeeks.service.entity.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,15 +32,15 @@ import java.util.Optional;
 class UserServiceImplTest {
 
     @Mock
-    UserRepository userRepository;
-
+    private UserRepository userRepository;
     @InjectMocks
-    UserServiceImpl userService;
+    private UserServiceImpl userService;
 
-    static List<NotificationResponse> notificationResponsesTest;
-    static List<TaskResponse> taskResponseTest;
-    static User user;
-
+    private static List<NotificationResponse> notificationResponsesTest;
+    private static List<TaskResponse> taskResponseTest;
+    private static User user;
+    private static User parent;
+    private static List<User> users;
 
     @BeforeAll
     static void setUp() {
@@ -96,36 +95,95 @@ class UserServiceImplTest {
                         .taskStatus(TASK_STATUS.ACTIVE)
                         .build()
         );
+        parent = User.builder()
+                .id(1L)
+                .family(Family.builder()
+                        .id("1L")
+                        .build())
+                .email("test@gmail.com")
+                .user_role(USER_ROLE.PARENT)
+                .build();
+        users = new ArrayList<>(List.of(parent));
     }
 
     @Test
     void getUserById() {
-        when(userRepository.findUserById(any()))
-                .thenReturn(Optional.ofNullable(user));
-        User user1 = userService.getUserById("");
+        when(userRepository.findByFirebaseId(any())).thenReturn(Optional.ofNullable(user));
+
+        User user1 = userService.getUserByFirebaseId("");
+
         assertEquals(user1, user);
     }
 
     @Test
     void canGetNoUserById() {
-        when(userRepository.findUserById(any()))
-                .thenReturn(Optional.empty());
-        assertThrows(UserNotFoundException.class, () -> userService.getUserById("1L"));
+        when(userRepository.findUserById(any())).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> userService.getUserByFirebaseId("1L"));
     }
 
     @Test
     void getDeadlineOfAllTask() {
-        when(userRepository.findUserById(any()))
-                .thenReturn(Optional.of(user));
-        List<NotificationResponse> notificationResponses = userService.getDeadlineOfAllTask(any());
+        List<NotificationResponse> notificationResponses = userService.getDeadlineOfAllTask(user);
+
         assertEquals(notificationResponses,notificationResponsesTest);
     }
 
     @Test
     void getUserTaskById() {
-        when(userRepository.findUserById(any()))
-                .thenReturn(Optional.of(user));
-        List<TaskResponse> taskResponse = userService.getUserTaskById(any());
+        List<TaskResponse> taskResponse = userService.getUserTaskById(user);
+
         assertEquals(taskResponse,taskResponseTest);
+    }
+
+    @Test
+    void getAllByFamilyIdPositive() {
+        when(userRepository.findAllByFamilyId(any())).thenReturn(Optional.ofNullable(users));
+
+        List<User> familyList = userService.getAllByFamilyId("1L");
+
+        assertEquals(familyList, users);
+        assertEquals(familyList.get(0).getFamily().getId(), users.get(0).getFamily().getId());
+    }
+
+    @Test
+    void getAllByFamilyIdNegative() {
+        when(userRepository.findAllByFamilyId(any())).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> userService.getAllByFamilyId("1L"));
+    }
+
+    @Test
+    void getAllByFamilyIdAndUserRolePositive() {
+        when(userRepository.findAllByFamilyIdAndUser_role("1L", USER_ROLE.PARENT)).thenReturn(Optional.ofNullable(users));
+
+        List<User> allByFamilyIdAndUserRole = userService.getAllByFamilyIdAndUserRole("1L", USER_ROLE.PARENT);
+
+        assertEquals(allByFamilyIdAndUserRole, users);
+        assertEquals(allByFamilyIdAndUserRole.get(0).getUser_role(), USER_ROLE.PARENT);
+    }
+
+    @Test
+    void getAllByFamilyIdAndUserRoleNegative() {
+        when(userRepository.findAllByFamilyIdAndUser_role(any(), any())).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> userService.getAllByFamilyIdAndUserRole("1L", USER_ROLE.PARENT));
+    }
+
+    @Test
+    void getUserByFirebaseIdPositive() {
+        when(userRepository.findByFirebaseId(any())).thenReturn(Optional.ofNullable(parent));
+
+        User userByFirebaseId = userService.getUserByFirebaseId(any());
+
+        assertEquals(userByFirebaseId, parent);
+        assertEquals(userByFirebaseId.getFirebaseId(), parent.getFirebaseId());
+    }
+
+    @Test
+    void getUserByFirebaseIdNegative() {
+        when(userRepository.findByFirebaseId(any())).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> userService.getUserByFirebaseId(any()));
     }
 }

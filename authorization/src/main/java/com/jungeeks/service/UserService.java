@@ -1,6 +1,5 @@
 package com.jungeeks.service;
 
-import com.jungeeks.entity.User;
 import com.jungeeks.security.entity.SecurityUserFirebase;
 
 public interface UserService {
