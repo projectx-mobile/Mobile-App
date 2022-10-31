@@ -1,4 +1,4 @@
-package com.jungeeks.service;
+package com.jungeeks.service.entity;
 
 import com.jungeeks.entity.User;
 import com.jungeeks.response.NotificationResponse;
@@ -14,22 +14,22 @@ public interface UserService {
      * Returns its tasks if it has status ACCEPTED on its getting request,
      * otherwise - throws <code>UserNotFoundException</code> with status BAD_REQUEST
      *
-     * @param id a unique child identifier
+     * @param user the user
      * @return NotificationResponse list
      */
-    List<NotificationResponse> getDeadlineOfAllTask(Long id);
+    List<NotificationResponse> getDeadlineOfAllTask(User user);
 
     /**
      * Fetches a child account from database by child number.
      * Returns its task deadline if it has status ACCEPTED on its getting request,
      * otherwise - throws <code>EntityNotFoundException</code> with status NOT_FOUND
      *
-     * @param id a unique account identifier
+     * @param user the user
      * @return TaskResponse list
      */
-    List<TaskResponse> getUserTaskById(Long id);
+    List<TaskResponse> getUserTaskById(User user);
 
-    User getUserById(Long id);
+    User getUserById(String uid);
 
 
 }

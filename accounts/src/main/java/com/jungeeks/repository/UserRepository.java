@@ -9,7 +9,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findUserById(Long aLong);
 
-    User findByUid(String uid);
+    Optional<User> findByUid(String uid);
 
 
 }

@@ -10,6 +10,7 @@ import com.jungeeks.exception.UserNotFoundException;
 import com.jungeeks.repository.UserRepository;
 import com.jungeeks.response.NotificationResponse;
 import com.jungeeks.response.TaskResponse;
+import com.jungeeks.service.entity.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -69,15 +71,6 @@ class UserServiceImplTest {
                                 .id(2L)
                                 .taskStatus(TASK_STATUS.ACTIVE)
                                 .build()))
-//                .confirmationToken(ConfirmationToken.builder()
-//                        .id(1L)
-//                        .confirmedAt(LocalDateTime.now())
-//                        .token("TestToken")
-//                        .confirmedAt(LocalDateTime.of(2000, Month.DECEMBER, 1, 2, 3, 4, 5))
-//                        .createAt(LocalDateTime.of(2000, Month.MARCH, 2, 3, 4, 5, 6))
-//                        .expiresAt(LocalDateTime.of(2001, Month.APRIL, 3, 4, 5, 6, 7))
-//                        .build())
-
                 .build();
 
         notificationResponsesTest = List.of(
@@ -93,8 +86,8 @@ class UserServiceImplTest {
                 TaskResponse.builder()
                         .title("test1")
                         .point(676L)
-                        .localDateTime(LocalDateTime.of(2000, Month.DECEMBER, 1, 2, 3, 4, 5))
                         .taskStatus(TASK_STATUS.ACTIVE)
+                        .localDateTime(LocalDateTime.of(2000, Month.DECEMBER, 1, 2, 3, 4, 5))
                         .build(),
                 TaskResponse.builder()
                         .title("test2")
@@ -107,42 +100,32 @@ class UserServiceImplTest {
 
     @Test
     void getUserById() {
-        Mockito.when(userRepository.findUserById(any()))
+        when(userRepository.findUserById(any()))
                 .thenReturn(Optional.ofNullable(user));
-
-        User user1 = userService.getUserById(1L);
+        User user1 = userService.getUserById("");
         assertEquals(user1, user);
     }
 
     @Test
     void canGetNoUserById() {
-        Mockito.when(userRepository.findUserById(any()))
+        when(userRepository.findUserById(any()))
                 .thenReturn(Optional.empty());
-
-        assertThrows(UserNotFoundException.class, () -> userService.getUserById(1L));
+        assertThrows(UserNotFoundException.class, () -> userService.getUserById("1L"));
     }
 
     @Test
     void getDeadlineOfAllTask() {
-        //given
-        Mockito.when(userRepository.findUserById(any()))
+        when(userRepository.findUserById(any()))
                 .thenReturn(Optional.of(user));
-
-        //when
         List<NotificationResponse> notificationResponses = userService.getDeadlineOfAllTask(any());
-        //then
         assertEquals(notificationResponses,notificationResponsesTest);
-
     }
 
     @Test
     void getUserTaskById() {
-        //given
-        Mockito.when(userRepository.findUserById(any()))
+        when(userRepository.findUserById(any()))
                 .thenReturn(Optional.of(user));
-        //when
         List<TaskResponse> taskResponse = userService.getUserTaskById(any());
-        //then
         assertEquals(taskResponse,taskResponseTest);
     }
 }
