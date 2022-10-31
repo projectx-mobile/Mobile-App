@@ -1,4 +1,4 @@
-package com.jungeeks.entity;
+package com.jungeeks.security.entity;
 
 import lombok.Builder;
 import lombok.Data;

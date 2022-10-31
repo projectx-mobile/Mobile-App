@@ -49,4 +49,10 @@ public class User{
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private List<ClientApp> clientApps;
+
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    private ParentNotification parentNotifications;
+
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    private ChildNotification childNotifications;
 }

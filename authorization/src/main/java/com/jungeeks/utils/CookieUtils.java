@@ -34,6 +34,7 @@ public class CookieUtils {
         cookie.setPath(restSecProps.getCookieProps().getPath());
         cookie.setDomain(restSecProps.getCookieProps().getDomain());
         cookie.setMaxAge(expiresInSeconds);
+        cookie.setSecure(true);
         httpServletResponse.addCookie(cookie);
     }
 
@@ -45,6 +46,7 @@ public class CookieUtils {
         cookie.setPath(restSecProps.getCookieProps().getPath());
         cookie.setDomain(restSecProps.getCookieProps().getDomain());
         cookie.setMaxAge(expiresInSeconds);
+        cookie.setSecure(true);
         httpServletResponse.addCookie(cookie);
     }
 
@@ -61,6 +63,7 @@ public class CookieUtils {
         cookie.setPath(restSecProps.getCookieProps().getPath());
         cookie.setDomain(restSecProps.getCookieProps().getDomain());
         cookie.setMaxAge(expiresInSeconds);
+        cookie.setSecure(true);
         httpServletResponse.addCookie(cookie);
     }
 
@@ -70,6 +73,7 @@ public class CookieUtils {
         cookie.setPath(restSecProps.getCookieProps().getPath());
         cookie.setDomain(restSecProps.getCookieProps().getDomain());
         cookie.setMaxAge(expiresInSeconds);
+        cookie.setSecure(true);
         httpServletResponse.addCookie(cookie);
     }
 }
