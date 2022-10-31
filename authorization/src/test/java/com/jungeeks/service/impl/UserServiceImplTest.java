@@ -1,7 +1,9 @@
 package com.jungeeks.service.impl;
 
 import com.jungeeks.entity.User;
+import com.jungeeks.entity.enums.USER_STATUS;
 import com.jungeeks.exception.RegistrationFailedException;
+import com.jungeeks.exception.UserNotFoundException;
 import com.jungeeks.repository.UserRepository;
 import com.jungeeks.security.entity.SecurityUserFirebase;
 import com.jungeeks.service.SecurityService;
@@ -96,7 +98,7 @@ class UserServiceImplTest {
                 .firebaseId(securityUserFirebaseWithSameEmail.getUid())
                 .build();
 
-        verify(userRepository, times(1)).save(userToSave);
+        verify(userRepository, times(0)).save(userToSave);
     }
 
     @Test
@@ -135,5 +137,55 @@ class UserServiceImplTest {
         boolean clientApps = userService.checkUserByContainsRegistrationToken();
 
         assertFalse(clientApps);
+    }
+
+    @Test
+    void checkUserStatusWhenUserStatusIsActivePositive() {
+        when(userRepository.findByFirebaseId(any())).thenReturn(
+                Optional.of(User.builder()
+                        .user_status(USER_STATUS.ACTIVE)
+                        .build()));
+        SecurityUserFirebase testDataUser = SecurityUserFirebase.builder()
+                .uid("uid")
+                .build();
+
+        assertFalse(userService.checkUserStatus(testDataUser));
+    }
+    @Test
+    void checkUserStatusWhenUserStatusIsBannedPositive() {
+        when(userRepository.findByFirebaseId(any())).thenReturn(
+                Optional.of(User.builder()
+                        .user_status(USER_STATUS.BANNED)
+                        .build()));
+        SecurityUserFirebase testDataUser = SecurityUserFirebase.builder()
+                .uid("uid")
+                .build();
+
+        assertTrue(userService.checkUserStatus(testDataUser));
+    }
+
+    @Test
+    void checkUserStatusWhenUserStatusIsRemovedPositive() {
+        when(userRepository.findByFirebaseId(any())).thenReturn(
+                Optional.of(User.builder()
+                        .user_status(USER_STATUS.REMOVED)
+                        .build()));
+        SecurityUserFirebase testDataUser = SecurityUserFirebase.builder()
+                .uid("uid")
+                .build();
+
+        assertTrue(userService.checkUserStatus(testDataUser));
+    }
+
+    @Test
+    void checkUserStatusNegative() {
+        when(userRepository.findByFirebaseId(any())).thenReturn(
+                Optional.empty());
+        SecurityUserFirebase testDataUser = SecurityUserFirebase.builder()
+                .uid("uid")
+                .build();
+        assertThrows(UserNotFoundException.class,
+                ()->userService.checkUserStatus(testDataUser),
+                "User with uid uid not found");
     }
 }

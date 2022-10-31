@@ -12,6 +12,7 @@ import com.jungeeks.service.UserService;
 import com.jungeeks.utils.CookieUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -33,6 +34,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     private SecurityService securityService;
     @Autowired
+    @Qualifier("auth_userService")
     private UserService userService;
     @Autowired
     private CookieUtils cookieUtils;
