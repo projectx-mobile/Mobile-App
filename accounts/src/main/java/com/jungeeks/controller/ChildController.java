@@ -6,7 +6,6 @@ import com.jungeeks.response.TaskResponse;
 import com.jungeeks.security.entity.SecurityUserFirebase;
 import com.jungeeks.security.service.AuthorizationService;
 import com.jungeeks.service.entity.UserService;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,7 +33,6 @@ public class ChildController {
     @Autowired
     private AuthorizationService authorizationService;
 
-
     /**
      * Gets deadline of task.
      *
@@ -46,7 +44,6 @@ public class ChildController {
         User user = userService.getUserById(userDetails.getUid());
         return new ResponseEntity<>(userService.getDeadlineOfAllTask(user), HttpStatus.ACCEPTED);
     }
-
 
     /**
      * Gets tasks.

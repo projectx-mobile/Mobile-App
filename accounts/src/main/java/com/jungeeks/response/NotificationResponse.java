@@ -13,7 +13,6 @@ import java.time.format.DateTimeFormatter;
 @Data
 
 public class NotificationResponse {
-//    @DateTimeFormat(iso = DateTimeFormatter.ISO_LOCAL_DATE_TIME)
     @JsonFormat(pattern = "YYYY-MM-dd HH:mm")
     private LocalDateTime localDateTime;
 }
