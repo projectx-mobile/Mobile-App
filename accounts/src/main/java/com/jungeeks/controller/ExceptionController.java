@@ -10,7 +10,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 @Slf4j
-public class ExController extends ResponseEntityExceptionHandler {
+public class ExceptionController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
     protected ResponseEntity<Object> handleMethodRuntimeException(RuntimeException runtimeException) {

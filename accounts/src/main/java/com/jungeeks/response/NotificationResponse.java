@@ -7,11 +7,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * The type Notification response.
+ */
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
-
 public class NotificationResponse {
     @JsonFormat(pattern = "YYYY-MM-dd HH:mm")
     private LocalDateTime localDateTime;

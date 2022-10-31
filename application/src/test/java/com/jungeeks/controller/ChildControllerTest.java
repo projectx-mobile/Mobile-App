@@ -171,7 +171,7 @@ class ChildControllerTest {
         ObjectMapper mapper = JsonMapper.builder()
                 .addModule(new JavaTimeModule())
                 .build();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+            mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         return ow.writeValueAsString(obj);
     }

@@ -38,8 +38,8 @@ public class UserServiceImpl implements UserService {
                                 .title(child.getTask().getTitle())
                                 .point(child.getRewardPoints())
                                 .localDateTime(child.getDeadline())
-                                .build()
-                ).toList();
+                                .build())
+                .toList();
     }
 
     public List<NotificationResponse> getDeadlineOfAllTask(User child) {
@@ -47,8 +47,8 @@ public class UserServiceImpl implements UserService {
 
         return child.getTasks().stream()
                 .map(task -> NotificationResponse.builder()
-                        .localDateTime(task.getDeadline()).build()
-                ).toList();
+                        .localDateTime(task.getDeadline()).build())
+                .toList();
     }
 
 }

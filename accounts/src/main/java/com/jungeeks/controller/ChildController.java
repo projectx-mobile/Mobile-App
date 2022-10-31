@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author nevels 09.29.2022
  */
-@RequestMapping("/child/")
+@RequestMapping("/child")
 @RestController
 @Slf4j
 public class ChildController {

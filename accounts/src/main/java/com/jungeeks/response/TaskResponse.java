@@ -6,12 +6,13 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 
-@AllArgsConstructor
-@NoArgsConstructor
+/**
+ * The type Task response.
+ */
 @Builder
 @Data
-public class TaskResponse {
 
+public class TaskResponse {
     private String title;
     private Long point;
     private TASK_STATUS taskStatus;
