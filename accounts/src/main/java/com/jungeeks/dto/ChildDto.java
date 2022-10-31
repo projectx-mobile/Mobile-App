@@ -6,6 +6,9 @@ import lombok.Data;
 import java.util.List;
 
 
+/**
+ * The type Child dto.
+ */
 @Data
 @Builder
 public class ChildDto {

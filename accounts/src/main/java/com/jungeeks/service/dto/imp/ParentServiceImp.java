@@ -10,12 +10,9 @@ import com.jungeeks.entity.enums.TASK_STATUS;
 import com.jungeeks.entity.enums.USER_ROLE;
 import com.jungeeks.service.dto.ParentService;
 import com.jungeeks.service.entity.UserService;
-import com.jungeeks.service.entity.imp.UserServiceImp;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,12 +23,13 @@ import java.util.Objects;
  *
  * @author TorusTredent on 10.28.2022
  */
-@Service("account_parentServiceImpl")
+@Service("accounts_parentServiceImpl")
 @Slf4j
 public class ParentServiceImp implements ParentService {
 
     @Autowired
-    private UserServiceImp userServiceImp;
+    @Qualifier("accounts_userServiceImpl")
+    private UserService userService;
 
     /**
      * get data for the parent home page
@@ -42,7 +40,7 @@ public class ParentServiceImp implements ParentService {
     @Override
     public ParentHomeDto getParentHomeDate(User user) {
         log.debug("Request getParentHomeDate by user with uid {}", user.getFirebaseId());
-        List<User> childs = userServiceImp.getAllByFamilyIdAndUserRole(user.getFamily().getId(), USER_ROLE.CHILD);
+        List<User> childs = userService.getAllByFamilyIdAndUserRole(user.getFamily().getId(), USER_ROLE.CHILD);
 
         log.debug("Number of childs {}", childs.size());
         List<ChildDto> childDtos = getChildDtoList(childs);
@@ -82,6 +80,5 @@ public class ParentServiceImp implements ParentService {
                             .build());
                 }).toList();
     }
-
 }
 

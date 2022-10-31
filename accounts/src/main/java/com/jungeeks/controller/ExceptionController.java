@@ -14,14 +14,12 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
     protected ResponseEntity<Object> handleMethodRuntimeException(RuntimeException runtimeException) {
-        log.warn(String.format("Bad request by %s", runtimeException.getMessage()));
+        log.warn("Bad request by {}", runtimeException.getMessage());
         return new ResponseEntity<>(runtimeException.getMessage(), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(UserNotFoundException.class)
     protected ResponseEntity<Object> handleMethodUserNotFoundException(UserNotFoundException userNotFoundException) {
-        log.warn(String.format("Bad request by %s", userNotFoundException.getMessage()));
+        log.warn("Bad request by {}", userNotFoundException.getMessage());
         return new ResponseEntity<>(userNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
     }
-
-
 }

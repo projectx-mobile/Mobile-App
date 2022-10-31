@@ -4,8 +4,8 @@ import com.jungeeks.dto.ChildDto;
 import com.jungeeks.dto.ParentHomeDto;
 import com.jungeeks.entity.*;
 import com.jungeeks.entity.enums.*;
-import com.jungeeks.repository.AccountsUserRepository;
-import com.jungeeks.service.entity.imp.UserServiceImp;
+import com.jungeeks.repository.UserRepository;
+import com.jungeeks.service.entity.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -29,9 +29,9 @@ class ParentServiceImpTest {
     @InjectMocks
     private ParentServiceImp parentServiceImp;
     @Mock
-    private UserServiceImp userServiceImp;
+    private UserServiceImpl userServiceImp;
     @Mock
-    private AccountsUserRepository accountsUserRepository;
+    private UserRepository userRepository;
 
     private static User user;
     private static User child;

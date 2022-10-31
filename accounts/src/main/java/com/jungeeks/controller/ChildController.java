@@ -31,6 +31,7 @@ public class ChildController {
     @Qualifier("accounts_userServiceImpl")
     private UserService userService;
     @Autowired
+    @Qualifier("utils_authorizationServiceImpl")
     private AuthorizationService authorizationService;
 
     /**
@@ -41,7 +42,7 @@ public class ChildController {
     @GetMapping("deadline")
     public ResponseEntity<List<NotificationResponse>> getDeadlineOfTask() {
         SecurityUserFirebase userDetails = authorizationService.getUser();
-        User user = userService.getUserById(userDetails.getUid());
+        User user = userService.getUserByFirebaseId(userDetails.getUid());
         return new ResponseEntity<>(userService.getDeadlineOfAllTask(user), HttpStatus.ACCEPTED);
     }
 
@@ -53,8 +54,7 @@ public class ChildController {
     @GetMapping("tasks")
     public ResponseEntity<List<TaskResponse>> getTasks() {
         SecurityUserFirebase userDetails = authorizationService.getUser();
-        User user = userService.getUserById(userDetails.getUid());
+        User user = userService.getUserByFirebaseId(userDetails.getUid());
         return new ResponseEntity<>(userService.getUserTaskById(user), HttpStatus.ACCEPTED);
     }
-
 }

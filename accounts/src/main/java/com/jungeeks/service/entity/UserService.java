@@ -6,7 +6,6 @@ import com.jungeeks.response.TaskResponse;
 import com.jungeeks.entity.enums.USER_ROLE;
 
 import java.util.List;
-import java.util.Optional;
 
 
 public interface UserService {
@@ -30,8 +29,6 @@ public interface UserService {
      * @return TaskResponse list
      */
     List<TaskResponse> getUserTaskById(User user);
-
-    User getUserById(String uid);
 
     /**
      * Gets user by id.

@@ -40,7 +40,7 @@ public class UserController {
      * @param authorizationService the authorization service
      */
     @Autowired
-    public UserController(@Qualifier("account_parentServiceImpl") ParentService parentService,
+    public UserController(@Qualifier("accounts_parentServiceImpl") ParentService parentService,
                           @Qualifier("accounts_userServiceImpl") UserService userService,
                           @Qualifier("utils_authorizationServiceImpl") AuthorizationService authorizationService) {
         this.parentService = parentService;
