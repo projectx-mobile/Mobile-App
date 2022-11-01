@@ -13,10 +13,9 @@ import com.jungeeks.entity.User;
 import com.jungeeks.entity.enums.TASK_STATUS;
 import com.jungeeks.entity.enums.USER_ROLE;
 import com.jungeeks.filter.SecurityFilter;
-import com.jungeeks.response.NotificationResponse;
-import com.jungeeks.response.TaskResponse;
+import com.jungeeks.dto.NotificationDto;
+import com.jungeeks.dto.TaskDto;
 import com.jungeeks.service.entity.UserService;
-import org.mockito.Mockito;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -67,8 +66,8 @@ class ChildControllerTest {
     private static final String EMAIL = "kidsapptestacc@gmail.com";
     private static final String PASSWORD = "12344321";
 
-    private static List<NotificationResponse> notificationResponse;
-    private static List<TaskResponse> taskResponse;
+    private static List<NotificationDto> notificationDto;
+    private static List<TaskDto> taskDto;
     private static User user;
 
     @Autowired
@@ -107,29 +106,29 @@ class ChildControllerTest {
                                 .build()))
                 .build();
 
-        notificationResponse = List.of(
-                NotificationResponse.builder()
+        notificationDto = List.of(
+                NotificationDto.builder()
                         .localDateTime(LocalDateTime.of(2000, Month.DECEMBER, 1, 2, 3, 4, 5))
                         .build(),
-                NotificationResponse.builder()
+                NotificationDto.builder()
                         .localDateTime(LocalDateTime.of(2000, Month.DECEMBER, 1, 2, 3, 4, 5))
                         .build()
         );
 
-        taskResponse = List.of(
-                TaskResponse.builder()
+        taskDto = List.of(
+                TaskDto.builder()
                         .title("First task")
                         .taskStatus(TASK_STATUS.ACTIVE)
                         .point(1L)
                         .localDateTime(LocalDateTime.of(2000, Month.DECEMBER, 1, 2, 3, 4, 5))
                         .build(),
-                TaskResponse.builder()
+                TaskDto.builder()
                         .title("Second task")
                         .taskStatus(TASK_STATUS.ACTIVE)
                         .point(2L)
                         .localDateTime(LocalDateTime.of(2000, Month.DECEMBER, 1, 2, 3, 4, 5))
                         .build(),
-                TaskResponse.builder()
+                TaskDto.builder()
                         .title("Third task")
                         .taskStatus(TASK_STATUS.ACTIVE)
                         .point(3L)
@@ -141,11 +140,11 @@ class ChildControllerTest {
 
     @Test
     void getDeadlineOfTask() throws Exception {
-        when(userService.getDeadlineOfAllTask(any())).thenReturn(notificationResponse);
+        when(userService.getDeadlineOfAllTask(any())).thenReturn(notificationDto);
         when(userService.getUserById(any())).thenReturn(user);
         SignUpResponseDto idTokenFromFirebase1 = getResponseFromFirebase();
         String idTokenFromFirebase = idTokenFromFirebase1.getIdToken();
-        String resultQuery = mappingObjectToJson(notificationResponse);
+        String resultQuery = mappingObjectToJson(notificationDto);
         this.mockMvc.perform(MockMvcRequestBuilders.get("/child/deadline")
                         .header("Authorization", "Bearer " + idTokenFromFirebase))
                 .andDo(print())
@@ -155,11 +154,11 @@ class ChildControllerTest {
 
     @Test
     void getTasks() throws Exception {
-        when(userService.getUserTaskById(any())).thenReturn(taskResponse);
+        when(userService.getUserTaskById(any())).thenReturn(taskDto);
         when(userService.getUserById(any())).thenReturn(user);
         SignUpResponseDto idTokenFromFirebase1 = getResponseFromFirebase();
         String idTokenFromFirebase = idTokenFromFirebase1.getIdToken();
-        String resultQuery = mappingObjectToJson(taskResponse);
+        String resultQuery = mappingObjectToJson(taskDto);
         this.mockMvc.perform(MockMvcRequestBuilders.get("/child/tasks")
                         .header("Authorization", "Bearer " + idTokenFromFirebase))
                 .andDo(print())

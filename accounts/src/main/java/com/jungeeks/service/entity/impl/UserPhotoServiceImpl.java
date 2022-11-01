@@ -23,9 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * The type User photo service.
- */
 @Slf4j
 @Service
 public class UserPhotoServiceImpl implements UserPhotoService {
@@ -34,42 +31,21 @@ public class UserPhotoServiceImpl implements UserPhotoService {
     private PhotoStorageService photoStorageService;
     private AuthorizationService authorizationService;
 
-    /**
-     * Sets photo storage service.
-     *
-     * @param photoStorageService the photo storage service
-     */
     @Autowired
     public void setPhotoStorageService(PhotoStorageService photoStorageService) {
         this.photoStorageService = photoStorageService;
     }
 
-    /**
-     * Sets authorization service.
-     *
-     * @param authorizationService the authorization service
-     */
     @Autowired
     public void setAuthorizationService(AuthorizationService authorizationService) {
         this.authorizationService = authorizationService;
     }
 
-    /**
-     * Sets user service.
-     *
-     * @param userService the user service
-     */
     @Autowired
-    public void setUserService(@Qualifier("accountsUserService") UserService userService) {
+    public void setUserService(@Qualifier("accounts_userServiceImpl") UserService userService) {
         this.userService = userService;
     }
 
-    /**
-     * Gets user photo.
-     *
-     * @param path the path
-     * @return the user photo
-     */
     @Override
     public File getUserPhoto(String path) {
         String uid = getUid();
@@ -77,25 +53,12 @@ public class UserPhotoServiceImpl implements UserPhotoService {
         return getFile(path, user);
     }
 
-    /**
-     * Gets user photo.
-     *
-     * @param userId the user id
-     * @param path   the path
-     * @return the user photo
-     */
     @Override
     public File getUserPhoto(Long userId, String path) {
         User user = userService.getUserById(userId);
         return getFile(path, user);
     }
 
-    /**
-     * Add user photo string.
-     *
-     * @param multipartFile the multipart file
-     * @return the string
-     */
     @Transactional
     @Override
     public String addUserPhoto(@NonNull MultipartFile multipartFile) {
@@ -114,12 +77,6 @@ public class UserPhotoServiceImpl implements UserPhotoService {
         return path;
     }
 
-    /**
-     * Update user photo.
-     *
-     * @param path          the path
-     * @param multipartFile the multipart file
-     */
     @Transactional
     @Modifying
     @Override
@@ -134,11 +91,6 @@ public class UserPhotoServiceImpl implements UserPhotoService {
         photoStorageService.update(photo.getPath(), multipartFile, PHOTO_TYPE.USER);
     }
 
-    /**
-     * Delete user photo.
-     *
-     * @param path the path
-     */
     @Transactional
     @Modifying
     @Override

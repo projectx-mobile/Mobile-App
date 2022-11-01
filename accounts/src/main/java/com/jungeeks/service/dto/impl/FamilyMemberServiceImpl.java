@@ -11,9 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * The type Family member service.
- */
 @Slf4j
 @Service
 public class FamilyMemberServiceImpl implements FamilyMemberService {
@@ -21,32 +18,16 @@ public class FamilyMemberServiceImpl implements FamilyMemberService {
     private UserService userService;
     private AuthorizationService authorizationService;
 
-    /**
-     * Sets user service.
-     *
-     * @param userService the user service
-     */
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
-    /**
-     * Sets authorization service.
-     *
-     * @param authorizationService the authorization service
-     */
     @Autowired
     public void setAuthorizationService(AuthorizationService authorizationService) {
         this.authorizationService = authorizationService;
     }
 
-    /**
-     * Gets family members.
-     *
-     * @param familyId the family id
-     * @return the family members
-     */
     @Override
     public List<FamilyMemberDto> getFamilyMembers(String familyId) {
         List<User> familyMembers = userService.getAllByFamilyId(familyId);

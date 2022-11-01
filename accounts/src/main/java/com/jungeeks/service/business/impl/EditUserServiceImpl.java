@@ -12,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-/**
- * The type Edit user service.
- */
 @Slf4j
 @Service
 public class EditUserServiceImpl implements EditUserService {
@@ -23,54 +20,29 @@ public class EditUserServiceImpl implements EditUserService {
 
     private AuthorizationService authorizationService;
 
-    /**
-     * Sets user service.
-     *
-     * @param userService the user service
-     */
     @Autowired
-    @Qualifier("accountsUserService")
+    @Qualifier("accounts_userServiceImpl")
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
-    /**
-     * Sets authorization service.
-     *
-     * @param authorizationService the authorization service
-     */
     @Autowired
     public void setAuthorizationService(AuthorizationService authorizationService) {
         this.authorizationService = authorizationService;
     }
 
-    /**
-     * Change user name.
-     *
-     * @param userName the user name
-     */
     @Override
     public void changeUserName(String userName) {
         String uid = getUid();
         userService.changeUserName(uid, userName);
     }
 
-    /**
-     * Change user status.
-     *
-     * @param user_status the user status
-     */
     @Override
     public void changeUserStatus(USER_STATUS user_status) {
         String uid = getUid();
         userService.changeUserStatus(uid, user_status);
     }
 
-    /**
-     * Delete family member.
-     *
-     * @param userId the user id
-     */
     @Override
     public void deleteFamilyMember(Long userId) {
         String uid = authorizationService.getUser().getUid();
@@ -81,7 +53,6 @@ public class EditUserServiceImpl implements EditUserService {
             throw new NotEnoughRightsException("Insufficient rights to execute the request");
         }
     }
-
 
     private String getUid() {
         return authorizationService.getUser().getUid();

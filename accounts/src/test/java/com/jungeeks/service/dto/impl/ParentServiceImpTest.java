@@ -1,10 +1,10 @@
-package com.jungeeks.service.dto.imp;
+package com.jungeeks.service.dto.impl;
 
 import com.jungeeks.dto.ChildDto;
 import com.jungeeks.dto.ParentHomeDto;
 import com.jungeeks.entity.*;
 import com.jungeeks.entity.enums.*;
-import com.jungeeks.repository.UserRepository;
+import com.jungeeks.repository.AccountsUserRepository;
 import com.jungeeks.service.entity.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = ParentServiceImpTest.class)
@@ -31,7 +29,7 @@ class ParentServiceImpTest {
     @Mock
     private UserServiceImpl userServiceImp;
     @Mock
-    private UserRepository userRepository;
+    private AccountsUserRepository userRepository;
 
     private static User user;
     private static User child;

@@ -13,19 +13,12 @@ public class RegisterController {
     @Autowired
     private RegisterUserService registerUserService;
 
-    /**
-     * Register parent with email or google
-     * Create family and setup other entities
-     */
     @PostMapping("/parent")
     public ResponseEntity<String> registerParent(@RequestParam(name = "username") String username) {
         registerUserService.registerParentUser(username);
         return ResponseEntity.ok("User registered");
     }
 
-    /**
-     * Create family and setup other entities
-     */
     @PostMapping("/invite/parent")
     public ResponseEntity<String> registerParentByInvite(@RequestParam(name = "username") String username,
                                                          @RequestParam(name = "familyId") String familyId) {
@@ -33,9 +26,6 @@ public class RegisterController {
         return ResponseEntity.ok("User registered");
     }
 
-    /**
-     * add User to
-     */
     @PostMapping("/invite/child")
     public ResponseEntity<String> registerChildByInvite(@RequestParam(name = "username") String username,
                                                         @RequestParam(name = "familyId") String familyId) {

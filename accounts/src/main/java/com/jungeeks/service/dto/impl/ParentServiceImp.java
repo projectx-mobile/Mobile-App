@@ -1,4 +1,4 @@
-package com.jungeeks.service.dto.imp;
+package com.jungeeks.service.dto.impl;
 
 import com.jungeeks.dto.ChildDto;
 import com.jungeeks.dto.ParentHomeDto;
@@ -18,11 +18,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Implementation of {@link ParentService}
- *
- * @author TorusTredent on 10.28.2022
- */
 @Service("accounts_parentServiceImpl")
 @Slf4j
 public class ParentServiceImp implements ParentService {
@@ -31,12 +26,6 @@ public class ParentServiceImp implements ParentService {
     @Qualifier("accounts_userServiceImpl")
     private UserService userService;
 
-    /**
-     * get data for the parent home page
-     *
-     * @param user the user
-     * @return the parent home date
-     */
     @Override
     public ParentHomeDto getParentHomeDate(User user) {
         log.debug("Request getParentHomeDate by user with uid {}", user.getFirebaseId());
@@ -81,4 +70,3 @@ public class ParentServiceImp implements ParentService {
                 }).toList();
     }
 }
-

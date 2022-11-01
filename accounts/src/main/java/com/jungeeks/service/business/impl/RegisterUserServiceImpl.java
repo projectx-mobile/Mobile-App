@@ -29,52 +29,26 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
     private AccountsUserRepository userRepository;
     private AuthorizationService authorizationService;
-    private PhotoStorageService photoStorageService;
     private AccountsFamilyRepository familyRepository;
 
-    /**
-     * The constant DEFAULT_PHOTO_PATH.
-     */
     public static final String DEFAULT_PHOTO_PATH = "default_account_photo.jpeg";
 
-    /**
-     * Sets user repository.
-     *
-     * @param userRepository the user repository
-     */
     @Autowired
     @Qualifier("accounts_userRepository")
     public void setUserRepository(AccountsUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    /**
-     * Sets authorization service.
-     *
-     * @param authorizationService the authorization service
-     */
     @Autowired
     public void setAuthorizationService(AuthorizationService authorizationService) {
         this.authorizationService = authorizationService;
     }
 
-    /**
-     * Sets family repository.
-     *
-     * @param familyRepository the family repository
-     */
     @Autowired
     public void setFamilyRepository(AccountsFamilyRepository familyRepository) {
         this.familyRepository = familyRepository;
     }
 
-    /**
-     * Register by invite.
-     *
-     * @param username  the username
-     * @param familyId  the family id
-     * @param user_role the user role
-     */
     @Transactional
     @Modifying
     @Override
@@ -112,11 +86,6 @@ public class RegisterUserServiceImpl implements RegisterUserService {
         }
     }
 
-    /**
-     * Register parent user.
-     *
-     * @param username the username
-     */
     @Transactional
     @Modifying
     @Override

@@ -44,7 +44,7 @@ public class UserPhotoController {
                 .body(new FileSystemResource(userPhoto));
     }
 
-    @PostMapping("/photo/get_by_userId_path")
+    @PostMapping("/photo/get-by-userId-and-path")
     public ResponseEntity<FileSystemResource> getUserPhoto(@RequestParam(name = "userId") Long userId,
                                                            @RequestParam(name = "path") String path) {
         File userPhoto = userPhotoService.getUserPhoto(userId, path);

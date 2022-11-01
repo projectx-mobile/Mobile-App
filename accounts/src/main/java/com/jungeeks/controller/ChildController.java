@@ -1,8 +1,8 @@
 package com.jungeeks.controller;
 
 import com.jungeeks.entity.User;
-import com.jungeeks.response.NotificationResponse;
-import com.jungeeks.response.TaskResponse;
+import com.jungeeks.dto.NotificationDto;
+import com.jungeeks.dto.TaskDto;
 import com.jungeeks.security.entity.SecurityUserFirebase;
 import com.jungeeks.security.service.AuthorizationService;
 import com.jungeeks.service.entity.UserService;
@@ -19,8 +19,6 @@ import java.util.List;
  * Rest controller for operations related to child home page:
  * operation on getting deadline of all tasks
  * operation getting data of all tasks
- *
- * @author nevels 09.29.2022
  */
 @RequestMapping("/child")
 @RestController
@@ -30,31 +28,22 @@ public class ChildController {
     @Autowired
     @Qualifier("accounts_userServiceImpl")
     private UserService userService;
+
     @Autowired
     @Qualifier("utils_authorizationServiceImpl")
     private AuthorizationService authorizationService;
 
-    /**
-     * Gets deadline of task.
-     *
-     * @return the deadline of task
-     */
     @GetMapping("deadline")
-    public ResponseEntity<List<NotificationResponse>> getDeadlineOfTask() {
+    public ResponseEntity<List<NotificationDto>> getDeadlineOfTask() {
         SecurityUserFirebase userDetails = authorizationService.getUser();
-        User user = userService.getUserByFirebaseId(userDetails.getUid());
+        User user = userService.getUserByUid(userDetails.getUid());//TODO: move to childService
         return new ResponseEntity<>(userService.getDeadlineOfAllTask(user), HttpStatus.ACCEPTED);
     }
 
-    /**
-     * Gets tasks.
-     *
-     * @return the tasks
-     */
     @GetMapping("tasks")
-    public ResponseEntity<List<TaskResponse>> getTasks() {
+    public ResponseEntity<List<TaskDto>> getTasks() {
         SecurityUserFirebase userDetails = authorizationService.getUser();
-        User user = userService.getUserByFirebaseId(userDetails.getUid());
+        User user = userService.getUserByUid(userDetails.getUid());//TODO: move to childService
         return new ResponseEntity<>(userService.getUserTaskById(user), HttpStatus.ACCEPTED);
     }
 }
