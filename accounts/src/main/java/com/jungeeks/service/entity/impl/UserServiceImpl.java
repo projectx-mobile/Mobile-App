@@ -20,6 +20,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/**
+ * The type User service.
+ */
 @Slf4j
 @Service("accountsUserService")
 public class UserServiceImpl implements UserService {
@@ -27,34 +30,69 @@ public class UserServiceImpl implements UserService {
     private AccountsUserRepository accountsUserRepository;
     private AuthorizationService authorizationService;
 
+    /**
+     * Sets user repository.
+     *
+     * @param accountsUserRepository the accounts user repository
+     */
     @Autowired
     @Qualifier("accounts_userRepository")
     public void setUserRepository(AccountsUserRepository accountsUserRepository) {
         this.accountsUserRepository = accountsUserRepository;
     }
 
+    /**
+     * Sets authorization service.
+     *
+     * @param authorizationService the authorization service
+     */
+    @Autowired
     public void setAuthorizationService(AuthorizationService authorizationService) {
         this.authorizationService = authorizationService;
     }
 
+    /**
+     * Gets user by id.
+     *
+     * @param userId the user id
+     * @return the user by id
+     */
     @Override
     public User getUserById(Long userId) {
         return accountsUserRepository.findUserById(userId)
                 .orElseThrow(() -> new UserNotFoundException(String.format("User with id %s not found", userId)));
     }
 
+    /**
+     * Gets user by uid.
+     *
+     * @param uId the u id
+     * @return the user by uid
+     */
     @Override
     public User getUserByUid(String uId) {
         return accountsUserRepository.findByFirebaseId(uId)
                 .orElseThrow(() -> new UserNotFoundException(String.format("User with uid %s not found", uId)));
     }
 
+    /**
+     * Gets all by family id.
+     *
+     * @param familyId the family id
+     * @return the all by family id
+     */
     @Override
     public List<User> getAllByFamilyId(@NonNull String familyId) {
         return accountsUserRepository.findAllByFamilyId(familyId)
                 .orElseThrow(() -> new UserNotFoundException(String.format("Family id %s not found", familyId)));
     }
 
+    /**
+     * Change user status.
+     *
+     * @param uId           the u id
+     * @param newUserStatus the new user status
+     */
     @Transactional
     @Modifying
     @Override
@@ -86,6 +124,12 @@ public class UserServiceImpl implements UserService {
         log.debug(String.format("Changed user_status from uId:%s",uId));
     }
 
+    /**
+     * Change user name.
+     *
+     * @param uId     the u id
+     * @param newName the new name
+     */
     @Transactional
     @Modifying
     @Override
@@ -96,4 +140,18 @@ public class UserServiceImpl implements UserService {
         log.debug(String.format("Changed username from uId:%s",uId));
     }
 
+    /**
+     * Delete family member.
+     *
+     * @param userId the user id
+     */
+    @Transactional
+    @Modifying
+    @Override
+    public void deleteFamilyMember(Long userId) {
+        User user = accountsUserRepository.findUserById(userId)
+                .orElseThrow(() -> new UserNotFoundException(String.format("User with id %s not found", userId)));
+        user.setFamily(null);
+        log.debug(String.format("Delete family member by id %s",userId));
+    }
 }

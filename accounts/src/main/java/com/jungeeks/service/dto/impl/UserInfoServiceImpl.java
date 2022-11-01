@@ -16,6 +16,9 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The type User info service.
+ */
 @Service
 @Slf4j
 public class UserInfoServiceImpl implements UserInfoService {
@@ -24,21 +27,42 @@ public class UserInfoServiceImpl implements UserInfoService {
     private UserService userService;
     private FamilyMemberService familyMemberService;
 
+    /**
+     * Sets authorization service.
+     *
+     * @param authorizationService the authorization service
+     */
     @Autowired
     public void setAuthorizationService(AuthorizationService authorizationService) {
         this.authorizationService = authorizationService;
     }
 
+    /**
+     * Sets user service.
+     *
+     * @param userService the user service
+     */
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * Sets family member service.
+     *
+     * @param familyMemberService the family member service
+     */
     @Autowired
     public void setFamilyMemberService(FamilyMemberService familyMemberService) {
         this.familyMemberService = familyMemberService;
     }
 
+    /**
+     * Gets user info by user id.
+     *
+     * @param id the id
+     * @return the user info by user id
+     */
     public UserInfoDto getUserInfoByUserId(Long id) {
         String uid = authorizationService.getUser().getUid();
         User authUser = userService.getUserByUid(uid);
@@ -58,6 +82,12 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .build();
     }
 
+    /**
+     * Gets user info by user u id.
+     *
+     * @param uId the u id
+     * @return the user info by user u id
+     */
     @Transactional
     @Override
     public UserInfoDto getUserInfoByUserUId(String uId) {
@@ -71,5 +101,4 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .photoPath(user.getPhoto().get(0).getPath())
                 .build();
     }
-
 }

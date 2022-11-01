@@ -1,20 +1,18 @@
-package com.jungeeks.service.busines.impl;
+package com.jungeeks.service.business.impl;
 
 import com.jungeeks.RandomString;
 import com.jungeeks.aws.service.photoStorage.PhotoStorageService;
-import com.jungeeks.dto.enums.USER_ROLE_DTO;
-import com.jungeeks.entity.Family;
-import com.jungeeks.entity.ParentNotification;
-import com.jungeeks.entity.Photo;
-import com.jungeeks.entity.User;
+import com.jungeeks.entity.*;
+import com.jungeeks.entity.enums.NOTIFICATION_PERIOD;
 import com.jungeeks.entity.enums.USER_ROLE;
 import com.jungeeks.entity.enums.USER_STATUS;
+import com.jungeeks.exception.FamilyNotFoundException;
 import com.jungeeks.exception.UserNotFoundException;
 import com.jungeeks.repository.AccountsFamilyRepository;
 import com.jungeeks.repository.AccountsUserRepository;
 import com.jungeeks.security.entity.SecurityUserFirebase;
 import com.jungeeks.security.service.AuthorizationService;
-import com.jungeeks.service.busines.RegisterUserService;
+import com.jungeeks.service.business.RegisterUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,38 +21,102 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/**
+ * The type Register user service.
+ */
 @Service
 public class RegisterUserServiceImpl implements RegisterUserService {
 
     private AccountsUserRepository userRepository;
     private AuthorizationService authorizationService;
-    private AccountsFamilyRepository familyRepository;
     private PhotoStorageService photoStorageService;
+    private AccountsFamilyRepository familyRepository;
+
+    /**
+     * The constant DEFAULT_PHOTO_PATH.
+     */
     public static final String DEFAULT_PHOTO_PATH = "default_account_photo.jpeg";
 
+    /**
+     * Sets user repository.
+     *
+     * @param userRepository the user repository
+     */
     @Autowired
     @Qualifier("accounts_userRepository")
     public void setUserRepository(AccountsUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Sets authorization service.
+     *
+     * @param authorizationService the authorization service
+     */
     @Autowired
     public void setAuthorizationService(AuthorizationService authorizationService) {
         this.authorizationService = authorizationService;
     }
 
+    /**
+     * Sets family repository.
+     *
+     * @param familyRepository the family repository
+     */
     @Autowired
     public void setFamilyRepository(AccountsFamilyRepository familyRepository) {
         this.familyRepository = familyRepository;
     }
 
+    /**
+     * Register by invite.
+     *
+     * @param username  the username
+     * @param familyId  the family id
+     * @param user_role the user role
+     */
     @Transactional
     @Modifying
     @Override
     public void registerByInvite(String username, String familyId, USER_ROLE user_role) {
+        SecurityUserFirebase authUser = authorizationService.getUser();
+        String uid = authUser.getUid();
+        Family family = familyRepository.findById(familyId)
+                .orElseThrow(() -> new FamilyNotFoundException(String.format("Family with id %s not found", familyId)));
+        User user = userRepository.findByFirebaseId(uid)
+                .orElseThrow(() -> new UserNotFoundException(String.format("User with uid %s not found", uid)));
 
+        user.setPoints(0L);
+        user.setName(username);
+        user.setFamily(family);
+        user.setUser_role(user_role);
+        user.setUser_status(USER_STATUS.ACTIVE);
+        user.setPhoto(List.of(Photo.builder()
+                .path(DEFAULT_PHOTO_PATH)
+                .build()));
+        switch (user_role) {
+            case PARENT -> user.setParentNotifications(ParentNotification.builder()
+                    .allOff(false)
+                    .newTaskStatus(true)
+                    .newRequest(true)
+                    .newReward(true)
+                    .build());
+            case CHILD -> user.setChildNotifications(ChildNotification.builder()
+                    .allOff(false)
+                    .newTask(true)
+                    .confirmReward(true)
+                    .confirmTask(true)
+                    .penaltyAndBonus(true)
+                    .taskReminder(true)
+                    .build());
+        }
     }
 
+    /**
+     * Register parent user.
+     *
+     * @param username the username
+     */
     @Transactional
     @Modifying
     @Override

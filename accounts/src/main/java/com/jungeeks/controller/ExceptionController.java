@@ -11,24 +11,23 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Slf4j
 @ControllerAdvice
-public class ExController {
+public class ExceptionController {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Object> handleMethodUserNotFoundException(UserNotFoundException userNotFoundException){
-        log.warn(String.format("Bad request by %s", userNotFoundException.getMessage()));
+        log.warn("Bad request by {}", userNotFoundException.getMessage());
         return new ResponseEntity<>(userNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(PathNotFoundException.class)
     public ResponseEntity<Object> handleMethodUserNotFoundException(PathNotFoundException pathNotFoundException){
-        log.warn(String.format("Bad request by %s", pathNotFoundException.getMessage()));
+        log.warn("Bad request by {}", pathNotFoundException.getMessage());
         return new ResponseEntity<>(pathNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InvalidRequestException.class)
     public ResponseEntity<Object> handleMethodUserNotFoundException(InvalidRequestException invalidRequestException){
-        log.warn(String.format("Bad request by %s", invalidRequestException.getMessage()));
+        log.warn("Bad request by {}", invalidRequestException.getMessage());
         return new ResponseEntity<>(invalidRequestException.getMessage(), HttpStatus.BAD_REQUEST);
     }
-
 }

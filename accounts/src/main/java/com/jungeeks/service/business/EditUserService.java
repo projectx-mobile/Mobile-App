@@ -1,8 +1,6 @@
-package com.jungeeks.service.busines;
+package com.jungeeks.service.business;
 
 import com.jungeeks.entity.enums.USER_STATUS;
-import lombok.NonNull;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * The interface Edit user service.
@@ -21,4 +19,6 @@ public interface EditUserService {
      * @param user_status the user status
      */
     void changeUserStatus(USER_STATUS user_status);
+
+    void deleteFamilyMember(Long userId);
 }

@@ -1,7 +1,7 @@
 package com.jungeeks.controller;
 
 import com.jungeeks.dto.UserInfoDto;
-import com.jungeeks.service.busines.EditUserService;
+import com.jungeeks.service.business.EditUserService;
 import com.jungeeks.service.dto.UserInfoService;
 import com.jungeeks.entity.enums.USER_STATUS;
 import com.jungeeks.security.service.AuthorizationService;
@@ -77,9 +77,8 @@ public class PersonalInfController {
      * @return the response entity
      */
     @PostMapping("/delete/member")
-    public ResponseEntity<String> deleteUser(@RequestParam(name = "userId") Long userId){
-
+    public ResponseEntity<String> deleteFamilyMember(@RequestParam(name = "userId") Long userId){
+        editUserService.deleteFamilyMember(userId);
         return ResponseEntity.ok("Account deleted");
     }
-
 }

@@ -1,7 +1,7 @@
-package com.jungeeks.service.busines.impl;
+package com.jungeeks.service.business.impl;
 
 import com.jungeeks.service.entity.UserService;
-import com.jungeeks.service.busines.EditUserService;
+import com.jungeeks.service.business.EditUserService;
 import com.jungeeks.entity.enums.USER_STATUS;
 import com.jungeeks.security.service.AuthorizationService;
 import lombok.extern.slf4j.Slf4j;
@@ -41,16 +41,40 @@ public class EditUserServiceImpl implements EditUserService {
         this.authorizationService = authorizationService;
     }
 
-
+    /**
+     * Change user name.
+     *
+     * @param userName the user name
+     */
     @Override
     public void changeUserName(String userName) {
-        String uid = authorizationService.getUser().getUid();
+        String uid = getUid();
         userService.changeUserName(uid, userName);
     }
 
+    /**
+     * Change user status.
+     *
+     * @param user_status the user status
+     */
     @Override
     public void changeUserStatus(USER_STATUS user_status) {
-        String uid = authorizationService.getUser().getUid();
+        String uid = getUid();
         userService.changeUserStatus(uid, user_status);
+    }
+
+    /**
+     * Delete family member.
+     *
+     * @param userId the user id
+     */
+    @Override
+    public void deleteFamilyMember(Long userId) {
+        userService.deleteFamilyMember(userId);
+    }
+
+
+    private String getUid() {
+        return authorizationService.getUser().getUid();
     }
 }

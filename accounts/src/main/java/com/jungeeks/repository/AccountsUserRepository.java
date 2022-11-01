@@ -1,5 +1,6 @@
 package com.jungeeks.repository;
 
+import com.jungeeks.entity.Family;
 import com.jungeeks.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
