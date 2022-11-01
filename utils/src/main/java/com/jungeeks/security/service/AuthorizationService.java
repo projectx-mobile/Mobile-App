@@ -2,6 +2,14 @@ package com.jungeeks.security.service;
 
 import com.jungeeks.security.entity.SecurityUserFirebase;
 
+/**
+ * The interface Authorization service.
+ */
 public interface AuthorizationService {
-    public SecurityUserFirebase getUser();
+    /**
+     * Gets user.
+     *
+     * @return the user
+     */
+    SecurityUserFirebase getUser();
 }

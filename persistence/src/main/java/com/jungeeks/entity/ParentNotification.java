@@ -1,21 +1,19 @@
 package com.jungeeks.entity;
 
 import com.jungeeks.entity.enums.NOTIFICATION_PERIOD;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Map;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
+@Setter
+@Getter
+@EqualsAndHashCode
+@ToString
 @Entity(name = "parent_notification")
 public class ParentNotification {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
