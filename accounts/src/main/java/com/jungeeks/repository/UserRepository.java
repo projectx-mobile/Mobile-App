@@ -15,11 +15,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findUserById(Long aLong);
 
 
-    /**
-     * @param uid
-     * @return
-     */
-    Optional<User> findByUid(String uid);
+//    /**
+//     * @param uid
+//     * @return
+//     */
+//    Optional<User> findByUid(String uid);
+
+    Optional<User> findByFirebaseId(String firebaseId);
 
 
 }

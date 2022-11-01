@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public User getUserById(String uid) {
-        return userRepository.findByUid(uid).orElseThrow(
+        return userRepository.findByFirebaseId(uid).orElseThrow(
                 () -> new UserNotFoundException(String.format("User %s not found", uid)));
     }
 

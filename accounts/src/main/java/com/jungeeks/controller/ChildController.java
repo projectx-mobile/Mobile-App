@@ -30,6 +30,7 @@ public class ChildController {
     @Autowired
     @Qualifier("accounts_userServiceImpl")
     private UserService userService;
+
     @Autowired
     private AuthorizationService authorizationService;
 
