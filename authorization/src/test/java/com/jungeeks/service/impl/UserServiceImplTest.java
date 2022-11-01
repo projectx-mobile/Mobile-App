@@ -1,5 +1,6 @@
 package com.jungeeks.service.impl;
 
+import com.jungeeks.entity.ClientApp;
 import com.jungeeks.entity.User;
 import com.jungeeks.entity.enums.USER_STATUS;
 import com.jungeeks.exception.RegistrationFailedException;
@@ -16,6 +17,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -34,7 +36,6 @@ class UserServiceImplTest {
     private SecurityService securityService;
 
     private static User user;
-    private static User userWithoutClientApps;
     private static SecurityUserFirebase securityUserFirebaseWithSameEmail;
     private static SecurityUserFirebase securityUserFirebaseWithAnotherEmail;
 
@@ -47,11 +48,6 @@ class UserServiceImplTest {
                 .firebaseId(FIREBASE_ID)
                 .email("test@gmail.com")
                 .clientApps(new ArrayList<>())
-                .build();
-        userWithoutClientApps = User.builder()
-                .id(2L)
-                .firebaseId(FIREBASE_ID)
-                .email("test1@gmail.com")
                 .build();
         securityUserFirebaseWithSameEmail = SecurityUserFirebase.builder()
                 .uid(FIREBASE_ID)
@@ -121,6 +117,7 @@ class UserServiceImplTest {
 
     @Test
     void checkUserByContainsRegistrationTokenExistsUser() {
+        User user = User.builder().clientApps(List.of(ClientApp.builder().build())).build();
         when(userRepository.findByFirebaseId(any())).thenReturn(Optional.ofNullable(user));
         when(securityService.getUser()).thenReturn(securityUserFirebaseWithSameEmail);
 
@@ -131,7 +128,8 @@ class UserServiceImplTest {
 
     @Test
     void checkUserByContainsRegistrationTokenNotExistsUser() {
-        when(userRepository.findByFirebaseId(any())).thenReturn(Optional.ofNullable(userWithoutClientApps));
+        User user = User.builder().clientApps(new ArrayList<>()).build();
+        when(userRepository.findByFirebaseId(any())).thenReturn(Optional.ofNullable(user));
         when(securityService.getUser()).thenReturn(securityUserFirebaseWithSameEmail);
 
         boolean clientApps = userService.checkUserByContainsRegistrationToken();

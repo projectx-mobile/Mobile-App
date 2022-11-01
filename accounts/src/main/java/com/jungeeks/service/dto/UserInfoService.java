@@ -1,5 +1,6 @@
 package com.jungeeks.service.dto;
 
+import com.jungeeks.dto.FamilyIdDto;
 import com.jungeeks.dto.UserInfoDto;
 
 /**
@@ -21,4 +22,11 @@ public interface UserInfoService {
      * @return the user info by user u id
      */
     UserInfoDto getUserInfoByUserUId(String uId);
+
+    /**
+     * Gets family id.
+     *
+     * @return the family id
+     */
+    FamilyIdDto getFamilyId();
 }

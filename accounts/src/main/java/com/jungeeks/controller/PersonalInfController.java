@@ -1,5 +1,6 @@
 package com.jungeeks.controller;
 
+import com.jungeeks.dto.FamilyIdDto;
 import com.jungeeks.dto.UserInfoDto;
 import com.jungeeks.service.business.EditUserService;
 import com.jungeeks.service.dto.UserInfoService;
@@ -7,6 +8,7 @@ import com.jungeeks.entity.enums.USER_STATUS;
 import com.jungeeks.security.service.AuthorizationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -80,5 +82,15 @@ public class PersonalInfController {
     public ResponseEntity<String> deleteFamilyMember(@RequestParam(name = "userId") Long userId){
         editUserService.deleteFamilyMember(userId);
         return ResponseEntity.ok("Account deleted");
+    }
+
+    /**
+     * Get family id response entity.
+     *
+     * @return the response entity
+     */
+    @GetMapping("/family")
+    public ResponseEntity<FamilyIdDto> getFamilyId(){
+        return ResponseEntity.ok(userInfoService.getFamilyId());
     }
 }

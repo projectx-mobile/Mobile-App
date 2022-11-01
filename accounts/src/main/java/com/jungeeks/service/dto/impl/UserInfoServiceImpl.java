@@ -1,5 +1,7 @@
 package com.jungeeks.service.dto.impl;
 
+import com.jungeeks.dto.FamilyIdDto;
+import com.jungeeks.entity.Family;
 import com.jungeeks.exception.InvalidRequestException;
 import com.jungeeks.service.entity.UserService;
 import com.jungeeks.dto.FamilyMemberDto;
@@ -99,6 +101,20 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .user_role(user.getUser_role())
                 .familyMembers(familyMembers)
                 .photoPath(user.getPhoto().get(0).getPath())
+                .build();
+    }
+
+    /**
+     * Gets family id.
+     *
+     * @return the family id
+     */
+    @Override
+    public FamilyIdDto getFamilyId() {
+        String uid = authorizationService.getUser().getUid();
+        String id = userService.getUserByUid(uid).getFamily().getId();
+        return FamilyIdDto.builder()
+                .id(id)
                 .build();
     }
 }
