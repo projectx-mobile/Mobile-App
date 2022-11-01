@@ -1,8 +1,6 @@
 package com.jungeeks.controller;
 
-import com.jungeeks.exception.InvalidRequestException;
-import com.jungeeks.exception.PathNotFoundException;
-import com.jungeeks.exception.UserNotFoundException;
+import com.jungeeks.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,5 +27,17 @@ public class ExceptionController {
     public ResponseEntity<Object> handleMethodUserNotFoundException(InvalidRequestException invalidRequestException){
         log.warn("Bad request by {}", invalidRequestException.getMessage());
         return new ResponseEntity<>(invalidRequestException.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(FamilyNotFoundException.class)
+    public ResponseEntity<Object> handleMethodUserNotFoundException(FamilyNotFoundException familyNotFoundException){
+        log.warn("Bad request by {}", familyNotFoundException.getMessage());
+        return new ResponseEntity<>(familyNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotEnoughRightsException.class)
+    public ResponseEntity<Object> handleMethodUserNotFoundException(NotEnoughRightsException notEnoughRightsException){
+       log.warn("Bad request by {}", notEnoughRightsException.getMessage());
+       return new ResponseEntity<>(notEnoughRightsException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
