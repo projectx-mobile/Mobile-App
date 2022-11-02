@@ -11,6 +11,7 @@ import com.jungeeks.service.dto.UserInfoService;
 import com.jungeeks.security.service.AuthorizationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -31,6 +32,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Autowired
+    @Qualifier("accounts_userServiceImpl")
     public void setUserService(UserService userService) {
         this.userService = userService;
     }

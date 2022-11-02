@@ -11,11 +11,6 @@ import java.util.List;
 
 public interface UserService {
 
-    List<NotificationDto> getDeadlineOfAllTask(User user);
-
-    List<TaskDto> getUserTaskById(User user);
-
-
     User getUserById(Long id);
 
     User getUserByUid(String uId);

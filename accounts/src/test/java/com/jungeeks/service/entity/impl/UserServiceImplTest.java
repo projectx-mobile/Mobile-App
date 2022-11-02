@@ -12,6 +12,7 @@ import com.jungeeks.entity.Task;
 import com.jungeeks.entity.User;
 import com.jungeeks.dto.NotificationDto;
 import com.jungeeks.dto.TaskDto;
+import com.jungeeks.service.dto.ChildService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,8 @@ class UserServiceImplTest {
     private static User user;
     private static User parent;
     private static List<User> users;
+
+
 
 
     @BeforeAll
@@ -206,19 +209,19 @@ class UserServiceImplTest {
         assertThrows(UserNotFoundException.class, () -> userService.getUserByUid("1L"));
     }
 
-    @Test
-    void getDeadlineOfAllTask() {
-        List<NotificationDto> notificationResponse = userService.getDeadlineOfAllTask(user);
-
-        assertEquals(notificationResponse, notificationResponsesTest);
-    }
-
-    @Test
-    void getUserTaskById() {
-        List<TaskDto> taskDto = userService.getUserTaskById(user);
-
-        assertEquals(taskDto, taskDtoTest);
-    }
+//    @Test
+//    void getDeadlineOfAllTask() {
+//        List<NotificationDto> notificationResponse = userService.getDeadlineOfAllTask(user);
+//
+//        assertEquals(notificationResponse, notificationResponsesTest);
+//    }
+//
+//    @Test
+//    void getUserTaskById() {
+//        List<TaskDto> taskDto = userService.getUserTaskById(user);
+//
+//        assertEquals(taskDto, taskDtoTest);
+//    }
 
     @Test
     void getUserByIdPositive() {

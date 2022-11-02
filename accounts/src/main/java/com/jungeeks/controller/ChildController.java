@@ -1,11 +1,9 @@
 package com.jungeeks.controller;
 
-import com.jungeeks.entity.User;
 import com.jungeeks.dto.NotificationDto;
 import com.jungeeks.dto.TaskDto;
-import com.jungeeks.security.entity.SecurityUserFirebase;
 import com.jungeeks.security.service.AuthorizationService;
-import com.jungeeks.service.business.ChildService;
+import com.jungeeks.service.dto.ChildService;
 import com.jungeeks.service.entity.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,27 +32,17 @@ public class ChildController {
     @Qualifier("utils_authorizationServiceImpl")
     private AuthorizationService authorizationService;
 
+    @Autowired
     private ChildService childService;
 
-//    @GetMapping("deadline")
-//    public ResponseEntity<List<NotificationDto>> getDeadlineOfTask() {
-//        SecurityUserFirebase userDetails = authorizationService.getUser();
-//        User user = userService.getUserByUid(userDetails.getUid());//TODO: move to childService
-//        return new ResponseEntity<>(userService.getDeadlineOfAllTask(user), HttpStatus.ACCEPTED);
-//    }
 
     @GetMapping("deadline")
     public ResponseEntity<List<NotificationDto>> getDeadlineOfTask() {
-        SecurityUserFirebase userDetails = authorizationService.getUser();
-        User user = userService.getUserByUid(userDetails.getUid());//TODO: move to childService
-//        userService.getDeadlineOfAllTask(user);
-        return new ResponseEntity<>(childService.getDeadlineOfAllTask(), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(childService.getDeadlineOfAllTask(), HttpStatus.OK);
     }
 
     @GetMapping("tasks")
     public ResponseEntity<List<TaskDto>> getTasks() {
-        SecurityUserFirebase userDetails = authorizationService.getUser();
-        User user = userService.getUserByUid(userDetails.getUid());//TODO: move to childService
-        return new ResponseEntity<>(childService.getUserTaskById(), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(childService.getUserTaskById(), HttpStatus.OK);
     }
 }

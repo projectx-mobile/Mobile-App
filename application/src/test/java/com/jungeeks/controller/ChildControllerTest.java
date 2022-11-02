@@ -138,57 +138,57 @@ class ChildControllerTest {
 
     }
 
-    @Test
-    void getDeadlineOfTask() throws Exception {
-        when(userService.getDeadlineOfAllTask(any())).thenReturn(notificationDto);
-        when(userService.getUserById(any())).thenReturn(user);
-        SignUpResponseDto idTokenFromFirebase1 = getResponseFromFirebase();
-        String idTokenFromFirebase = idTokenFromFirebase1.getIdToken();
-        String resultQuery = mappingObjectToJson(notificationDto);
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/child/deadline")
-                        .header("Authorization", "Bearer " + idTokenFromFirebase))
-                .andDo(print())
-                .andExpect(MockMvcResultMatchers.content().json(resultQuery))
-                .andExpect(MockMvcResultMatchers.status().isAccepted());
-    }
-
-    @Test
-    void getTasks() throws Exception {
-        when(userService.getUserTaskById(any())).thenReturn(taskDto);
-        when(userService.getUserById(any())).thenReturn(user);
-        SignUpResponseDto idTokenFromFirebase1 = getResponseFromFirebase();
-        String idTokenFromFirebase = idTokenFromFirebase1.getIdToken();
-        String resultQuery = mappingObjectToJson(taskDto);
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/child/tasks")
-                        .header("Authorization", "Bearer " + idTokenFromFirebase))
-                .andDo(print())
-                .andExpect(MockMvcResultMatchers.content().json(resultQuery))
-                .andExpect(MockMvcResultMatchers.status().isAccepted());
-    }
-
-    private String mappingObjectToJson(Object obj) throws JsonProcessingException {
-        ObjectMapper mapper = JsonMapper.builder()
-                .addModule(new JavaTimeModule())
-                .build();
-            mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        return ow.writeValueAsString(obj);
-    }
-    private SignUpResponseDto getResponseFromFirebase() {
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        Map<String, Object> body = new HashMap<>();
-        body.put("email", EMAIL);
-        body.put("password", PASSWORD);
-        body.put("returnSecureToken", true);
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("key", firebaseProjectId);
-
-        HttpEntity<Map<String, Object>> mapHttpEntity = new HttpEntity<>(body, httpHeaders);
-
-        return restTemplate.postForObject(SIGN_UP_FIREBASE_URL, mapHttpEntity, SignUpResponseDto.class, params);
-    }
+//    @Test
+//    void getDeadlineOfTask() throws Exception {
+//        when(userService.getDeadlineOfAllTask(any())).thenReturn(notificationDto);
+//        when(userService.getUserById(any())).thenReturn(user);
+//        SignUpResponseDto idTokenFromFirebase1 = getResponseFromFirebase();
+//        String idTokenFromFirebase = idTokenFromFirebase1.getIdToken();
+//        String resultQuery = mappingObjectToJson(notificationDto);
+//        this.mockMvc.perform(MockMvcRequestBuilders.get("/child/deadline")
+//                        .header("Authorization", "Bearer " + idTokenFromFirebase))
+//                .andDo(print())
+//                .andExpect(MockMvcResultMatchers.content().json(resultQuery))
+//                .andExpect(MockMvcResultMatchers.status().isAccepted());
+//    }
+//
+//    @Test
+//    void getTasks() throws Exception {
+//        when(userService.getUserTaskById(any())).thenReturn(taskDto);
+//        when(userService.getUserById(any())).thenReturn(user);
+//        SignUpResponseDto idTokenFromFirebase1 = getResponseFromFirebase();
+//        String idTokenFromFirebase = idTokenFromFirebase1.getIdToken();
+//        String resultQuery = mappingObjectToJson(taskDto);
+//        this.mockMvc.perform(MockMvcRequestBuilders.get("/child/tasks")
+//                        .header("Authorization", "Bearer " + idTokenFromFirebase))
+//                .andDo(print())
+//                .andExpect(MockMvcResultMatchers.content().json(resultQuery))
+//                .andExpect(MockMvcResultMatchers.status().isAccepted());
+//    }
+//
+//    private String mappingObjectToJson(Object obj) throws JsonProcessingException {
+//        ObjectMapper mapper = JsonMapper.builder()
+//                .addModule(new JavaTimeModule())
+//                .build();
+//            mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+//        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+//        return ow.writeValueAsString(obj);
+//    }
+//    private SignUpResponseDto getResponseFromFirebase() {
+//        RestTemplate restTemplate = new RestTemplate();
+//
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+//        Map<String, Object> body = new HashMap<>();
+//        body.put("email", EMAIL);
+//        body.put("password", PASSWORD);
+//        body.put("returnSecureToken", true);
+//
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("key", firebaseProjectId);
+//
+//        HttpEntity<Map<String, Object>> mapHttpEntity = new HttpEntity<>(body, httpHeaders);
+//
+//        return restTemplate.postForObject(SIGN_UP_FIREBASE_URL, mapHttpEntity, SignUpResponseDto.class, params);
+//    }
 }

@@ -32,29 +32,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<TaskDto> getUserTaskById(User child) {
-        log.debug("Request getUserTaskById by id {}", child.getId());
-        return child.getTasks().stream()
-                .map(task -> TaskDto.builder()
-                                .taskStatus(task.getTaskStatus())
-                                .title(task.getTask().getTitle())
-                                .point(task.getRewardPoints())
-                                .localDateTime(task.getDeadline())
-                                .build())
-                .toList();
-    }
-
-    @Override
-    public List<NotificationDto> getDeadlineOfAllTask(User child) {
-        log.debug("Request getDeadlineOfAllTask by id {}", child.getId());
-
-        return child.getTasks().stream()
-                .map(task -> NotificationDto.builder()
-                        .localDateTime(task.getDeadline()).build())
-                .toList();
-    }
-
-    @Override
     public User getUserById(Long userId) {
         return accountsUserRepository.findUserById(userId)
                 .orElseThrow(() -> new UserNotFoundException(String.format("User with id %s not found", userId)));
