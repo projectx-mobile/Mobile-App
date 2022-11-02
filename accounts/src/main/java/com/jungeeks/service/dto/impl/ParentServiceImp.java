@@ -8,6 +8,8 @@ import com.jungeeks.entity.User;
 import com.jungeeks.entity.enums.REQUEST_STATUS;
 import com.jungeeks.entity.enums.TASK_STATUS;
 import com.jungeeks.entity.enums.USER_ROLE;
+import com.jungeeks.security.entity.SecurityUserFirebase;
+import com.jungeeks.security.service.AuthorizationService;
 import com.jungeeks.service.dto.ParentService;
 import com.jungeeks.service.entity.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,19 +24,30 @@ import java.util.Objects;
 @Slf4j
 public class ParentServiceImp implements ParentService {
 
-    @Autowired
-    @Qualifier("accounts_userServiceImpl")
     private UserService userService;
+    private AuthorizationService authorizationService;
+
+    @Autowired
+    public void setUserService(@Qualifier("accounts_userServiceImpl") UserService userService) {
+        this.userService = userService;
+    }
+
+    @Autowired
+    public void setAuthorizationService(@Qualifier("utils_authorizationServiceImpl")
+                                            AuthorizationService authorizationService) {
+        this.authorizationService = authorizationService;
+    }
 
     @Override
-    public ParentHomeDto getParentHomeDate(User user) {
-        log.debug("Request getParentHomeDate by user with uid {}", user.getFirebaseId());
-        List<User> childs = userService.getAllByFamilyIdAndUserRole(user.getFamily().getId(), USER_ROLE.CHILD);
+    public ParentHomeDto getParentHomeDate() {
+        User userDb = getUserFromAuth();
+        log.debug("Request getParentHomeDate by user with uid {}", userDb.getFirebaseId());
+        List<User> childs = userService.getAllByFamilyIdAndUserRole(userDb.getFamily().getId(), USER_ROLE.CHILD);
 
         log.debug("Number of childs {}", childs.size());
         List<ChildDto> childDtos = getChildDtoList(childs);
         return ParentHomeDto.builder()
-                .familyId(user.getFamily().getId())
+                .familyId(userDb.getFamily().getId())
                 .childDtos(childDtos)
                 .build();
     }
@@ -68,5 +81,10 @@ public class ParentServiceImp implements ParentService {
                                     .toList())
                             .build());
                 }).toList();
+    }
+
+    private User getUserFromAuth() {
+        String uid = authorizationService.getUser().getUid();
+        return userService.getUserByUid(uid);
     }
 }

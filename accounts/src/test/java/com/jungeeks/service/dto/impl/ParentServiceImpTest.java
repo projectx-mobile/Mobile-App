@@ -5,6 +5,9 @@ import com.jungeeks.dto.ParentHomeDto;
 import com.jungeeks.entity.*;
 import com.jungeeks.entity.enums.*;
 import com.jungeeks.repository.AccountsUserRepository;
+import com.jungeeks.security.entity.SecurityUserFirebase;
+import com.jungeeks.security.service.AuthorizationService;
+import com.jungeeks.service.entity.UserService;
 import com.jungeeks.service.entity.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -18,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = ParentServiceImpTest.class)
@@ -27,9 +31,9 @@ class ParentServiceImpTest {
     @InjectMocks
     private ParentServiceImp parentServiceImp;
     @Mock
-    private UserServiceImpl userServiceImp;
+    private UserService userService;
     @Mock
-    private AccountsUserRepository userRepository;
+    private AuthorizationService authorizationService;
 
     private static User user;
     private static User child;
@@ -37,6 +41,7 @@ class ParentServiceImpTest {
     private static ParentHomeDto parentHomeDto;
     private static ParentHomeDto parentHomeDtoWithOutChilds;
     private static List<User> childs;
+    private static SecurityUserFirebase securityUserFirebase;
 
 
     @BeforeAll
@@ -197,23 +202,31 @@ class ParentServiceImpTest {
                 .childDtos(List.of())
                 .build();
         childs = List.of(child);
+
+        securityUserFirebase = SecurityUserFirebase.builder()
+                .uid("test")
+                .build();
     }
 
 
     @Test
     void getParentHomeDatePositive() {
-        when(userServiceImp.getAllByFamilyIdAndUserRole(user.getFamily().getId(), USER_ROLE.CHILD)).thenReturn(childs);
+        when(authorizationService.getUser()).thenReturn(securityUserFirebase);
+        when(userService.getUserByUid(any())).thenReturn(user);
+        when(userService.getAllByFamilyIdAndUserRole(user.getFamily().getId(), USER_ROLE.CHILD)).thenReturn(childs);
 
-        ParentHomeDto parentHomeDto1 = parentServiceImp.getParentHomeDate(user);
+        ParentHomeDto parentHomeDto1 = parentServiceImp.getParentHomeDate();
 
         assertEquals(parentHomeDto1, parentHomeDto);
     }
 
     @Test
     void getParentHomeDateWithEmptyChildList() {
-        when(userServiceImp.getAllByFamilyIdAndUserRole(user.getFamily().getId(), USER_ROLE.CHILD)).thenReturn(new ArrayList<>());
+        when(authorizationService.getUser()).thenReturn(securityUserFirebase);
+        when(userService.getUserByUid(any())).thenReturn(user);
+        when(userService.getAllByFamilyIdAndUserRole(user.getFamily().getId(), USER_ROLE.CHILD)).thenReturn(new ArrayList<>());
 
-        ParentHomeDto parentHomeDto1 = parentServiceImp.getParentHomeDate(user);
+        ParentHomeDto parentHomeDto1 = parentServiceImp.getParentHomeDate();
 
         assertEquals(parentHomeDto1, parentHomeDtoWithOutChilds);
     }

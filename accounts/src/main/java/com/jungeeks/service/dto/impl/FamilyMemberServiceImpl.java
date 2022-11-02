@@ -1,5 +1,8 @@
 package com.jungeeks.service.dto.impl;
 
+import com.jungeeks.entity.Family;
+import com.jungeeks.entity.enums.USER_ROLE;
+import com.jungeeks.entity.enums.USER_STATUS;
 import com.jungeeks.service.entity.UserService;
 import com.jungeeks.dto.FamilyMemberDto;
 import com.jungeeks.entity.User;
@@ -18,6 +21,7 @@ public class FamilyMemberServiceImpl implements FamilyMemberService {
     private UserService userService;
     private AuthorizationService authorizationService;
 
+
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -35,9 +39,12 @@ public class FamilyMemberServiceImpl implements FamilyMemberService {
         log.debug(String.format("Found %s users by familyId: " + familyId, familyMembers.size()));
         return familyMembers.stream()
                 .filter(x -> !x.getFirebaseId().equals(currUserUid))
+                .filter(x -> x.getUser_status() != USER_STATUS.REMOVED && x.getUser_status() != USER_STATUS.BANNED)
                 .map((x) -> (
                         FamilyMemberDto.builder()
                                 .id(x.getId())
+                                .userStatus(x.getUser_status())
+                                .user_role(x.getUser_role())
                                 .username(x.getName())
                                 .photoPath(x.getPhoto().get(0).getPath())
                                 .build())

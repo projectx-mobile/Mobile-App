@@ -28,15 +28,8 @@ public class UserController {
     @Qualifier("accounts_userServiceImpl")
     private UserService userService;
 
-    @Autowired
-    @Qualifier("utils_authorizationServiceImpl")
-    private AuthorizationService authorizationService;
-
     @GetMapping("/getParentHome")
     public ResponseEntity<ParentHomeDto> getDataForParentHomePage() {
-        SecurityUserFirebase user = authorizationService.getUser();
-        User userDb = userService.getUserByUid(user.getUid());//TODO:MOVE to parent service
-        log.debug("Fetching data for parent home page with familyId {}", userDb.getFamily());
-        return new ResponseEntity<>(parentService.getParentHomeDate(userDb), HttpStatus.OK);
+        return new ResponseEntity<>(parentService.getParentHomeDate(), HttpStatus.OK);
     }
 }

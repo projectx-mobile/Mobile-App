@@ -1,10 +1,13 @@
 package com.jungeeks.service.dto.impl;
 
+import com.jungeeks.dto.FamilyIdDto;
 import com.jungeeks.dto.FamilyMemberDto;
 import com.jungeeks.dto.UserInfoDto;
+import com.jungeeks.entity.enums.USER_ROLE;
 import com.jungeeks.exception.InvalidRequestException;
 import com.jungeeks.entity.*;
 import com.jungeeks.entity.enums.USER_STATUS;
+import com.jungeeks.exception.UserNotFoundException;
 import com.jungeeks.service.dto.FamilyMemberService;
 import com.jungeeks.service.entity.UserService;
 import com.jungeeks.security.entity.SecurityUserFirebase;
@@ -64,6 +67,7 @@ class UserInfoServiceImplTest {
                 .name("Dev")
                 .email("dev123@gmail.com")
                 .user_status(USER_STATUS.ACTIVE)
+                .user_role(USER_ROLE.PARENT)
                 .photo(List.of(Photo.builder()
                         .path("devPhoto")
                         .creationDate(LocalDateTime.now())
@@ -77,17 +81,23 @@ class UserInfoServiceImplTest {
 
         testDataFamilyMembers = List.of(FamilyMemberDto.builder()
                         .id(1L)
+                        .userStatus(USER_STATUS.ACTIVE)
+                        .user_role(USER_ROLE.PARENT)
                         .photoPath("photo1")
                         .username("Dev1")
                         .build(),
                 FamilyMemberDto.builder()
                         .id(2L)
+                        .userStatus(USER_STATUS.ACTIVE)
+                        .user_role(USER_ROLE.PARENT)
                         .photoPath("photo2")
                         .username("Dev2")
                         .build());
 
         testDataUserInfoDto = UserInfoDto.builder()
                 .username(testDataUser.getName())
+                .userStatus(USER_STATUS.ACTIVE)
+                .user_role(USER_ROLE.PARENT)
                 .familyMembers(testDataFamilyMembers)
                 .photoPath(testDataUser.getPhoto().get(0).getPath())
                 .build();
@@ -127,6 +137,44 @@ class UserInfoServiceImplTest {
         when(familyMemberService.getFamilyMembers(any())).thenReturn(testDataFamilyMembers);
 
         UserInfoDto userInfoByUserId = userInfoService.getUserInfoByUserUId("uid");
+
+        assertEquals(testDataUserInfoDto, userInfoByUserId);
+    }
+
+    @Test
+    void getFamilyIdPositive() {
+        when(authorizationService.getUser()).thenReturn(SecurityUserFirebase.builder()
+                .uid("uid")
+                .build());
+        when(userService.getUserByUid(any())).thenReturn(testDataValidAuthUser);
+
+        FamilyIdDto familyIdDto = userInfoService.getFamilyId();
+
+        assertEquals(familyIdDto,  FamilyIdDto.builder()
+                                                .id("familyIdValid")
+                                                .build());
+    }
+
+    @Test
+    void getFamilyIdNegativeWithWrongFirebaseId() {
+        when(authorizationService.getUser()).thenReturn(SecurityUserFirebase.builder()
+                .uid("uid")
+                .build());
+        when(userService.getUserByUid(any())).thenThrow(UserNotFoundException.class);
+
+        assertThrows(UserNotFoundException.class, () -> userInfoService.getFamilyId());
+    }
+
+    @Test
+    void getCurrentUserInfo() {
+        when(authorizationService.getUser()).thenReturn(SecurityUserFirebase.builder()
+                .uid("uid")
+                .build());
+        when(userService.getUserByUid(any())).thenReturn(testDataValidAuthUser);
+        when(userService.getUserById(any())).thenReturn(testDataUser);
+        when(familyMemberService.getFamilyMembers(any())).thenReturn(testDataFamilyMembers);
+
+        UserInfoDto userInfoByUserId = userInfoService.getUserInfoByUserId(1L);
 
         assertEquals(testDataUserInfoDto, userInfoByUserId);
     }

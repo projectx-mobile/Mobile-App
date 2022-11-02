@@ -32,23 +32,23 @@ public class EditUserServiceImpl implements EditUserService {
     }
 
     @Override
-    public void changeUserName(String userName) {
+    public boolean changeUserName(String userName) {
         String uid = getUid();
-        userService.changeUserName(uid, userName);
+        return userService.changeUserName(uid, userName);
     }
 
     @Override
-    public void changeUserStatus(USER_STATUS user_status) {
+    public boolean changeUserStatus(USER_STATUS user_status) {
         String uid = getUid();
-        userService.changeUserStatus(uid, user_status);
+        return userService.changeUserStatus(uid, user_status);
     }
 
     @Override
-    public void deleteFamilyMember(Long userId) {
-        String uid = authorizationService.getUser().getUid();
+    public boolean deleteFamilyMember(Long userId) {
+        String uid = getUid();
         User user = userService.getUserByUid(uid);
         if (user.getUser_role() == USER_ROLE.PARENT) {
-            userService.deleteFamilyMember(userId);
+            return userService.deleteFamilyMember(userId);
         } else {
             throw new NotEnoughRightsException("Insufficient rights to execute the request");
         }

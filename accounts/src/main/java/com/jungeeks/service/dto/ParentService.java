@@ -5,5 +5,5 @@ import com.jungeeks.entity.User;
 
 public interface ParentService {
 
-    ParentHomeDto getParentHomeDate(User user);
+    ParentHomeDto getParentHomeDate();
 }

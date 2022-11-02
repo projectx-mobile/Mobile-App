@@ -138,5 +138,4 @@ class UserPhotoServiceImplTest {
                 "Photo not found");
 
     }
-
 }

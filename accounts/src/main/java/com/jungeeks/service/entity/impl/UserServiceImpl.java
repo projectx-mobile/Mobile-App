@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Modifying
     @Override
-    public void changeUserStatus(String uId, USER_STATUS newUserStatus) {
+    public boolean changeUserStatus(String uId, USER_STATUS newUserStatus) {
         User user = accountsUserRepository.findByFirebaseId(uId)
                 .orElseThrow(() -> new UserNotFoundException(String.format("User with uid %s not found", uId)));
         user.setUser_status(newUserStatus);
@@ -112,25 +112,28 @@ public class UserServiceImpl implements UserService {
             }
         }
         log.debug(String.format("Changed user_status from uId:%s",uId));
+        return true;
     }
 
     @Transactional
     @Modifying
     @Override
-    public void changeUserName(String uId, String newName) {
+    public boolean changeUserName(String uId, String newName) {
         User user = accountsUserRepository.findByFirebaseId(uId)
                 .orElseThrow(() -> new UserNotFoundException(String.format("User with uid %s not found", uId)));
         user.setName(newName);
         log.debug(String.format("Changed username from uId:%s",uId));
+        return true;
     }
 
     @Transactional
     @Modifying
     @Override
-    public void deleteFamilyMember(Long userId) {
+    public boolean deleteFamilyMember(Long userId) {
         User user = accountsUserRepository.findUserById(userId)
                 .orElseThrow(() -> new UserNotFoundException(String.format("User with id %s not found", userId)));
-        user.setFamily(null);
+        user.setUser_status(USER_STATUS.REMOVED);
         log.debug(String.format("Delete family member by id %s",userId));
+        return true;
     }
 }

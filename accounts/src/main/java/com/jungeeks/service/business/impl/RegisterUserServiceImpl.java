@@ -7,12 +7,17 @@ import com.jungeeks.entity.enums.NOTIFICATION_PERIOD;
 import com.jungeeks.entity.enums.USER_ROLE;
 import com.jungeeks.entity.enums.USER_STATUS;
 import com.jungeeks.exception.FamilyNotFoundException;
+import com.jungeeks.exception.UserIsAlreadyExistException;
 import com.jungeeks.exception.UserNotFoundException;
 import com.jungeeks.repository.AccountsFamilyRepository;
 import com.jungeeks.repository.AccountsUserRepository;
 import com.jungeeks.security.entity.SecurityUserFirebase;
 import com.jungeeks.security.service.AuthorizationService;
 import com.jungeeks.service.business.RegisterUserService;
+import com.jungeeks.service.dto.FamilyMemberService;
+import com.jungeeks.service.entity.FamilyService;
+import com.jungeeks.service.entity.UserService;
+import com.jungeeks.service.entity.impl.FamilyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.Modifying;
@@ -27,17 +32,11 @@ import java.util.List;
 @Service
 public class RegisterUserServiceImpl implements RegisterUserService {
 
-    private AccountsUserRepository userRepository;
     private AuthorizationService authorizationService;
-    private AccountsFamilyRepository familyRepository;
+    private FamilyService familyService;
+    private UserService userService;
 
     public static final String DEFAULT_PHOTO_PATH = "default_account_photo.jpeg";
-
-    @Autowired
-    @Qualifier("accounts_userRepository")
-    public void setUserRepository(AccountsUserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Autowired
     public void setAuthorizationService(AuthorizationService authorizationService) {
@@ -45,21 +44,27 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     }
 
     @Autowired
-    public void setFamilyRepository(AccountsFamilyRepository familyRepository) {
-        this.familyRepository = familyRepository;
+    public void setFamilyService(FamilyService familyService) {
+        this.familyService = familyService;
+    }
+
+    @Autowired
+    @Qualifier("accounts_userServiceImpl")
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     @Transactional
     @Modifying
     @Override
-    public void registerByInvite(String username, String familyId, USER_ROLE user_role) {
-        SecurityUserFirebase authUser = authorizationService.getUser();
-        String uid = authUser.getUid();
-        Family family = familyRepository.findById(familyId)
-                .orElseThrow(() -> new FamilyNotFoundException(String.format("Family with id %s not found", familyId)));
-        User user = userRepository.findByFirebaseId(uid)
-                .orElseThrow(() -> new UserNotFoundException(String.format("User with uid %s not found", uid)));
+    public boolean registerByInvite(String username, String familyId, USER_ROLE user_role) {
+        String uid = getUserFromAuth();
+        Family family = familyService.getFamilyById(familyId);
 
+        User user = userService.getUserByUid(uid);
+        if (user.getFamily() != null) {
+            throw new UserIsAlreadyExistException(String.format("User with uid %s is already exist", uid));
+        }
         user.setPoints(0L);
         user.setName(username);
         user.setFamily(family);
@@ -84,25 +89,27 @@ public class RegisterUserServiceImpl implements RegisterUserService {
                     .taskReminder(true)
                     .build());
         }
+        return true;
     }
 
     @Transactional
     @Modifying
     @Override
-    public void registerParentUser(String username) {
-        SecurityUserFirebase authUser = authorizationService.getUser();
-        String uid = authUser.getUid();
+    public boolean registerParentUser(String username) {
+        String uid = getUserFromAuth();
         RandomString randomString = new RandomString(12);
         Family build = Family.builder()
                 .id(randomString.nextString())
                 .build();
-        Family familyDb = familyRepository.save(build);
-        User user = userRepository.findByFirebaseId(uid)
-                .orElseThrow(() -> new UserNotFoundException(String.format("User with uid %s not found", uid)));
+        Family familyDb = familyService.save(build);
+        User user = userService.getUserByUid(uid);
+        if (user.getFamily() != null) {
+            throw new UserIsAlreadyExistException(String.format("User with uid %s is already exist", uid));
+        }
         user.setPoints(0L);
         user.setName(username);
         user.setFamily(familyDb);
-        user.setUser_role(USER_ROLE.PARENT);
+        user.setUser_role(USER_ROLE.ADMIN);
         user.setUser_status(USER_STATUS.ACTIVE);
         user.setPhoto(List.of(Photo.builder()
                 .path(DEFAULT_PHOTO_PATH)
@@ -113,5 +120,11 @@ public class RegisterUserServiceImpl implements RegisterUserService {
                 .newRequest(true)
                 .newReward(true)
                 .build());
+        return true;
+    }
+
+
+    private String getUserFromAuth() {
+        return authorizationService.getUser().getUid();
     }
 }

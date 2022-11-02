@@ -95,8 +95,7 @@ class UserControllerTest {
 
     @Test
     void getParentHomePagePositive() throws Exception {
-        when(userService.getUserByUid((String) any())).thenReturn(user);
-        when(parentService.getParentHomeDate(user)).thenReturn(parentHomeDto);
+        when(parentService.getParentHomeDate()).thenReturn(parentHomeDto);
 
         SignUpResponseDto idTokenFromFirebase1 = getResponseFromFirebase();
         String idTokenFromFirebase = idTokenFromFirebase1.getIdToken();

@@ -24,9 +24,9 @@ public interface UserService {
 
     List<User> getAllByFamilyIdAndUserRole(String familyId, USER_ROLE user_role);
 
-    void changeUserStatus(String uId, USER_STATUS newUserStatus);
+    boolean changeUserStatus(String uId, USER_STATUS newUserStatus);
 
-    void changeUserName(String uId, String newName);
+    boolean changeUserName(String uId, String newName);
 
-    void deleteFamilyMember(Long userId);
+    boolean deleteFamilyMember(Long userId);
 }

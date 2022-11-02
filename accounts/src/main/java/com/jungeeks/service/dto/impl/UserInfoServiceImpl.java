@@ -11,6 +11,7 @@ import com.jungeeks.service.dto.UserInfoService;
 import com.jungeeks.security.service.AuthorizationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Autowired
+    @Qualifier("accounts_userServiceImpl")
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
@@ -56,6 +58,8 @@ public class UserInfoServiceImpl implements UserInfoService {
         return UserInfoDto.builder()
                 .username(user.getName())
                 .familyMembers(familyMembers)
+                .userStatus(user.getUser_status())
+                .user_role(user.getUser_role())
                 .photoPath(user.getPhoto().get(0).getPath())
                 .build();
     }
@@ -69,6 +73,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         return UserInfoDto.builder()
                 .username(user.getName())
                 .user_role(user.getUser_role())
+                .userStatus(user.getUser_status())
                 .familyMembers(familyMembers)
                 .photoPath(user.getPhoto().get(0).getPath())
                 .build();
