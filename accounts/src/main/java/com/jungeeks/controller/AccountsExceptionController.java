@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Slf4j
-@ControllerAdvice
-public class ExceptionController {
+@ControllerAdvice()
+public class AccountsExceptionController {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Object> handleMethodUserNotFoundException(UserNotFoundException userNotFoundException){
@@ -44,6 +44,6 @@ public class ExceptionController {
     @ExceptionHandler(UserIsAlreadyExistException.class)
     public ResponseEntity<Object> handleMethodUserIsAlreadyExistException(UserIsAlreadyExistException userIsAlreadyExistException){
         log.warn("Bad request by {}", userIsAlreadyExistException.getMessage());
-        return new ResponseEntity<>(userIsAlreadyExistException.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("User is already exist", HttpStatus.FORBIDDEN);
     }
 }
