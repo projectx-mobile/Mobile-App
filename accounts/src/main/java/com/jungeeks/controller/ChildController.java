@@ -5,6 +5,7 @@ import com.jungeeks.dto.NotificationDto;
 import com.jungeeks.dto.TaskDto;
 import com.jungeeks.security.entity.SecurityUserFirebase;
 import com.jungeeks.security.service.AuthorizationService;
+import com.jungeeks.service.business.ChildService;
 import com.jungeeks.service.entity.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,17 +34,27 @@ public class ChildController {
     @Qualifier("utils_authorizationServiceImpl")
     private AuthorizationService authorizationService;
 
+    private ChildService childService;
+
+//    @GetMapping("deadline")
+//    public ResponseEntity<List<NotificationDto>> getDeadlineOfTask() {
+//        SecurityUserFirebase userDetails = authorizationService.getUser();
+//        User user = userService.getUserByUid(userDetails.getUid());//TODO: move to childService
+//        return new ResponseEntity<>(userService.getDeadlineOfAllTask(user), HttpStatus.ACCEPTED);
+//    }
+
     @GetMapping("deadline")
     public ResponseEntity<List<NotificationDto>> getDeadlineOfTask() {
         SecurityUserFirebase userDetails = authorizationService.getUser();
         User user = userService.getUserByUid(userDetails.getUid());//TODO: move to childService
-        return new ResponseEntity<>(userService.getDeadlineOfAllTask(user), HttpStatus.ACCEPTED);
+//        userService.getDeadlineOfAllTask(user);
+        return new ResponseEntity<>(childService.getDeadlineOfAllTask(), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("tasks")
     public ResponseEntity<List<TaskDto>> getTasks() {
         SecurityUserFirebase userDetails = authorizationService.getUser();
         User user = userService.getUserByUid(userDetails.getUid());//TODO: move to childService
-        return new ResponseEntity<>(userService.getUserTaskById(user), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(childService.getUserTaskById(), HttpStatus.ACCEPTED);
     }
 }
