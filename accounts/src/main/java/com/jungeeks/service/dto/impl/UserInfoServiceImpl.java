@@ -11,6 +11,7 @@ import com.jungeeks.service.dto.UserInfoService;
 import com.jungeeks.security.service.AuthorizationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -80,5 +81,11 @@ public class UserInfoServiceImpl implements UserInfoService {
         return FamilyIdDto.builder()
                 .id(id)
                 .build();
+    }
+
+    @Override
+    public UserInfoDto getCurrentUserInfo() {
+        String uid = authorizationService.getUser().getUid();
+        return getUserInfoByUserUId(uid);
     }
 }

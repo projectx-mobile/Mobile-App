@@ -30,8 +30,7 @@ public class PersonalInfoController {
 
     @GetMapping()
     public ResponseEntity<UserInfoDto> getPersonalInfo() {
-        String uid = authorizationService.getUser().getUid();//TODO:???
-        return ResponseEntity.ok(userInfoService.getUserInfoByUserUId(uid));
+        return ResponseEntity.ok(userInfoService.getCurrentUserInfo());
     }
 
     @PostMapping()

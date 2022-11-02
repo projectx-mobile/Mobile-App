@@ -10,4 +10,6 @@ public interface UserInfoService {
     UserInfoDto getUserInfoByUserUId(String uId);
 
     FamilyIdDto getFamilyId();
+
+    UserInfoDto getCurrentUserInfo();
 }
