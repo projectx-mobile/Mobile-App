@@ -77,7 +77,7 @@ class ChildControllerTest {
 
     @BeforeAll
     public static void setUp() {
-
+//init
         user = User.builder()
                 .id(1L)
                 .email(null)
