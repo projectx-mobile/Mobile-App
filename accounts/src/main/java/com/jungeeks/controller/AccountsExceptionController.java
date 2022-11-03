@@ -18,7 +18,7 @@ public class AccountsExceptionController {
         if (businessException.getHttpStatus() == HttpStatus.OK) {
             log.warn(BAD_REQUEST + " by {}", businessException.getMessage());
 
-            return new ResponseEntity<>(businessException.getError_code(), BAD_REQUEST);
+            return new ResponseEntity<>(businessException.getError_code().getMessage(), BAD_REQUEST);
         }
 
         if(businessException.getError_code() == null) {
@@ -35,6 +35,6 @@ public class AccountsExceptionController {
 
         log.warn(businessException.getHttpStatus() + " by {}", businessException.getMessage());
 
-        return new ResponseEntity<>(businessException.getError_code(), businessException.getHttpStatus());
+        return new ResponseEntity<>(businessException.getError_code().getMessage(), businessException.getHttpStatus());
     }
 }

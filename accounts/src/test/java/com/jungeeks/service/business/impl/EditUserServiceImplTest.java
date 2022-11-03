@@ -46,7 +46,7 @@ class EditUserServiceImplTest {
                 .build();
         user = User.builder()
                 .firebaseId(PARENT_FIREBASE_ID)
-                .user_role(USER_ROLE.PARENT)
+                .user_role(USER_ROLE.ADMIN)
                 .build();
         child = User.builder()
                 .firebaseId(CHILD_FIREBASE_ID)

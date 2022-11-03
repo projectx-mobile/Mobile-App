@@ -40,7 +40,7 @@ public class EditUserServiceImpl implements EditUserService {
     @Override
     public boolean deleteFamilyMember(Long userId) {
         User user = userService.getUserByUid(getUid());
-        if (user.getUser_role() == USER_ROLE.PARENT) {
+        if (user.getUser_role() == USER_ROLE.ADMIN) {
             return userService.deleteFamilyMember(userId);
         } else {
             throw new BusinessException("Insufficient rights to execute the request", ERROR_CODE.NOT_ENOUGH_RIGHTS);
