@@ -53,7 +53,7 @@ jobs:
           file: docker/workflow.Dockerfile
           context: .
           push: true
-          tags: latest
+          tags: ${{ secrets.TMP_REGISTRY }}/${{ secrets.REPOSITORY_NAME }}:latest
       
       #Temporary disabled while updating aws credentials
       #
