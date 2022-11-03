@@ -4,7 +4,8 @@ import com.jungeeks.RandomString;
 import com.jungeeks.entity.*;
 import com.jungeeks.entity.enums.USER_ROLE;
 import com.jungeeks.entity.enums.USER_STATUS;
-import com.jungeeks.exception.UserIsAlreadyExistException;
+import com.jungeeks.exception.BusinessException;
+import com.jungeeks.exception.enums.ERROR_CODE;
 import com.jungeeks.security.service.AuthorizationService;
 import com.jungeeks.service.business.RegisterUserService;
 import com.jungeeks.service.entity.FamilyService;
@@ -43,7 +44,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
         User user = userService.getUserByUid(uid);
         if (user.getFamily() != null) {
-            throw new UserIsAlreadyExistException(String.format("User with uid %s is already exist", uid));
+            throw new BusinessException(String.format("User with uid %s is already exist", uid), ERROR_CODE.USER_IS_ALREADY_EXIST);
         }
         user.setPoints(0L);
         user.setName(username);
@@ -84,7 +85,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
         Family familyDb = familyService.save(build);
         User user = userService.getUserByUid(uid);
         if (user.getFamily() != null) {
-            throw new UserIsAlreadyExistException(String.format("User with uid %s is already exist", uid));
+            throw new BusinessException(String.format("User with uid %s is already exist", uid), ERROR_CODE.USER_IS_ALREADY_EXIST);
         }
         user.setPoints(0L);
         user.setName(username);

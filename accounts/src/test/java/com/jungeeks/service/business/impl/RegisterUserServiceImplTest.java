@@ -3,11 +3,7 @@ package com.jungeeks.service.business.impl;
 import com.jungeeks.entity.Family;
 import com.jungeeks.entity.User;
 import com.jungeeks.entity.enums.USER_ROLE;
-import com.jungeeks.exception.FamilyNotFoundException;
-import com.jungeeks.exception.UserIsAlreadyExistException;
-import com.jungeeks.exception.UserNotFoundException;
-import com.jungeeks.repository.AccountsFamilyRepository;
-import com.jungeeks.repository.AccountsUserRepository;
+import com.jungeeks.exception.BusinessException;
 import com.jungeeks.security.entity.SecurityUserFirebase;
 import com.jungeeks.security.service.AuthorizationService;
 import com.jungeeks.service.entity.FamilyService;
@@ -18,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -79,18 +73,18 @@ class RegisterUserServiceImplTest {
     @Test
     void registerByInviteNegativeWithWrongFamilyId() {
         when(authorizationService.getUser()).thenReturn(securityUserFirebaseParent);
-        when(familyService.getFamilyById(any())).thenThrow(FamilyNotFoundException.class);
+        when(familyService.getFamilyById(any())).thenThrow(BusinessException.class);
 
-        assertThrows(FamilyNotFoundException.class, () -> registerUserService.registerByInvite(USERNAME, FAMILY_ID, USER_ROLE.PARENT));
+        assertThrows(BusinessException.class, () -> registerUserService.registerByInvite(USERNAME, FAMILY_ID, USER_ROLE.PARENT));
     }
 
     @Test
     void registerByInviteNegativeWithWrongFirebaseId() {
         when(authorizationService.getUser()).thenReturn(securityUserFirebaseParent);
         when(familyService.getFamilyById(any())).thenReturn(family);
-        when(userService.getUserByUid(PARENT_FIREBASE_ID)).thenThrow(UserNotFoundException.class);
+        when(userService.getUserByUid(PARENT_FIREBASE_ID)).thenThrow(BusinessException.class);
 
-        assertThrows(UserNotFoundException.class, () -> registerUserService.registerByInvite(USERNAME, FAMILY_ID, USER_ROLE.PARENT));
+        assertThrows(BusinessException.class, () -> registerUserService.registerByInvite(USERNAME, FAMILY_ID, USER_ROLE.PARENT));
     }
 
     @Test
@@ -99,7 +93,7 @@ class RegisterUserServiceImplTest {
         when(familyService.getFamilyById(FAMILY_ID)).thenReturn(family);
         when(userService.getUserByUid(PARENT_FIREBASE_ID)).thenReturn(parent);
 
-        assertThrows(UserIsAlreadyExistException.class, () -> registerUserService.registerByInvite(USERNAME, FAMILY_ID, USER_ROLE.PARENT));
+        assertThrows(BusinessException.class, () -> registerUserService.registerByInvite(USERNAME, FAMILY_ID, USER_ROLE.PARENT));
     }
 
     @Test
@@ -117,9 +111,9 @@ class RegisterUserServiceImplTest {
     void registerParentUserNegativeWithWrongFirebaseId() {
         when(authorizationService.getUser()).thenReturn(securityUserFirebaseParent);
         when(familyService.save(family)).thenReturn(family);
-        when(userService.getUserByUid(PARENT_FIREBASE_ID)).thenThrow(UserNotFoundException.class);
+        when(userService.getUserByUid(PARENT_FIREBASE_ID)).thenThrow(BusinessException.class);
 
-        assertThrows(UserNotFoundException.class, () -> registerUserService.registerParentUser(USERNAME));
+        assertThrows(BusinessException.class, () -> registerUserService.registerParentUser(USERNAME));
     }
 
     @Test
@@ -128,6 +122,6 @@ class RegisterUserServiceImplTest {
         when(familyService.save(family)).thenReturn(family);
         when(userService.getUserByUid(PARENT_FIREBASE_ID)).thenReturn(parent);
 
-        assertThrows(UserIsAlreadyExistException.class, () -> registerUserService.registerParentUser(USERNAME));
+        assertThrows(BusinessException.class, () -> registerUserService.registerParentUser(USERNAME));
     }
 }

@@ -1,6 +1,6 @@
 package com.jungeeks.service.entity.impl;
 
-import com.jungeeks.exception.PathNotFoundException;
+import com.jungeeks.exception.BusinessException;
 import com.jungeeks.service.entity.UserService;
 import com.jungeeks.aws.service.photoStorage.PhotoStorageService;
 import com.jungeeks.entity.Photo;
@@ -90,9 +90,9 @@ class UserPhotoServiceImplTest {
         when(userService.getUserByUid(any())).thenReturn(testDataValidUser);
 
         when(photoStorageService.load(any(), any())).thenReturn(validFile);
-        assertThrows(PathNotFoundException.class,
+        assertThrows(BusinessException.class,
                 () -> userPhotoService.getUserPhoto("123456789"),
-                "This path 123456789 not found");
+                "Path not found");
     }
 
     @Test
@@ -103,7 +103,7 @@ class UserPhotoServiceImplTest {
         when(userService.getUserByUid(any())).thenReturn(testDataValidUser);
         when(photoStorageService.load(any(), any())).thenReturn(notValidFile);
 
-        assertThrows(PathNotFoundException.class,
+        assertThrows(BusinessException.class,
                 () -> userPhotoService.getUserPhoto(path1),
                 "Photo not found");
 
@@ -123,9 +123,9 @@ class UserPhotoServiceImplTest {
         when(userService.getUserById(any())).thenReturn(testDataValidUser);
 
         when(photoStorageService.load(any(), any())).thenReturn(validFile);
-        assertThrows(PathNotFoundException.class,
+        assertThrows(BusinessException.class,
                 () -> userPhotoService.getUserPhoto(testDataValidUser.getId(), "123456789"),
-                "This path 123456789 not found");
+                "Path not found");
     }
 
     @Test
@@ -133,7 +133,7 @@ class UserPhotoServiceImplTest {
         when(userService.getUserById(any())).thenReturn(testDataValidUser);
         when(photoStorageService.load(any(), any())).thenReturn(notValidFile);
 
-        assertThrows(PathNotFoundException.class,
+        assertThrows(BusinessException.class,
                 () -> userPhotoService.getUserPhoto(testDataValidUser.getId(), path1),
                 "Photo not found");
 

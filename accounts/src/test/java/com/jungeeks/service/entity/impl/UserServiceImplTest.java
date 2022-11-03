@@ -4,7 +4,7 @@ import com.jungeeks.entity.*;
 import com.jungeeks.entity.enums.TASK_STATUS;
 import com.jungeeks.entity.enums.USER_ROLE;
 import com.jungeeks.entity.enums.USER_STATUS;
-import com.jungeeks.exception.UserNotFoundException;
+import com.jungeeks.exception.BusinessException;
 import com.jungeeks.repository.AccountsUserRepository;
 import com.jungeeks.entity.Family;
 import com.jungeeks.entity.FamilyTask;
@@ -12,7 +12,6 @@ import com.jungeeks.entity.Task;
 import com.jungeeks.entity.User;
 import com.jungeeks.dto.NotificationDto;
 import com.jungeeks.dto.TaskDto;
-import com.jungeeks.service.dto.ChildService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -206,22 +205,8 @@ class UserServiceImplTest {
     void notGetUserById() {
         when(accountsUserRepository.findUserById(any())).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> userService.getUserByUid("1L"));
+        assertThrows(BusinessException.class, () -> userService.getUserByUid("1L"));
     }
-
-//    @Test
-//    void getDeadlineOfAllTask() {
-//        List<NotificationDto> notificationResponse = userService.getDeadlineOfAllTask(user);
-//
-//        assertEquals(notificationResponse, notificationResponsesTest);
-//    }
-//
-//    @Test
-//    void getUserTaskById() {
-//        List<TaskDto> taskDto = userService.getUserTaskById(user);
-//
-//        assertEquals(taskDto, taskDtoTest);
-//    }
 
     @Test
     void getUserByIdPositive() {
@@ -238,9 +223,9 @@ class UserServiceImplTest {
         when(accountsUserRepository.findUserById(any()))
                 .thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class,
+        assertThrows(BusinessException.class,
                 () -> userService.getUserById(1L),
-                "User with id 1 not found");
+                "User not found");
     }
 
     @Test
@@ -255,9 +240,9 @@ class UserServiceImplTest {
         when(accountsUserRepository.findByFirebaseId(any()))
                 .thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class,
+        assertThrows(BusinessException.class,
                 () -> userService.getUserByUid("qwerty"),
-                "User with uid qwerty not found");
+                "User not found");
     }
 
     @Test
@@ -273,7 +258,7 @@ class UserServiceImplTest {
     void getAllByFamilyIdNegative() {
         when(accountsUserRepository.findAllByFamilyId(any())).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> userService.getAllByFamilyId("123"));
+        assertThrows(BusinessException.class, () -> userService.getAllByFamilyId("123"));
     }
 
     @Test
@@ -281,7 +266,6 @@ class UserServiceImplTest {
         when(accountsUserRepository.findByFirebaseId(any()))
                 .thenReturn(Optional.of(new User()));
         assertDoesNotThrow(() -> userService.changeUserStatus("qwerty", USER_STATUS.ACTIVE));
-
     }
 
     @Test
@@ -289,9 +273,9 @@ class UserServiceImplTest {
         when(accountsUserRepository.findByFirebaseId(any()))
                 .thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class,
+        assertThrows(BusinessException.class,
                 () -> userService.changeUserStatus("qwerty", USER_STATUS.ACTIVE),
-                "User with uid qwerty not found");
+                "User not found");
     }
 
     @Test
@@ -308,7 +292,7 @@ class UserServiceImplTest {
     void getAllByFamilyIdAndUserRoleNegative() {
         when(accountsUserRepository.findAllByFamilyIdAndUser_role(any(), any())).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> userService.getAllByFamilyIdAndUserRole("1L", USER_ROLE.PARENT));
+        assertThrows(BusinessException.class, () -> userService.getAllByFamilyIdAndUserRole("1L", USER_ROLE.PARENT));
     }
 
     @Test
@@ -325,6 +309,6 @@ class UserServiceImplTest {
     void getUserByFirebaseIdNegative() {
         when(accountsUserRepository.findByFirebaseId(any())).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> userService.getUserByUid(any()));
+        assertThrows(BusinessException.class, () -> userService.getUserByUid(any()));
     }
 }

@@ -1,6 +1,7 @@
 package com.jungeeks.service.entity.impl;
 
-import com.jungeeks.exception.PathNotFoundException;
+import com.jungeeks.exception.BusinessException;
+import com.jungeeks.exception.enums.ERROR_CODE;
 import com.jungeeks.service.entity.UserPhotoService;
 import com.jungeeks.service.entity.UserService;
 import com.jungeeks.aws.service.photoStorage.PhotoStorageService;
@@ -10,9 +11,9 @@ import com.jungeeks.entity.User;
 import com.jungeeks.security.service.AuthorizationService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -76,7 +77,9 @@ public class UserPhotoServiceImpl implements UserPhotoService {
         Photo photo = user.getPhoto().stream()
                 .filter(x -> x.getPath().equals(path))
                 .findFirst()
-                .orElseThrow(() -> new PathNotFoundException(String.format("This path %s not found", path)));
+                .orElseThrow(() -> new BusinessException((String.format("This path %s not found", path)),
+                                                                ERROR_CODE.PATH_NOT_FOUND,
+                                                                HttpStatus.NOT_FOUND));
         photo.setCreationDate(LocalDateTime.now());
         photoStorageService.update(photo.getPath(), multipartFile, PHOTO_TYPE.USER);
     }
@@ -90,7 +93,9 @@ public class UserPhotoServiceImpl implements UserPhotoService {
         Photo photo = userPhotos.stream()
                 .filter(x -> x.getPath().equals(path))
                 .findFirst()
-                .orElseThrow(() -> new PathNotFoundException(String.format("This path %s not found", path)));
+                .orElseThrow(() -> new BusinessException((String.format("This path %s not found", path)),
+                        ERROR_CODE.PATH_NOT_FOUND, HttpStatus.NOT_FOUND));
+
         userPhotos.remove(photo);
         photoStorageService.delete(photo.getPath(), PHOTO_TYPE.USER);
     }
@@ -100,12 +105,14 @@ public class UserPhotoServiceImpl implements UserPhotoService {
         Photo photo = user.getPhoto().stream()
                 .filter(x -> x.getPath().equals(path))
                 .findFirst()
-                .orElseThrow(() -> new PathNotFoundException(String.format("This path %s not found", path)));
+                .orElseThrow(() -> new BusinessException((String.format("This path %s not found", path)),
+                        ERROR_CODE.PATH_NOT_FOUND, HttpStatus.NOT_FOUND));
+
         File tmpPhoto = photoStorageService.load(photo.getPath(), PHOTO_TYPE.USER);
         if (tmpPhoto.exists() && tmpPhoto.canRead()) {
             return tmpPhoto;
         } else {
-            throw new PathNotFoundException("Photo not found");
+            throw new BusinessException("Photo not found", HttpStatus.NOT_FOUND);
         }
     }
 

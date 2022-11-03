@@ -2,7 +2,8 @@ package com.jungeeks.service.business.impl;
 
 import com.jungeeks.entity.User;
 import com.jungeeks.entity.enums.USER_ROLE;
-import com.jungeeks.exception.NotEnoughRightsException;
+import com.jungeeks.exception.BusinessException;
+import com.jungeeks.exception.enums.ERROR_CODE;
 import com.jungeeks.service.entity.UserService;
 import com.jungeeks.service.business.EditUserService;
 import com.jungeeks.entity.enums.USER_STATUS;
@@ -42,7 +43,7 @@ public class EditUserServiceImpl implements EditUserService {
         if (user.getUser_role() == USER_ROLE.PARENT) {
             return userService.deleteFamilyMember(userId);
         } else {
-            throw new NotEnoughRightsException("Insufficient rights to execute the request");
+            throw new BusinessException("Insufficient rights to execute the request", ERROR_CODE.NOT_ENOUGH_RIGHTS);
         }
     }
 

@@ -1,7 +1,8 @@
 package com.jungeeks.service.dto.impl;
 
 import com.jungeeks.dto.FamilyIdDto;
-import com.jungeeks.exception.InvalidRequestException;
+import com.jungeeks.exception.BusinessException;
+import com.jungeeks.exception.enums.ERROR_CODE;
 import com.jungeeks.service.entity.UserService;
 import com.jungeeks.dto.FamilyMemberDto;
 import com.jungeeks.dto.UserInfoDto;
@@ -10,7 +11,6 @@ import com.jungeeks.service.dto.FamilyMemberService;
 import com.jungeeks.service.dto.UserInfoService;
 import com.jungeeks.security.service.AuthorizationService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -38,12 +38,12 @@ public class UserInfoServiceImpl implements UserInfoService {
         String authUserFamilyId = authUser.getFamily().getId();
         User user = userService.getUserById(id);
         if (Objects.isNull(user) || !user.getFamily().getId().equals(authUserFamilyId)) {
-            log.warn("Invalid id param");
-            throw new InvalidRequestException("Invalid id parameter");
+            throw new BusinessException("Invalid id parameter", ERROR_CODE.INVALID_REQUEST);
         }
 
         List<FamilyMemberDto> familyMembers = familyMemberService.getFamilyMembers(user.getFamily().getId());
         log.debug("Get userinfo by id");
+
         return UserInfoDto.builder()
                 .username(user.getName())
                 .familyMembers(familyMembers)
@@ -59,6 +59,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         User user = userService.getUserByUid(uId);
         List<FamilyMemberDto> familyMembers = familyMemberService.getFamilyMembers(user.getFamily().getId());
         log.debug("Get userinfo by uId");
+
         return UserInfoDto.builder()
                 .username(user.getName())
                 .user_role(user.getUser_role())

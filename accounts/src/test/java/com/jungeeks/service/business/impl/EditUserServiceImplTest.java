@@ -3,8 +3,7 @@ package com.jungeeks.service.business.impl;
 import com.jungeeks.entity.User;
 import com.jungeeks.entity.enums.USER_ROLE;
 import com.jungeeks.entity.enums.USER_STATUS;
-import com.jungeeks.exception.NotEnoughRightsException;
-import com.jungeeks.exception.UserNotFoundException;
+import com.jungeeks.exception.BusinessException;
 import com.jungeeks.security.entity.SecurityUserFirebase;
 import com.jungeeks.security.service.AuthorizationService;
 import com.jungeeks.service.entity.UserService;
@@ -68,9 +67,9 @@ class EditUserServiceImplTest {
     @Test
     void changeUserNameNegative() {
         when(authorizationService.getUser()).thenReturn(securityUserFirebaseParent);
-        when(userService.changeUserName(PARENT_FIREBASE_ID, "test")).thenThrow(UserNotFoundException.class);
+        when(userService.changeUserName(PARENT_FIREBASE_ID, "test")).thenThrow(BusinessException.class);
 
-        assertThrows(UserNotFoundException.class, () -> editUserService.changeUserName("test"));
+        assertThrows(BusinessException.class, () -> editUserService.changeUserName("test"));
 
         verify(userService, times(1)).changeUserName(PARENT_FIREBASE_ID, "test");
     }
@@ -89,9 +88,9 @@ class EditUserServiceImplTest {
     @Test
     void changeUserStatusNegative() {
         when(authorizationService.getUser()).thenReturn(securityUserFirebaseParent);
-        when(userService.changeUserStatus(PARENT_FIREBASE_ID, USER_STATUS.REMOVED)).thenThrow(UserNotFoundException.class);
+        when(userService.changeUserStatus(PARENT_FIREBASE_ID, USER_STATUS.REMOVED)).thenThrow(BusinessException.class);
 
-        assertThrows(UserNotFoundException.class, () -> editUserService.changeUserStatus(USER_STATUS.REMOVED));
+        assertThrows(BusinessException.class, () -> editUserService.changeUserStatus(USER_STATUS.REMOVED));
 
         verify(userService, times(1)).changeUserStatus(PARENT_FIREBASE_ID, USER_STATUS.REMOVED);
     }
@@ -113,7 +112,7 @@ class EditUserServiceImplTest {
         when(authorizationService.getUser()).thenReturn(securityUserFirebaseChild);
         when(userService.getUserByUid(CHILD_FIREBASE_ID)).thenReturn(child);
 
-        assertThrows(NotEnoughRightsException.class, () -> editUserService.deleteFamilyMember(1L));
+        assertThrows(BusinessException.class, () -> editUserService.deleteFamilyMember(1L));
 
         verify(userService, times(0)).deleteFamilyMember(any());
     }
@@ -122,9 +121,9 @@ class EditUserServiceImplTest {
     void deleteFamilyMemberNegativeWithWrongUserId() {
         when(authorizationService.getUser()).thenReturn(securityUserFirebaseParent);
         when(userService.getUserByUid(PARENT_FIREBASE_ID)).thenReturn(user);
-        when(userService.deleteFamilyMember(1L)).thenThrow(UserNotFoundException.class);
+        when(userService.deleteFamilyMember(1L)).thenThrow(BusinessException.class);
 
-        assertThrows(UserNotFoundException.class, () -> editUserService.deleteFamilyMember(1L));
+        assertThrows(BusinessException.class, () -> editUserService.deleteFamilyMember(1L));
 
         verify(userService, times(1)).deleteFamilyMember(any());
     }

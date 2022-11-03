@@ -7,43 +7,34 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
 @Slf4j
 @ControllerAdvice()
 public class AccountsExceptionController {
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Object> handleMethodUserNotFoundException(UserNotFoundException userNotFoundException){
-        log.warn("Bad request by {}", userNotFoundException.getMessage());
-        return new ResponseEntity<>(userNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(PathNotFoundException.class)
-    public ResponseEntity<Object> handleMethodPathNotFoundException(PathNotFoundException pathNotFoundException){
-        log.warn("Bad request by {}", pathNotFoundException.getMessage());
-        return new ResponseEntity<>(pathNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(InvalidRequestException.class)
-    public ResponseEntity<Object> handleMethodInvalidRequestException(InvalidRequestException invalidRequestException){
-        log.warn("Bad request by {}", invalidRequestException.getMessage());
-        return new ResponseEntity<>(invalidRequestException.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Object> handleMethodFamilyNotFoundException(BusinessException businessException){
-        log.warn("Bad request by {}", businessException.getMessage());
-        return new ResponseEntity<>(businessException.getError_code(), HttpStatus.BAD_REQUEST);
-    }
+        if (businessException.getHttpStatus() == HttpStatus.OK) {
+            log.warn(BAD_REQUEST + " by {}", businessException.getMessage());
 
-    @ExceptionHandler(NotEnoughRightsException.class)
-    public ResponseEntity<Object> handleMethodNotEnoughRightsException(NotEnoughRightsException notEnoughRightsException){
-       log.warn("Bad request by {}", notEnoughRightsException.getMessage());
-       return new ResponseEntity<>(notEnoughRightsException.getMessage(), HttpStatus.BAD_REQUEST);
-    }
+            return new ResponseEntity<>(businessException.getError_code(), BAD_REQUEST);
+        }
 
-    @ExceptionHandler(UserIsAlreadyExistException.class)
-    public ResponseEntity<Object> handleMethodUserIsAlreadyExistException(UserIsAlreadyExistException userIsAlreadyExistException){
-        log.warn("Bad request by {}", userIsAlreadyExistException.getMessage());
-        return new ResponseEntity<>("User is already exist", HttpStatus.FORBIDDEN);
+        if(businessException.getError_code() == null) {
+            log.warn(businessException.getHttpStatus() + " by {}", businessException.getMessage());
+
+            return new ResponseEntity<>(businessException.getMessage(), businessException.getHttpStatus());
+        }
+
+        if (businessException.getError_code() == null && businessException.getHttpStatus() == HttpStatus.OK) {
+            log.warn(BAD_REQUEST + " by {}", businessException.getMessage());
+
+            return new ResponseEntity<>(businessException.getMessage(), BAD_REQUEST);
+        }
+
+        log.warn(businessException.getHttpStatus() + " by {}", businessException.getMessage());
+
+        return new ResponseEntity<>(businessException.getError_code(), businessException.getHttpStatus());
     }
 }

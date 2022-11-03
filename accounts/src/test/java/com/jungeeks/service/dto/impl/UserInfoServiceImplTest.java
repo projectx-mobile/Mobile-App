@@ -4,10 +4,9 @@ import com.jungeeks.dto.FamilyIdDto;
 import com.jungeeks.dto.FamilyMemberDto;
 import com.jungeeks.dto.UserInfoDto;
 import com.jungeeks.entity.enums.USER_ROLE;
-import com.jungeeks.exception.InvalidRequestException;
+import com.jungeeks.exception.BusinessException;
 import com.jungeeks.entity.*;
 import com.jungeeks.entity.enums.USER_STATUS;
-import com.jungeeks.exception.UserNotFoundException;
 import com.jungeeks.service.dto.FamilyMemberService;
 import com.jungeeks.service.entity.UserService;
 import com.jungeeks.security.entity.SecurityUserFirebase;
@@ -126,7 +125,7 @@ class UserInfoServiceImplTest {
         when(userService.getUserById(any())).thenReturn(testDataUser);
         when(familyMemberService.getFamilyMembers(any())).thenReturn(testDataFamilyMembers);
 
-        assertThrows(InvalidRequestException.class,
+        assertThrows(BusinessException.class,
                 () -> userInfoService.getUserInfoByUserId(1L),
                 "Invalid id parameter");
     }
@@ -160,9 +159,9 @@ class UserInfoServiceImplTest {
         when(authorizationService.getUser()).thenReturn(SecurityUserFirebase.builder()
                 .uid("uid")
                 .build());
-        when(userService.getUserByUid(any())).thenThrow(UserNotFoundException.class);
+        when(userService.getUserByUid(any())).thenThrow(BusinessException.class);
 
-        assertThrows(UserNotFoundException.class, () -> userInfoService.getFamilyId());
+        assertThrows(BusinessException.class, () -> userInfoService.getFamilyId());
     }
 
     @Test

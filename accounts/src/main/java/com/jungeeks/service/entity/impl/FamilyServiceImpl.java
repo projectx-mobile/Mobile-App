@@ -2,8 +2,6 @@ package com.jungeeks.service.entity.impl;
 
 import com.jungeeks.entity.Family;
 import com.jungeeks.exception.BusinessException;
-import com.jungeeks.exception.FamilyNotFoundException;
-import com.jungeeks.exception.enums.ERROR_CODE;
 import com.jungeeks.repository.AccountsFamilyRepository;
 import com.jungeeks.service.entity.FamilyService;
 import lombok.extern.slf4j.Slf4j;

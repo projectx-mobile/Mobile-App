@@ -7,7 +7,8 @@ public enum ERROR_CODE {
     NOT_ENOUGH_RIGHTS("Not enough right"),
     PATH_NOT_FOUND("Path not found"),
     USER_IS_ALREADY_EXIST("User is already exist"),
-    USER_NOT_FOUND("User not found");
+    USER_NOT_FOUND("User not found"),
+    USER_WITH_FAMILY_ID_AND_ROLE ("User with familyId and role not found");
 
     private String message;
 
