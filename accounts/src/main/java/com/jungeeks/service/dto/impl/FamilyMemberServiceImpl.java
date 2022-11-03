@@ -10,33 +10,32 @@ import com.jungeeks.service.dto.FamilyMemberService;
 import com.jungeeks.security.service.AuthorizationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Slf4j
-@Service
+@Service("accounts-familyMemberServiceImpl")
 public class FamilyMemberServiceImpl implements FamilyMemberService {
 
-    private UserService userService;
-    private AuthorizationService authorizationService;
-
+    private final UserService userService;
+    private final AuthorizationService authorizationService;
 
     @Autowired
-    public void setUserService(UserService userService) {
+    public FamilyMemberServiceImpl(@Qualifier("accounts-userServiceImpl") UserService userService,
+                                   AuthorizationService authorizationService) {
         this.userService = userService;
-    }
-
-    @Autowired
-    public void setAuthorizationService(AuthorizationService authorizationService) {
         this.authorizationService = authorizationService;
     }
 
     @Override
     public List<FamilyMemberDto> getFamilyMembers(String familyId) {
         List<User> familyMembers = userService.getAllByFamilyId(familyId);
-        String currUserUid = authorizationService.getUser().getUid();
+        String currUserUid = getUid();
+
         log.debug(String.format("Found %s users by familyId: " + familyId, familyMembers.size()));
+
         return familyMembers.stream()
                 .filter(x -> !x.getFirebaseId().equals(currUserUid))
                 .filter(x -> x.getUser_status() != USER_STATUS.REMOVED && x.getUser_status() != USER_STATUS.BANNED)
@@ -50,5 +49,10 @@ public class FamilyMemberServiceImpl implements FamilyMemberService {
                                 .build())
                 )
                 .toList();
+    }
+
+
+    private String getUid() {
+        return authorizationService.getUser().getUid();
     }
 }

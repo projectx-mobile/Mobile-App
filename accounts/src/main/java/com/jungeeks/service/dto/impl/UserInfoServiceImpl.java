@@ -12,41 +12,29 @@ import com.jungeeks.security.service.AuthorizationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
-
-@Service
 @Slf4j
+@Service("accounts-userInfoServiceImpl")
 public class UserInfoServiceImpl implements UserInfoService {
 
     private AuthorizationService authorizationService;
     private UserService userService;
     private FamilyMemberService familyMemberService;
 
-    @Autowired
-    public void setAuthorizationService(AuthorizationService authorizationService) {
+    public UserInfoServiceImpl(AuthorizationService authorizationService,
+                               @Qualifier("accounts-userServiceImpl") UserService userService,
+                               FamilyMemberService familyMemberService) {
         this.authorizationService = authorizationService;
-    }
-
-    @Autowired
-    @Qualifier("accounts_userServiceImpl")
-    public void setUserService(UserService userService) {
         this.userService = userService;
-    }
-
-    @Autowired
-    public void setFamilyMemberService(FamilyMemberService familyMemberService) {
         this.familyMemberService = familyMemberService;
     }
 
     public UserInfoDto getUserInfoByUserId(Long id) {
-        String uid = authorizationService.getUser().getUid();
-        User authUser = userService.getUserByUid(uid);
+        User authUser = userService.getUserByUid(getUid());
         String authUserFamilyId = authUser.getFamily().getId();
         User user = userService.getUserById(id);
         if (Objects.isNull(user) || !user.getFamily().getId().equals(authUserFamilyId)) {
@@ -82,8 +70,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public FamilyIdDto getFamilyId() {
-        String uid = authorizationService.getUser().getUid();
-        String id = userService.getUserByUid(uid).getFamily().getId();
+        String id = userService.getUserByUid(getUid()).getFamily().getId();
         return FamilyIdDto.builder()
                 .id(id)
                 .build();
@@ -91,7 +78,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public UserInfoDto getCurrentUserInfo() {
-        String uid = authorizationService.getUser().getUid();
-        return getUserInfoByUserUId(uid);
+        return getUserInfoByUserUId(getUid());
+    }
+
+    private String getUid() {
+        return authorizationService.getUser().getUid();
     }
 }

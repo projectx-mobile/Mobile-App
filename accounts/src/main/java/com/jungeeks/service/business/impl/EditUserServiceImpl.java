@@ -13,40 +13,32 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Slf4j
-@Service
+@Service("accounts-editUserServiceImpl")
 public class EditUserServiceImpl implements EditUserService {
 
-    private UserService userService;
-
-    private AuthorizationService authorizationService;
+    private final UserService userService;
+    private final AuthorizationService authorizationService;
 
     @Autowired
-    @Qualifier("accounts_userServiceImpl")
-    public void setUserService(UserService userService) {
+    public EditUserServiceImpl(@Qualifier("accounts-userServiceImpl")UserService userService,
+                               AuthorizationService authorizationService) {
         this.userService = userService;
-    }
-
-    @Autowired
-    public void setAuthorizationService(AuthorizationService authorizationService) {
         this.authorizationService = authorizationService;
     }
 
     @Override
     public boolean changeUserName(String userName) {
-        String uid = getUid();
-        return userService.changeUserName(uid, userName);
+        return userService.changeUserName(getUid(), userName);
     }
 
     @Override
     public boolean changeUserStatus(USER_STATUS user_status) {
-        String uid = getUid();
-        return userService.changeUserStatus(uid, user_status);
+        return userService.changeUserStatus(getUid(), user_status);
     }
 
     @Override
     public boolean deleteFamilyMember(Long userId) {
-        String uid = getUid();
-        User user = userService.getUserByUid(uid);
+        User user = userService.getUserByUid(getUid());
         if (user.getUser_role() == USER_ROLE.PARENT) {
             return userService.deleteFamilyMember(userId);
         } else {

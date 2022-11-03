@@ -29,10 +29,10 @@ public class AccountsExceptionController {
         return new ResponseEntity<>(invalidRequestException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(FamilyNotFoundException.class)
-    public ResponseEntity<Object> handleMethodFamilyNotFoundException(FamilyNotFoundException familyNotFoundException){
-        log.warn("Bad request by {}", familyNotFoundException.getMessage());
-        return new ResponseEntity<>(familyNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<Object> handleMethodFamilyNotFoundException(BusinessException businessException){
+        log.warn("Bad request by {}", businessException.getMessage());
+        return new ResponseEntity<>(businessException.getError_code(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NotEnoughRightsException.class)

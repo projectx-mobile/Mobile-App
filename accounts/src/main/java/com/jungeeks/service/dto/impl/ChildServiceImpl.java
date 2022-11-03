@@ -13,20 +13,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Slf4j
-@Service
+@Service("accounts-childServiceImpl")
 public class ChildServiceImpl implements ChildService {
 
-    private AuthorizationService authorizationService;
-    private UserService userService;
+    private final AuthorizationService authorizationService;
+    private final UserService userService;
 
     @Autowired
-    public void setAuthorizationService(AuthorizationService authorizationService) {
+    public ChildServiceImpl(AuthorizationService authorizationService,
+                            @Qualifier("accounts-userServiceImpl") UserService userService) {
         this.authorizationService = authorizationService;
-    }
-
-    @Autowired
-    @Qualifier("accounts_userServiceImpl")
-    public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
@@ -56,8 +52,6 @@ public class ChildServiceImpl implements ChildService {
 
 
     private User getUser() {
-        String uid = authorizationService.getUser().getUid();
-        return userService.getUserByUid(uid);
+        return userService.getUserByUid(authorizationService.getUser().getUid());
     }
-
 }

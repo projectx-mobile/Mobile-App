@@ -8,7 +8,6 @@ import com.jungeeks.entity.User;
 import com.jungeeks.entity.enums.REQUEST_STATUS;
 import com.jungeeks.entity.enums.TASK_STATUS;
 import com.jungeeks.entity.enums.USER_ROLE;
-import com.jungeeks.security.entity.SecurityUserFirebase;
 import com.jungeeks.security.service.AuthorizationService;
 import com.jungeeks.service.dto.ParentService;
 import com.jungeeks.service.entity.UserService;
@@ -20,21 +19,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
-@Service("accounts_parentServiceImpl")
 @Slf4j
+@Service("accounts-parentServiceImpl")
 public class ParentServiceImp implements ParentService {
 
-    private UserService userService;
-    private AuthorizationService authorizationService;
+    private final UserService userService;
+    private final AuthorizationService authorizationService;
 
-    @Autowired
-    public void setUserService(@Qualifier("accounts_userServiceImpl") UserService userService) {
+    public ParentServiceImp(@Qualifier("accounts-userServiceImpl")UserService userService,
+                            AuthorizationService authorizationService) {
         this.userService = userService;
-    }
-
-    @Autowired
-    public void setAuthorizationService(@Qualifier("utils_authorizationServiceImpl")
-                                            AuthorizationService authorizationService) {
         this.authorizationService = authorizationService;
     }
 
@@ -42,9 +36,10 @@ public class ParentServiceImp implements ParentService {
     public ParentHomeDto getParentHomeDate() {
         User userDb = getUserFromAuth();
         log.debug("Request getParentHomeDate by user with uid {}", userDb.getFirebaseId());
-        List<User> childs = userService.getAllByFamilyIdAndUserRole(userDb.getFamily().getId(), USER_ROLE.CHILD);
 
+        List<User> childs = userService.getAllByFamilyIdAndUserRole(userDb.getFamily().getId(), USER_ROLE.CHILD);
         log.debug("Number of childs {}", childs.size());
+
         List<ChildDto> childDtos = getChildDtoList(childs);
         return ParentHomeDto.builder()
                 .familyId(userDb.getFamily().getId())
@@ -55,6 +50,7 @@ public class ParentServiceImp implements ParentService {
 
     private List<ChildDto> getChildDtoList(List<User> childs) {
         log.debug("Mapping list child to list childDto");
+
         return childs.stream()
                 .map((x) -> {
                     String[] split = x.getPhoto().size() == 0 ? null : x.getPhoto().get(0).getPath().split("/");
@@ -84,7 +80,7 @@ public class ParentServiceImp implements ParentService {
     }
 
     private User getUserFromAuth() {
-        String uid = authorizationService.getUser().getUid();
-        return userService.getUserByUid(uid);
+        return userService.getUserByUid(authorizationService.getUser().getUid());
     }
 }
+

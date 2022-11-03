@@ -24,32 +24,24 @@ import java.util.List;
 import java.util.Objects;
 
 @Slf4j
-@Service
+@Service("accounts-userPhotoServiceImpl")
 public class UserPhotoServiceImpl implements UserPhotoService {
 
-    private UserService userService;
-    private PhotoStorageService photoStorageService;
-    private AuthorizationService authorizationService;
+    private final UserService userService;
+    private final PhotoStorageService photoStorageService;
+    private final AuthorizationService authorizationService;
 
-    @Autowired
-    public void setPhotoStorageService(PhotoStorageService photoStorageService) {
-        this.photoStorageService = photoStorageService;
-    }
-
-    @Autowired
-    public void setAuthorizationService(AuthorizationService authorizationService) {
-        this.authorizationService = authorizationService;
-    }
-
-    @Autowired
-    public void setUserService(@Qualifier("accounts_userServiceImpl") UserService userService) {
+    public UserPhotoServiceImpl(@Qualifier("accounts-userServiceImpl") UserService userService,
+                                PhotoStorageService photoStorageService,
+                                AuthorizationService authorizationService) {
         this.userService = userService;
+        this.photoStorageService = photoStorageService;
+        this.authorizationService = authorizationService;
     }
 
     @Override
     public File getUserPhoto(String path) {
-        String uid = getUid();
-        User user = userService.getUserByUid(uid);
+        User user = userService.getUserByUid(getUid());
         return getFile(path, user);
     }
 
@@ -62,8 +54,7 @@ public class UserPhotoServiceImpl implements UserPhotoService {
     @Transactional
     @Override
     public String addUserPhoto(@NonNull MultipartFile multipartFile) {
-        String uid = getUid();
-        User user = userService.getUserByUid(uid);
+        User user = userService.getUserByUid(getUid());
         List<Photo> photo = user.getPhoto();
         if (Objects.isNull(photo)) {
             photo = new ArrayList<>();
@@ -81,8 +72,7 @@ public class UserPhotoServiceImpl implements UserPhotoService {
     @Modifying
     @Override
     public void updateUserPhoto(String path, MultipartFile multipartFile) {
-        String uid = getUid();
-        User user = userService.getUserByUid(uid);
+        User user = userService.getUserByUid(getUid());
         Photo photo = user.getPhoto().stream()
                 .filter(x -> x.getPath().equals(path))
                 .findFirst()
@@ -95,8 +85,7 @@ public class UserPhotoServiceImpl implements UserPhotoService {
     @Modifying
     @Override
     public void deleteUserPhoto(String path) {
-        String uid = getUid();
-        User user = userService.getUserByUid(uid);
+        User user = userService.getUserByUid(getUid());
         List<Photo> userPhotos = user.getPhoto();
         Photo photo = userPhotos.stream()
                 .filter(x -> x.getPath().equals(path))
@@ -119,6 +108,7 @@ public class UserPhotoServiceImpl implements UserPhotoService {
             throw new PathNotFoundException("Photo not found");
         }
     }
+
     private String getUid() {
         return authorizationService.getUser().getUid();
     }

@@ -1,6 +1,5 @@
 package com.jungeeks.repository;
 
-import com.jungeeks.entity.Family;
 import com.jungeeks.entity.User;
 import com.jungeeks.entity.enums.USER_ROLE;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository("accounts_userRepository")
+@Repository
 public interface AccountsUserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findUserById(Long id);

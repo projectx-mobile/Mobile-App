@@ -1,7 +1,5 @@
 package com.jungeeks.service.entity.impl;
 
-import com.jungeeks.dto.NotificationDto;
-import com.jungeeks.dto.TaskDto;
 import com.jungeeks.entity.ChildNotification;
 import com.jungeeks.entity.ParentNotification;
 import com.jungeeks.entity.User;
@@ -20,19 +18,20 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Slf4j
-@Service("accounts_userServiceImpl")
+@Service("accounts-userServiceImpl")
 public class UserServiceImpl implements UserService {
 
     private AccountsUserRepository accountsUserRepository;
 
     @Autowired
-    @Qualifier("accounts_userRepository")
-    public void setUserRepository(AccountsUserRepository accountsUserRepository) {
+    public UserServiceImpl(AccountsUserRepository accountsUserRepository) {
         this.accountsUserRepository = accountsUserRepository;
     }
 
     @Override
     public User getUserById(Long userId) {
+        log.debug("Request findUserById by id {}", userId);
+
         return accountsUserRepository.findUserById(userId)
                 .orElseThrow(() -> new UserNotFoundException(String.format("User with id %s not found", userId)));
     }
@@ -40,6 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllByFamilyId(String familyId) {
         log.debug("Request getAllByFamilyId by familyId {}", familyId);
+
         return accountsUserRepository.findAllByFamilyId(familyId).orElseThrow(
                 () -> new UserNotFoundException(String.format("Family with id %s not found", familyId)));
     }
@@ -47,6 +47,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllByFamilyIdAndUserRole(String familyId, USER_ROLE user_role) {
         log.debug("Request getAllByFamilyIdAndUserRole by familyId {} and userRole {}", familyId, user_role);
+
         return accountsUserRepository.findAllByFamilyIdAndUser_role(familyId, user_role).orElseThrow(
                 () -> new UserNotFoundException(String.format("User with familyId %s and role %s not found",
                         familyId, user_role))
@@ -56,6 +57,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUid(String uid) {
         log.debug("Request getUserByFirebaseId by uid {}", uid);
+
         return accountsUserRepository.findByFirebaseId(uid).orElseThrow(
                 () -> new UserNotFoundException(String.format("User with uid %s not found", uid)));
     }
@@ -66,8 +68,10 @@ public class UserServiceImpl implements UserService {
     public boolean changeUserStatus(String uId, USER_STATUS newUserStatus) {
         User user = accountsUserRepository.findByFirebaseId(uId)
                 .orElseThrow(() -> new UserNotFoundException(String.format("User with uid %s not found", uId)));
+
         user.setUser_status(newUserStatus);
-        if (newUserStatus.equals(USER_STATUS.REMOVED)||newUserStatus.equals(USER_STATUS.BANNED)){
+
+        if (newUserStatus.equals(USER_STATUS.REMOVED) || newUserStatus.equals(USER_STATUS.BANNED)){
             USER_ROLE user_role = user.getUser_role();
             switch (user_role){
                 case PARENT -> {
@@ -88,7 +92,8 @@ public class UserServiceImpl implements UserService {
                 }
             }
         }
-        log.debug(String.format("Changed user_status from uId:%s",uId));
+        log.debug("Changed user_status from uId:{}",uId);
+
         return true;
     }
 
@@ -99,7 +104,8 @@ public class UserServiceImpl implements UserService {
         User user = accountsUserRepository.findByFirebaseId(uId)
                 .orElseThrow(() -> new UserNotFoundException(String.format("User with uid %s not found", uId)));
         user.setName(newName);
-        log.debug(String.format("Changed username from uId:%s",uId));
+        log.debug("Changed username from uId:{}",uId);
+
         return true;
     }
 
@@ -110,7 +116,8 @@ public class UserServiceImpl implements UserService {
         User user = accountsUserRepository.findUserById(userId)
                 .orElseThrow(() -> new UserNotFoundException(String.format("User with id %s not found", userId)));
         user.setUser_status(USER_STATUS.REMOVED);
-        log.debug(String.format("Delete family member by id %s",userId));
+        log.debug("Delete family member by id {}",userId);
+
         return true;
     }
 }

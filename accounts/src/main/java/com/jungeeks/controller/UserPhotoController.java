@@ -20,23 +20,27 @@ import java.io.File;
 @Slf4j
 public class UserPhotoController {
 
-    @Autowired
-    private UserPhotoService userPhotoService;
+    private final UserPhotoService userPhotoService;
 
-    @PostMapping("/photo/add")
-    public ResponseEntity<String> addUserPhoto(@RequestParam(name = "photo") MultipartFile multipartFile) {
-        userPhotoService.addUserPhoto(multipartFile);
-        return ResponseEntity.status(HttpStatus.OK).body("photo success added");
+    @Autowired
+    public UserPhotoController(UserPhotoService userPhotoService) {
+        this.userPhotoService = userPhotoService;
     }
 
-    @PostMapping("/photo/update")
+    @PostMapping("/add")
+    public ResponseEntity<String> addUserPhoto(@RequestParam(name = "photo") MultipartFile multipartFile) {
+        userPhotoService.addUserPhoto(multipartFile);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/update")
     public ResponseEntity<String> updateUserPhoto(@RequestParam(name = "path") String path,
                                                   @RequestParam(name = "photo") MultipartFile multipartFile) {
         userPhotoService.updateUserPhoto(path, multipartFile);
-        return ResponseEntity.status(HttpStatus.OK).body("photo success updated");
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/photo/get_by_path")
+    @PostMapping("/get-by-path")
     public ResponseEntity<FileSystemResource> getUserPhoto(@RequestParam(name = "path") String path) {
         File userPhoto = userPhotoService.getUserPhoto(path);
         return ResponseEntity.ok()
@@ -44,7 +48,7 @@ public class UserPhotoController {
                 .body(new FileSystemResource(userPhoto));
     }
 
-    @PostMapping("/photo/get-by-userId-and-path")
+    @PostMapping("/get-by-userId-and-path")
     public ResponseEntity<FileSystemResource> getUserPhoto(@RequestParam(name = "userId") Long userId,
                                                            @RequestParam(name = "path") String path) {
         File userPhoto = userPhotoService.getUserPhoto(userId, path);
@@ -53,7 +57,7 @@ public class UserPhotoController {
                 .body(new FileSystemResource(userPhoto));
     }
 
-    @PostMapping("/photo/delete")
+    @PostMapping("/delete")
     public ResponseEntity<String> deleteUserPhoto(@RequestParam(name = "path") String path) {
         userPhotoService.deleteUserPhoto(path);
         return ResponseEntity.ok()

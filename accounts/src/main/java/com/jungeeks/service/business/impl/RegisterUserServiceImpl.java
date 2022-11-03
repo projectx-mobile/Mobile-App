@@ -1,23 +1,14 @@
 package com.jungeeks.service.business.impl;
 
 import com.jungeeks.RandomString;
-import com.jungeeks.aws.service.photoStorage.PhotoStorageService;
 import com.jungeeks.entity.*;
-import com.jungeeks.entity.enums.NOTIFICATION_PERIOD;
 import com.jungeeks.entity.enums.USER_ROLE;
 import com.jungeeks.entity.enums.USER_STATUS;
-import com.jungeeks.exception.FamilyNotFoundException;
 import com.jungeeks.exception.UserIsAlreadyExistException;
-import com.jungeeks.exception.UserNotFoundException;
-import com.jungeeks.repository.AccountsFamilyRepository;
-import com.jungeeks.repository.AccountsUserRepository;
-import com.jungeeks.security.entity.SecurityUserFirebase;
 import com.jungeeks.security.service.AuthorizationService;
 import com.jungeeks.service.business.RegisterUserService;
-import com.jungeeks.service.dto.FamilyMemberService;
 import com.jungeeks.service.entity.FamilyService;
 import com.jungeeks.service.entity.UserService;
-import com.jungeeks.service.entity.impl.FamilyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.Modifying;
@@ -26,31 +17,20 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
-/**
- * The type Register user service.
- */
-@Service
+@Service("accounts-registerUserServiceImpl")
 public class RegisterUserServiceImpl implements RegisterUserService {
 
-    private AuthorizationService authorizationService;
-    private FamilyService familyService;
-    private UserService userService;
+    private final AuthorizationService authorizationService;
+    private final FamilyService familyService;
+    private final UserService userService;
 
     public static final String DEFAULT_PHOTO_PATH = "default_account_photo.jpeg";
 
     @Autowired
-    public void setAuthorizationService(AuthorizationService authorizationService) {
+    public RegisterUserServiceImpl(AuthorizationService authorizationService, FamilyService familyService,
+                                   @Qualifier("accounts-userServiceImpl") UserService userService) {
         this.authorizationService = authorizationService;
-    }
-
-    @Autowired
-    public void setFamilyService(FamilyService familyService) {
         this.familyService = familyService;
-    }
-
-    @Autowired
-    @Qualifier("accounts_userServiceImpl")
-    public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
@@ -58,7 +38,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Modifying
     @Override
     public boolean registerByInvite(String username, String familyId, USER_ROLE user_role) {
-        String uid = getUserFromAuth();
+        String uid = getUser();
         Family family = familyService.getFamilyById(familyId);
 
         User user = userService.getUserByUid(uid);
@@ -96,7 +76,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Modifying
     @Override
     public boolean registerParentUser(String username) {
-        String uid = getUserFromAuth();
+        String uid = getUser();
         RandomString randomString = new RandomString(12);
         Family build = Family.builder()
                 .id(randomString.nextString())
@@ -124,7 +104,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     }
 
 
-    private String getUserFromAuth() {
+    private String getUser() {
         return authorizationService.getUser().getUid();
     }
 }

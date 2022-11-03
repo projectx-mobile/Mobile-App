@@ -8,6 +8,8 @@ import com.jungeeks.entity.enums.USER_STATUS;
 import com.jungeeks.security.service.AuthorizationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,14 +21,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class PersonalInfoController {
 
-    @Autowired
-    private UserInfoService userInfoService;
+    private final UserInfoService userInfoService;
+    private final EditUserService editUserService;
 
     @Autowired
-    private EditUserService editUserService;
-
-    @Autowired
-    private AuthorizationService authorizationService;
+    public PersonalInfoController(UserInfoService userInfoService, EditUserService editUserService) {
+        this.userInfoService = userInfoService;
+        this.editUserService = editUserService;
+    }
 
     @GetMapping()
     public ResponseEntity<UserInfoDto> getPersonalInfo() {
@@ -38,22 +40,22 @@ public class PersonalInfoController {
         return ResponseEntity.ok(userInfoService.getUserInfoByUserId(userId));
     }
 
-    @PostMapping("/change-name")
+    @PutMapping("/change-name")
     public ResponseEntity<String> changeUserName(@RequestParam(name = "name") String name){
         editUserService.changeUserName(name);
-        return ResponseEntity.ok("Name changed");
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<String> deleteUser(){
         editUserService.changeUserStatus(USER_STATUS.REMOVED);
-        return ResponseEntity.ok("Account deleted");
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/delete/member")
+    @DeleteMapping("/delete/member")
     public ResponseEntity<String> deleteFamilyMember(@RequestParam(name = "userId") Long userId){
         editUserService.deleteFamilyMember(userId);
-        return ResponseEntity.ok("Account deleted");
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/family")
