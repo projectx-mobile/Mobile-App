@@ -2,6 +2,7 @@ package com.jungeeks.service.entity.impl;
 
 import com.jungeeks.exception.BusinessException;
 import com.jungeeks.exception.enums.ERROR_CODE;
+import com.jungeeks.service.business.impl.RegisterUserServiceImpl;
 import com.jungeeks.service.entity.UserPhotoService;
 import com.jungeeks.service.entity.UserService;
 import com.jungeeks.aws.service.photoStorage.PhotoStorageService;
@@ -61,7 +62,7 @@ public class UserPhotoServiceImpl implements UserPhotoService {
             photo = new ArrayList<>();
         }
         String path = user.getId() + "_" + user.getPhoto().size() + ".jpeg";
-        photo.add(Photo.builder()
+        photo.set(0,Photo.builder()
                 .path(path)
                 .creationDate(LocalDateTime.now())
                 .build());
@@ -74,14 +75,18 @@ public class UserPhotoServiceImpl implements UserPhotoService {
     @Override
     public void updateUserPhoto(String path, MultipartFile multipartFile) {
         User user = userService.getUserByUid(getUid());
-        Photo photo = user.getPhoto().stream()
+        List<Photo> photos = user.getPhoto();
+        Photo photo = photos.stream()
                 .filter(x -> x.getPath().equals(path))
                 .findFirst()
                 .orElseThrow(() -> new BusinessException((String.format("This path %s not found", path)),
-                                                                ERROR_CODE.PATH_NOT_FOUND,
-                                                                HttpStatus.NOT_FOUND));
+                        ERROR_CODE.PATH_NOT_FOUND,
+                        HttpStatus.NOT_FOUND));
+        addUserPhoto(multipartFile);
+        if (! (photos.size() == 1 && photo.getPath().equals(RegisterUserServiceImpl.DEFAULT_PHOTO_PATH))) {
+            photoStorageService.update(photo.getPath(), multipartFile, PHOTO_TYPE.USER);
+        }
         photo.setCreationDate(LocalDateTime.now());
-        photoStorageService.update(photo.getPath(), multipartFile, PHOTO_TYPE.USER);
     }
 
     @Transactional
@@ -95,9 +100,15 @@ public class UserPhotoServiceImpl implements UserPhotoService {
                 .findFirst()
                 .orElseThrow(() -> new BusinessException((String.format("This path %s not found", path)),
                         ERROR_CODE.PATH_NOT_FOUND, HttpStatus.NOT_FOUND));
-
-        userPhotos.remove(photo);
-        photoStorageService.delete(photo.getPath(), PHOTO_TYPE.USER);
+        if (userPhotos.size() == 1) {
+            userPhotos.set(0, Photo.builder()
+                    .path(RegisterUserServiceImpl.DEFAULT_PHOTO_PATH)
+                    .creationDate(LocalDateTime.now())
+                    .build());
+        } else {
+            userPhotos.remove(photo);
+            photoStorageService.delete(photo.getPath(), PHOTO_TYPE.USER);
+        }
     }
 
 

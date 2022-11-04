@@ -1,6 +1,7 @@
 package com.jungeeks.service.dto.impl;
 
 import com.jungeeks.dto.FamilyIdDto;
+import com.jungeeks.entity.Family;
 import com.jungeeks.exception.BusinessException;
 import com.jungeeks.exception.enums.ERROR_CODE;
 import com.jungeeks.service.entity.UserService;
@@ -12,6 +13,7 @@ import com.jungeeks.service.dto.UserInfoService;
 import com.jungeeks.security.service.AuthorizationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -57,7 +59,11 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public UserInfoDto getUserInfoByUserUId(String uId) {
         User user = userService.getUserByUid(uId);
-        List<FamilyMemberDto> familyMembers = familyMemberService.getFamilyMembers(user.getFamily().getId());
+        Family family = user.getFamily();
+        if (Objects.isNull(family)){
+            throw new BusinessException("User not registered",ERROR_CODE.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+        }
+        List<FamilyMemberDto> familyMembers = familyMemberService.getFamilyMembers(family.getId());
         log.debug("Get userinfo by uId");
 
         return UserInfoDto.builder()
