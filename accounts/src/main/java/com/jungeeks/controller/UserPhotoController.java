@@ -26,12 +26,6 @@ public class UserPhotoController {
         this.userPhotoService = userPhotoService;
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<String> addUserPhoto(@RequestParam(name = "photo") MultipartFile multipartFile) {
-        userPhotoService.addUserPhoto(multipartFile);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @PutMapping("/update")
     public ResponseEntity<String> updateUserPhoto(@RequestParam String path,
                                                   @RequestParam MultipartFile photo) {
