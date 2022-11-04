@@ -6,6 +6,9 @@ subprojects {
 	group = 'com.projectX'
 	version = '0.0.1'
 
+	ext {
+		set('springCloudVersion', "2021.0.4")
+	}
 
 	apply plugin: 'java'
 	apply plugin: 'io.spring.dependency-management'

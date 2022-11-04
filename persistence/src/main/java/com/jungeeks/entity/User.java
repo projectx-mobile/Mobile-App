@@ -3,8 +3,6 @@ package com.jungeeks.entity;
 import com.jungeeks.entity.enums.USER_ROLE;
 import com.jungeeks.entity.enums.USER_STATUS;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;

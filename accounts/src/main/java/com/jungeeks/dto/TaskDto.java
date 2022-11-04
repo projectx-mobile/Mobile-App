@@ -1,18 +1,14 @@
-package com.jungeeks.response;
+package com.jungeeks.dto;
 
 import com.jungeeks.entity.enums.TASK_STATUS;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
-
-/**
- * The type Task response.
- */
 @Builder
 @Data
+public class TaskDto {
 
-public class TaskResponse {
     private String title;
     private Long point;
     private TASK_STATUS taskStatus;

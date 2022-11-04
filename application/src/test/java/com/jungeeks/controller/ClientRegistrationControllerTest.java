@@ -3,6 +3,7 @@ package com.jungeeks.controller;
 import com.jungeeks.entity.ClientApp;
 import com.jungeeks.entity.User;
 import com.jungeeks.filter.SecurityFilter;
+import com.jungeeks.repository.AccountsUserRepository;
 import com.jungeeks.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
@@ -25,8 +26,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 
@@ -41,9 +40,12 @@ public class ClientRegistrationControllerTest {
     private SecurityFilter securityFilter;
     private MockMvc mockMvc;
     @Autowired
-    private UserRepository userRepository;
+    private AccountsUserRepository accountsUserRepository;
     @Value("${FIREBASE_PROJECT_ID}")
     private String firebaseProjectId;
+
+    @Autowired
+    private UserRepository userRepository;
 
     private static final String FIREBASE_USER_ID = "UDlRPKRG8AaQfqXL3IL3mwXxtl32";
     private static final String NEW_REGISTRATION_TOKEN = "ewf3443wefdd34rssdf";
@@ -69,7 +71,7 @@ public class ClientRegistrationControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
-        User userAfterAddNewToken = userRepository.findByFirebaseId(FIREBASE_USER_ID).orElse(null);
+        User userAfterAddNewToken = accountsUserRepository.findByFirebaseId(FIREBASE_USER_ID).orElse(null);
         Assertions.assertNotNull(userAfterAddNewToken);
 
         ClientApp clientAppsAfterAddNewToken = userAfterAddNewToken.getClientApps()
@@ -87,7 +89,7 @@ public class ClientRegistrationControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
-        User userAfterUpdateToken = userRepository.findByFirebaseId(FIREBASE_USER_ID).orElse(null);
+        User userAfterUpdateToken = accountsUserRepository.findByFirebaseId(FIREBASE_USER_ID).orElse(null);
         Assertions.assertNotNull(userAfterUpdateToken);
 
         ClientApp clientAppAfterUpdate = userAfterUpdateToken.getClientApps()

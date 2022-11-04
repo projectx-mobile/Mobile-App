@@ -6,13 +6,14 @@ spring:
 
   liquibase:
     enabled: false
+    change-log: classpath:db/changelog/db.changelog-master.yaml
   jpa:
     hibernate:
       ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-    show-sql: true
+    show-sql: false
 
   thymeleaf:
     cache: false

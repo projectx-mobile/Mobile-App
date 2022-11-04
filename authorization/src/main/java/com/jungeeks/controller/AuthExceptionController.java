@@ -8,14 +8,13 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.MailSendException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
 @Slf4j
-public class ExceptionController {
+public class AuthExceptionController {
 
     @ExceptionHandler(RegistrationFailedException.class)
     public ResponseEntity<Object> handleMethodRegistrationFailedException(RegistrationFailedException registrationFailedException){
