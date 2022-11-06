@@ -8,7 +8,6 @@ import com.jungeeks.entity.enums.TASK_STATUS;
 import com.jungeeks.entity.enums.TASK_TYPE;
 import com.jungeeks.security.service.AuthorizationService;
 import com.jungeeks.service.dto.ChildTaskService;
-import com.jungeeks.service.entity.CategoryService;
 import com.jungeeks.service.entity.FamilyTaskService;
 import com.jungeeks.service.entity.TaskService;
 import com.jungeeks.service.entity.UserService;
