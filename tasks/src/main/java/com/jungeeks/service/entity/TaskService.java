@@ -4,7 +4,7 @@ import com.jungeeks.entity.Task;
 
 public interface TaskService {
 
-    Task findByTemplate(String template);
+    Task findByTitle(String title);
 
     Task save(Task task);
 }

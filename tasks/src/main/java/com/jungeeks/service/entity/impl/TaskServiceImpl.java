@@ -22,10 +22,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task findByTemplate(String template) {
-        return taskRepository.findByTitle(template).orElseThrow(
-                () -> new BusinessException(String.format("Task with template %s not found", template), NOT_FOUND)
-        );
+    public Task findByTitle(String title) {
+        return taskRepository.findByTitle(title).orElseThrow(
+                () -> new BusinessException(String.format("Task with template %s not found", title), NOT_FOUND));
     }
 
     @Override

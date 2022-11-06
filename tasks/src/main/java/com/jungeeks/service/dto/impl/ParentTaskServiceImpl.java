@@ -1,13 +1,13 @@
 package com.jungeeks.service.dto.impl;
 
-import com.jungeeks.dto.ChildNewTaskDto;
+import com.jungeeks.dto.ParentNewTaskDto;
 import com.jungeeks.entity.FamilyTask;
 import com.jungeeks.entity.Task;
 import com.jungeeks.entity.User;
 import com.jungeeks.entity.enums.TASK_STATUS;
 import com.jungeeks.entity.enums.TASK_TYPE;
 import com.jungeeks.security.service.AuthorizationService;
-import com.jungeeks.service.dto.ChildTaskService;
+import com.jungeeks.service.dto.ParentTaskService;
 import com.jungeeks.service.entity.CategoryService;
 import com.jungeeks.service.entity.FamilyTaskService;
 import com.jungeeks.service.entity.TaskService;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ChildTaskServiceImpl implements ChildTaskService {
+public class ParentTaskServiceImpl implements ParentTaskService {
 
     private final TaskService taskService;
     private final AuthorizationService authorizationService;
@@ -26,10 +26,10 @@ public class ChildTaskServiceImpl implements ChildTaskService {
     private final FamilyTaskService familyTaskService;
 
     @Autowired
-    public ChildTaskServiceImpl(TaskService taskService,
-                                AuthorizationService authorizationService,
-                                UserService userService,
-                                FamilyTaskService familyTaskService) {
+    public ParentTaskServiceImpl(TaskService taskService,
+                                 AuthorizationService authorizationService,
+                                 UserService userService,
+                                 FamilyTaskService familyTaskService) {
         this.taskService = taskService;
         this.authorizationService = authorizationService;
         this.userService = userService;
@@ -37,38 +37,41 @@ public class ChildTaskServiceImpl implements ChildTaskService {
     }
 
     @Override
-    public boolean saveTask(ChildNewTaskDto childNewTaskDto) {
+    public boolean saveTask(ParentNewTaskDto parentNewTaskDto) {
         User user = userService.getUserByUid(getUid());
-        saveFamilyTask(childNewTaskDto, user);
+        saveFamilyTask(parentNewTaskDto, user);
         return true;
     }
 
-    private void saveFamilyTask(ChildNewTaskDto childNewTaskDto, User user) {
-        FamilyTask familyTask = mapChildTaskDtoToFamilyTask(childNewTaskDto, user);
+    private void saveFamilyTask(ParentNewTaskDto parentNewTaskDto, User user) {
+        List<User> childs = parentNewTaskDto.getUserIds().stream().map(userService::getUserById).toList();
+        FamilyTask familyTask = mapParentTaskDtoToFamilyTask(parentNewTaskDto, user, childs);
         Task task;
-        if (childNewTaskDto.getTemplate() != null) {
-            task = taskService.findByTitle(childNewTaskDto.getTemplate());
+        if (parentNewTaskDto.getTemplate() != null) {
+            task = taskService.findByTitle(parentNewTaskDto.getTemplate());
         } else {
             task = taskService.save(Task.builder()
                     .taskType(TASK_TYPE.CUSTOM)
-                    .title(childNewTaskDto.getTitle())
-                    .description(childNewTaskDto.getDescription())
+                    .title(parentNewTaskDto.getTitle())
+                    .description(parentNewTaskDto.getDescription())
                     .build());
         }
         familyTask.setTask(task);
         familyTaskService.save(familyTask);
     }
 
-    private FamilyTask mapChildTaskDtoToFamilyTask(ChildNewTaskDto childNewTaskDto, User user) {
+    private FamilyTask mapParentTaskDtoToFamilyTask(ParentNewTaskDto parentNewTaskDto, User user, List<User> childs) {
         return FamilyTask.builder()
-                .creation(childNewTaskDto.getCreation())
-                .deadline(childNewTaskDto.getDeadLine())
-                .rewardPoints(childNewTaskDto.getRewardPoints())
-                .repeatable(childNewTaskDto.isRepeatable())
-                .users(List.of(user))
+                .creation(parentNewTaskDto.getCreation())
+                .deadline(parentNewTaskDto.getDeadLine())
+                .rewardPoints(parentNewTaskDto.getRewardPoints())
+                .penaltyPoints(parentNewTaskDto.getPenaltyPoints())
+                .repeatable(parentNewTaskDto.isRepeatable())
+                .photoReport(parentNewTaskDto.isPhotoReport())
+                .users(childs)
                 .author(user)
                 .family(user.getFamily())
-                .taskStatus(TASK_STATUS.PENDING)
+                .taskStatus(TASK_STATUS.ACTIVE)
                 .build();
     }
 

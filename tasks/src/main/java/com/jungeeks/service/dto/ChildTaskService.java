@@ -1,8 +1,8 @@
 package com.jungeeks.service.dto;
 
-import com.jungeeks.dto.SaveNewTaskDto;
+import com.jungeeks.dto.ChildNewTaskDto;
 
 public interface ChildTaskService {
 
-    boolean saveTask(SaveNewTaskDto saveNewTaskDto);
+    boolean saveTask(ChildNewTaskDto childNewTaskDto);
 }
