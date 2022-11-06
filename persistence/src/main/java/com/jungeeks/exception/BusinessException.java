@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
-import javax.persistence.GeneratedValue;
-
 @Getter
 @Setter
 @NoArgsConstructor
