@@ -1,6 +1,7 @@
 package com.jungeeks.controller;
 
 import com.jungeeks.dto.ChildNewTaskDto;
+import com.jungeeks.dto.ConfirmTaskDto;
 import com.jungeeks.dto.ParentNewTaskDto;
 import com.jungeeks.service.dto.ChildTaskService;
 import com.jungeeks.service.dto.ParentTaskService;
@@ -8,10 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/task")
 @RestController
@@ -27,15 +25,27 @@ public class TaskController {
         this.parentTaskService = parentTaskService;
     }
 
-    @PostMapping("/child/new-task")
-    public ResponseEntity saveNewTask(@RequestBody ChildNewTaskDto childNewTaskDto) {
+    @PostMapping("/child/new")
+    public ResponseEntity<HttpStatus> saveNewTask(@RequestBody ChildNewTaskDto childNewTaskDto) {
         childTaskService.saveTask(childNewTaskDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/parent/new-task")
-    public ResponseEntity saveNewTask(@RequestBody ParentNewTaskDto parentNewTaskDto) {
+    @PostMapping("/parent/new")
+    public ResponseEntity<HttpStatus> saveNewTask(@RequestBody ParentNewTaskDto parentNewTaskDto) {
         parentTaskService.saveTask(parentNewTaskDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/parent/confirm")
+    public ResponseEntity<HttpStatus> confirmTask(@RequestBody ConfirmTaskDto confirmTaskDto) {
+        parentTaskService.confirmTask(confirmTaskDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/parent/reject")
+    public ResponseEntity<HttpStatus> rejectTask(@RequestParam Long taskId) {
+        parentTaskService.rejectTask(taskId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

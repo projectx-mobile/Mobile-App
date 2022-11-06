@@ -12,12 +12,14 @@ import com.jungeeks.service.entity.CategoryService;
 import com.jungeeks.service.entity.FamilyTaskService;
 import com.jungeeks.service.entity.TaskService;
 import com.jungeeks.service.entity.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 public class ChildTaskServiceImpl implements ChildTaskService {
 
     private final TaskService taskService;
@@ -39,6 +41,8 @@ public class ChildTaskServiceImpl implements ChildTaskService {
     @Override
     public boolean saveTask(ChildNewTaskDto childNewTaskDto) {
         User user = userService.getUserByUid(getUid());
+        log.debug("Find user with id {}", user.getId());
+
         saveFamilyTask(childNewTaskDto, user);
         return true;
     }
@@ -46,6 +50,8 @@ public class ChildTaskServiceImpl implements ChildTaskService {
     private void saveFamilyTask(ChildNewTaskDto childNewTaskDto, User user) {
         FamilyTask familyTask = mapChildTaskDtoToFamilyTask(childNewTaskDto, user);
         Task task;
+        log.debug("In ChildNewTaskDto template {}", childNewTaskDto.getTemplate());
+
         if (childNewTaskDto.getTemplate() != null) {
             task = taskService.findByTitle(childNewTaskDto.getTemplate());
         } else {
@@ -55,6 +61,7 @@ public class ChildTaskServiceImpl implements ChildTaskService {
                     .description(childNewTaskDto.getDescription())
                     .build());
         }
+        log.debug("Set task in familyTask with id {}", task.getId());
         familyTask.setTask(task);
         familyTaskService.save(familyTask);
     }

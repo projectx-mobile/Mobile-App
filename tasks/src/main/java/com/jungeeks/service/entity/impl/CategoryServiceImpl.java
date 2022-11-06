@@ -4,6 +4,7 @@ import com.jungeeks.entity.Category;
 import com.jungeeks.exception.BusinessException;
 import com.jungeeks.repository.CategoryRepository;
 import com.jungeeks.service.entity.CategoryService;
+import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import static com.jungeeks.exception.enums.ERROR_CODE.FAMILY_NOT_FOUND;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
+@Slf4j
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
@@ -25,6 +27,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findByTitle(String title) {
+        log.debug("Request findByTitle with title {}", title);
+
         return categoryRepository.findByTitle(title).orElseThrow(
                 () -> new BusinessException(String.format("Category with title %s not found", title), NOT_FOUND));
     }

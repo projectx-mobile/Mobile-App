@@ -1,23 +1,27 @@
 package com.jungeeks.service.dto.impl;
 
+import com.jungeeks.dto.ConfirmTaskDto;
 import com.jungeeks.dto.ParentNewTaskDto;
 import com.jungeeks.entity.FamilyTask;
 import com.jungeeks.entity.Task;
 import com.jungeeks.entity.User;
 import com.jungeeks.entity.enums.TASK_STATUS;
 import com.jungeeks.entity.enums.TASK_TYPE;
+import com.jungeeks.exception.BusinessException;
+import com.jungeeks.exception.enums.ERROR_CODE;
 import com.jungeeks.security.service.AuthorizationService;
 import com.jungeeks.service.dto.ParentTaskService;
-import com.jungeeks.service.entity.CategoryService;
 import com.jungeeks.service.entity.FamilyTaskService;
 import com.jungeeks.service.entity.TaskService;
 import com.jungeeks.service.entity.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 public class ParentTaskServiceImpl implements ParentTaskService {
 
     private final TaskService taskService;
@@ -39,14 +43,70 @@ public class ParentTaskServiceImpl implements ParentTaskService {
     @Override
     public boolean saveTask(ParentNewTaskDto parentNewTaskDto) {
         User user = userService.getUserByUid(getUid());
+        log.debug("Find user with id {}", user.getId());
+
         saveFamilyTask(parentNewTaskDto, user);
+        return true;
+    }
+
+    @Override
+    public boolean confirmTask(ConfirmTaskDto confirmTaskDto) {
+        User user = userService.getUserByUid(getUid());
+        log.debug("Find user with id {}", user.getId());
+
+        FamilyTask familyTask = familyTaskService.findById(confirmTaskDto.getTaskId());
+        log.debug("FamilyTask with familyId {} and user with familyId {}", familyTask.getFamily().getId(), user.getFamily().getId());
+
+        if (familyTask.getFamily() == user.getFamily()) {
+            if (familyTask.getTaskStatus() == TASK_STATUS.PENDING) {
+                familyTask.setPhotoReport(confirmTaskDto.isPhotoReport());
+                familyTask.setRewardPoints(confirmTaskDto.getRewardPoints());
+                familyTask.setTaskStatus(TASK_STATUS.ACTIVE);
+                familyTaskService.save(familyTask);
+                log.debug("Confirm familyTask with id {}", familyTask.getId());
+
+            } else {
+                throw new BusinessException("Task status is not pending");
+            }
+        } else {
+            throw new BusinessException(String.format("Family id %s and user family id %s is not equal",
+                    familyTask.getFamily().getId(), user.getFamily().getId()), ERROR_CODE.FAMILY_ID_IS_NOT_EQUAL);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean rejectTask(Long taskId) {
+        User user = userService.getUserByUid(getUid());
+        log.debug("Find user with id {}", user.getId());
+
+        FamilyTask familyTask = familyTaskService.findById(taskId);
+        log.debug("FamilyTask with familyId {} and user with familyId {}", familyTask.getFamily().getId(), user.getFamily().getId());
+
+        if (user.getFamily() == familyTask.getFamily()) {
+            if (familyTask.getTaskStatus() == TASK_STATUS.PENDING) {
+                familyTask.setTaskStatus(TASK_STATUS.REJECT);
+                familyTaskService.save(familyTask);
+                log.debug("Reject familyTask with id {}", familyTask.getId());
+
+            } else {
+                throw new BusinessException("Task status is not pending");
+            }
+        } else {
+            throw new BusinessException(String.format("Family id %s and user family id %s is not equal",
+                    familyTask.getFamily().getId(), user.getFamily().getId()), ERROR_CODE.FAMILY_ID_IS_NOT_EQUAL);
+        }
         return true;
     }
 
     private void saveFamilyTask(ParentNewTaskDto parentNewTaskDto, User user) {
         List<User> childs = parentNewTaskDto.getUserIds().stream().map(userService::getUserById).toList();
+        log.debug("Size of child list {}", childs.size());
+
         FamilyTask familyTask = mapParentTaskDtoToFamilyTask(parentNewTaskDto, user, childs);
         Task task;
+        log.debug("In ParentNewTaskDto template {}", parentNewTaskDto.getTemplate());
+
         if (parentNewTaskDto.getTemplate() != null) {
             task = taskService.findByTitle(parentNewTaskDto.getTemplate());
         } else {
@@ -56,6 +116,8 @@ public class ParentTaskServiceImpl implements ParentTaskService {
                     .description(parentNewTaskDto.getDescription())
                     .build());
         }
+        log.debug("Find task with id {}", task.getId());
+
         familyTask.setTask(task);
         familyTaskService.save(familyTask);
     }

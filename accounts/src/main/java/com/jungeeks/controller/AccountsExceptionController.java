@@ -15,6 +15,12 @@ public class AccountsExceptionController {
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Object> handleMethodFamilyNotFoundException(BusinessException businessException){
+        if (businessException.getError_code() == null && businessException.getHttpStatus() == HttpStatus.OK) {
+            log.warn(BAD_REQUEST + " by {}", businessException.getMessage());
+
+            return new ResponseEntity<>(businessException.getMessage(), BAD_REQUEST);
+        }
+
         if (businessException.getHttpStatus() == HttpStatus.OK) {
             log.warn(BAD_REQUEST + " by {}", businessException.getMessage());
 
@@ -27,11 +33,6 @@ public class AccountsExceptionController {
             return new ResponseEntity<>(businessException.getMessage(), businessException.getHttpStatus());
         }
 
-        if (businessException.getError_code() == null && businessException.getHttpStatus() == HttpStatus.OK) {
-            log.warn(BAD_REQUEST + " by {}", businessException.getMessage());
-
-            return new ResponseEntity<>(businessException.getMessage(), BAD_REQUEST);
-        }
 
         log.warn(businessException.getHttpStatus() + " by {}", businessException.getMessage());
 
