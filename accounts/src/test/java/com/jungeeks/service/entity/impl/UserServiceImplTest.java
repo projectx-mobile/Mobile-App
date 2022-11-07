@@ -280,9 +280,10 @@ class UserServiceImplTest {
 
     @Test
     void getAllByFamilyIdAndUserRolePositive() {
-        when(accountsUserRepository.findAllByFamilyIdAndUser_role("1L", USER_ROLE.PARENT)).thenReturn(Optional.ofNullable(users));
+        when(accountsUserRepository.findAllByFamilyIdAndUser_role("1L", USER_ROLE.PARENT, USER_STATUS.ACTIVE)).
+                thenReturn(Optional.ofNullable(users));
 
-        List<User> allByFamilyIdAndUserRole = userService.getAllByFamilyIdAndUserRole("1L", USER_ROLE.PARENT);
+        List<User> allByFamilyIdAndUserRole = userService.getAllByFamilyIdAndUserRole("1L", USER_ROLE.PARENT, USER_STATUS.ACTIVE);
 
         assertEquals(allByFamilyIdAndUserRole, users);
         assertEquals(allByFamilyIdAndUserRole.get(0).getUser_role(), USER_ROLE.PARENT);
@@ -290,9 +291,9 @@ class UserServiceImplTest {
 
     @Test
     void getAllByFamilyIdAndUserRoleNegative() {
-        when(accountsUserRepository.findAllByFamilyIdAndUser_role(any(), any())).thenReturn(Optional.empty());
+        when(accountsUserRepository.findAllByFamilyIdAndUser_role(any(), any(), any())).thenReturn(Optional.empty());
 
-        assertThrows(BusinessException.class, () -> userService.getAllByFamilyIdAndUserRole("1L", USER_ROLE.PARENT));
+        assertThrows(BusinessException.class, () -> userService.getAllByFamilyIdAndUserRole("1L", USER_ROLE.PARENT, USER_STATUS.ACTIVE));
     }
 
     @Test
