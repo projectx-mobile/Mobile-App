@@ -17,7 +17,7 @@ public interface UserService {
 
     List<User> getAllByFamilyId(String familyId);
 
-    List<User> getAllByFamilyIdAndUserRole(String familyId, USER_ROLE user_role);
+    List<User> getAllByFamilyIdAndUserRole(String familyId, USER_ROLE user_role, USER_STATUS userStatus);
 
     boolean changeUserStatus(String uId, USER_STATUS newUserStatus);
 

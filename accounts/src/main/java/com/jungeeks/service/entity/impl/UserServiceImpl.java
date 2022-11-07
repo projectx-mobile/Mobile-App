@@ -51,10 +51,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllByFamilyIdAndUserRole(String familyId, USER_ROLE user_role) {
-        log.debug("Request getAllByFamilyIdAndUserRole by familyId {} and userRole {}", familyId, user_role);
+    public List<User> getAllByFamilyIdAndUserRole(String familyId, USER_ROLE user_role, USER_STATUS userStatus) {
+        log.debug("Request getAllByFamilyIdAndUserRole by familyId {} and userRole {}, userStatus {}", familyId, user_role, userStatus);
 
-        return accountsUserRepository.findAllByFamilyIdAndUser_role(familyId, user_role).orElseThrow(
+        return accountsUserRepository.findAllByFamilyIdAndUser_role(familyId, user_role, userStatus).orElseThrow(
                 () -> new BusinessException(String.format("User with familyId %s and role %s not found",
                         familyId, user_role), USER_WITH_FAMILY_ID_AND_ROLE, HttpStatus.NOT_FOUND)
         );
