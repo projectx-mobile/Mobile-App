@@ -8,7 +8,10 @@ public enum ERROR_CODE {
     PATH_NOT_FOUND("Path not found"),
     USER_IS_ALREADY_EXIST("User is already exist"),
     USER_NOT_FOUND("User not found"),
-    USER_WITH_FAMILY_ID_AND_ROLE ("User with familyId and role not found");
+    CATEGORY_NOT_FOUND("Category not found"),
+    TASK_NOT_FOUND ("Task not found"),
+    FAMILY_ID_IS_NOT_EQUAL ("Family id is not equal"),
+    FAMILY_TASK_DONT_MATCH("Family task parameters don't match");
 
     private String message;
 

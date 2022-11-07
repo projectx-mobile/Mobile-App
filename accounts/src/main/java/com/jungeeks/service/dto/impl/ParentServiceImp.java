@@ -8,11 +8,11 @@ import com.jungeeks.entity.User;
 import com.jungeeks.entity.enums.REQUEST_STATUS;
 import com.jungeeks.entity.enums.TASK_STATUS;
 import com.jungeeks.entity.enums.USER_ROLE;
+import com.jungeeks.entity.enums.USER_STATUS;
 import com.jungeeks.security.service.AuthorizationService;
 import com.jungeeks.service.dto.ParentService;
 import com.jungeeks.service.entity.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ public class ParentServiceImp implements ParentService {
         User userDb = getUserFromAuth();
         log.debug("Request getParentHomeDate by user with uid {}", userDb.getFirebaseId());
 
-        List<User> childs = userService.getAllByFamilyIdAndUserRole(userDb.getFamily().getId(), USER_ROLE.CHILD);
+        List<User> childs = userService.getAllByFamilyIdAndUserRoleAndUserStatus(userDb.getFamily().getId(), USER_ROLE.CHILD, USER_STATUS.ACTIVE);
         log.debug("Number of childs {}", childs.size());
 
         List<ChildDto> childDtos = getChildDtoList(childs);

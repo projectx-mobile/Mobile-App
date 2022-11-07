@@ -49,6 +49,7 @@ class UserServiceImplTest {
     private static List<TaskDto> taskDtoTest;
     private static User user;
     private static User parent;
+    private static User parentWithAdmin;
     private static List<User> users;
 
 
@@ -180,14 +181,22 @@ class UserServiceImplTest {
                         .build()
         );
         parent = User.builder()
-                .id(1L)
+                .id(2L)
                 .family(Family.builder()
                         .id("1L")
                         .build())
                 .email("test@gmail.com")
                 .user_role(USER_ROLE.PARENT)
                 .build();
-        users = new ArrayList<>(List.of(parent));
+        parentWithAdmin = User.builder()
+                .id(3L)
+                .family(Family.builder()
+                        .id("1L")
+                        .build())
+                .email("test@gmail.com")
+                .user_role(USER_ROLE.ADMIN)
+                .build();
+        users = new ArrayList<>(List.of(parent, parentWithAdmin));
 
     }
 
@@ -279,20 +288,21 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getAllByFamilyIdAndUserRolePositive() {
-        when(accountsUserRepository.findAllByFamilyIdAndUser_role("1L", USER_ROLE.PARENT)).thenReturn(Optional.ofNullable(users));
+    void getAllByFamilyIdAndUserRoleAndUserStatusPositive() {
+        when(accountsUserRepository.findAllByFamilyIdAndUser_roleAndUser_status("1L", USER_ROLE.PARENT, USER_STATUS.ACTIVE)).
+                thenReturn(Optional.ofNullable(users));
 
-        List<User> allByFamilyIdAndUserRole = userService.getAllByFamilyIdAndUserRole("1L", USER_ROLE.PARENT);
+        List<User> allByFamilyIdAndUserRole = userService.getAllByFamilyIdAndUserRoleAndUserStatus("1L", USER_ROLE.PARENT, USER_STATUS.ACTIVE);
 
         assertEquals(allByFamilyIdAndUserRole, users);
         assertEquals(allByFamilyIdAndUserRole.get(0).getUser_role(), USER_ROLE.PARENT);
     }
 
     @Test
-    void getAllByFamilyIdAndUserRoleNegative() {
-        when(accountsUserRepository.findAllByFamilyIdAndUser_role(any(), any())).thenReturn(Optional.empty());
+    void getAllByFamilyIdAndUserRoleAndUserStatusNegative() {
+        when(accountsUserRepository.findAllByFamilyIdAndUser_roleAndUser_status(any(), any(), any())).thenReturn(Optional.empty());
 
-        assertThrows(BusinessException.class, () -> userService.getAllByFamilyIdAndUserRole("1L", USER_ROLE.PARENT));
+        assertThrows(BusinessException.class, () -> userService.getAllByFamilyIdAndUserRoleAndUserStatus("1L", USER_ROLE.PARENT, USER_STATUS.ACTIVE));
     }
 
     @Test
@@ -310,5 +320,42 @@ class UserServiceImplTest {
         when(accountsUserRepository.findByFirebaseId(any())).thenReturn(Optional.empty());
 
         assertThrows(BusinessException.class, () -> userService.getUserByUid(any()));
+    }
+
+    @Test
+    void getAllByFamilyIdAndUserRolePositive() {
+        when(accountsUserRepository.findAllByFamilyIdAndUser_role("1L", USER_ROLE.PARENT)).
+                thenReturn(Optional.ofNullable(users));
+
+        List<User> allByFamilyIdAndUserRole = userService.getAllByFamilyIdAndUserRole("1L", USER_ROLE.PARENT);
+
+        assertEquals(allByFamilyIdAndUserRole, users);
+        assertEquals(allByFamilyIdAndUserRole.get(0).getUser_role(), USER_ROLE.PARENT);
+    }
+
+    @Test
+    void getAllByFamilyIdAndUserRoleNegative() {
+        when(accountsUserRepository.findAllByFamilyIdAndUser_role(any(), any())).thenReturn(Optional.empty());
+
+        assertThrows(BusinessException.class, () -> userService.getAllByFamilyIdAndUserRole("1L", USER_ROLE.PARENT));
+    }
+
+    @Test
+    void getAllByFamilyIdAndUserRoleWithAdminPositive() {
+        when(accountsUserRepository.findAllByFamilyIdAndUser_roleWithAdmin("1L", USER_ROLE.PARENT)).
+                thenReturn(Optional.ofNullable(users));
+
+        List<User> allByFamilyIdAndUserRole = userService.getAllByFamilyIdAndUserRoleWithAdmin("1L", USER_ROLE.PARENT);
+
+        assertEquals(allByFamilyIdAndUserRole, users);
+        assertEquals(allByFamilyIdAndUserRole.get(1).getUser_role(), USER_ROLE.ADMIN);
+    }
+
+    @Test
+    void getAllByFamilyIdAndUserRoleWithAdminNegative() {
+        when(accountsUserRepository.findAllByFamilyIdAndUser_roleWithAdmin(any(), any())).
+                thenReturn(Optional.empty());
+
+        assertThrows(BusinessException.class, () -> userService.getAllByFamilyIdAndUserRoleWithAdmin("1L", USER_ROLE.PARENT));
     }
 }

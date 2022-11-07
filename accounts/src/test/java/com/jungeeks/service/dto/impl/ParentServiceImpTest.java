@@ -4,11 +4,9 @@ import com.jungeeks.dto.ChildDto;
 import com.jungeeks.dto.ParentHomeDto;
 import com.jungeeks.entity.*;
 import com.jungeeks.entity.enums.*;
-import com.jungeeks.repository.AccountsUserRepository;
 import com.jungeeks.security.entity.SecurityUserFirebase;
 import com.jungeeks.security.service.AuthorizationService;
 import com.jungeeks.service.entity.UserService;
-import com.jungeeks.service.entity.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -213,7 +211,7 @@ class ParentServiceImpTest {
     void getParentHomeDatePositive() {
         when(authorizationService.getUser()).thenReturn(securityUserFirebase);
         when(userService.getUserByUid(any())).thenReturn(user);
-        when(userService.getAllByFamilyIdAndUserRole(user.getFamily().getId(), USER_ROLE.CHILD)).thenReturn(childs);
+        when(userService.getAllByFamilyIdAndUserRoleAndUserStatus(user.getFamily().getId(), USER_ROLE.CHILD, USER_STATUS.ACTIVE)).thenReturn(childs);
 
         ParentHomeDto parentHomeDto1 = parentServiceImp.getParentHomeDate();
 
@@ -224,7 +222,7 @@ class ParentServiceImpTest {
     void getParentHomeDateWithEmptyChildList() {
         when(authorizationService.getUser()).thenReturn(securityUserFirebase);
         when(userService.getUserByUid(any())).thenReturn(user);
-        when(userService.getAllByFamilyIdAndUserRole(user.getFamily().getId(), USER_ROLE.CHILD)).thenReturn(new ArrayList<>());
+        when(userService.getAllByFamilyIdAndUserRoleAndUserStatus(user.getFamily().getId(), USER_ROLE.CHILD, USER_STATUS.ACTIVE)).thenReturn(new ArrayList<>());
 
         ParentHomeDto parentHomeDto1 = parentServiceImp.getParentHomeDate();
 
