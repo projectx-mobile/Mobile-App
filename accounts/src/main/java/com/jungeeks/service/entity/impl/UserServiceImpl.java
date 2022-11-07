@@ -54,8 +54,8 @@ public class UserServiceImpl implements UserService {
         log.debug("Request getAllByFamilyIdAndUserRoleAndUserStatus by familyId {} and userRole {}, userStatus {}",
                     familyId, user_role, userStatus);
 
-        return accountsUserRepository.findAllByFamilyIdAndUser_roleAndUser_status(familyId, user_role, userStatus).orElseThrow(
-                () -> new BusinessException(String.format("User with familyId %s, role %s and status %s not found",
+        return accountsUserRepository.findAllByFamilyIdAndUser_roleAndUser_status(familyId, user_role, userStatus)
+                .orElseThrow(() -> new BusinessException(String.format("User with familyId %s, role %s and status %s not found",
                                             familyId, user_role, userStatus), USER_NOT_FOUND, HttpStatus.NOT_FOUND)
         );
     }

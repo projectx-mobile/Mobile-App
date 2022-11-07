@@ -2,6 +2,7 @@ package com.jungeeks.service.dto.impl;
 
 import com.jungeeks.dto.ConfirmTaskDto;
 import com.jungeeks.dto.ParentNewTaskDto;
+import com.jungeeks.entity.ClientApp;
 import com.jungeeks.entity.FamilyTask;
 import com.jungeeks.entity.Task;
 import com.jungeeks.entity.User;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -155,15 +157,11 @@ public class ParentTaskServiceImpl implements ParentTaskService {
     }
 
     private void sendMessageForUsersWithEnableNewTaskNotification(List<User> childs, User parent) {
-        List<String> clientAppIds = new ArrayList<>();
-        childs.stream()
+        List<String> clientAppIds = childs.stream()
                 .filter(child -> !child.getChildNotifications().isAllOff() && child.getChildNotifications().isNewTask())
-                .forEach(user -> {
-                            user.getClientApps()
-                                    .forEach(clientApp -> {
-                                        clientAppIds.add(clientApp.getAppId());
-                                    });
-                });
+                .flatMap(child -> child.getClientApps().stream())
+                .map(ClientApp::getAppId)
+                .collect(Collectors.toList());
         firebaseService.sendMessageForAll(clientAppIds, MESSAGE, parent.getName());
     }
 

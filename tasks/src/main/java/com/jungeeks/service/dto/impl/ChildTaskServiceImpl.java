@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -96,15 +97,11 @@ public class ChildTaskServiceImpl implements ChildTaskService {
     }
 
     private void sendMessageForUsersWithEnableNotification(List<User> parents, User child) {
-        List<String> clientAppIds = new ArrayList<>();
-        parents.stream()
+        List<String> clientAppIds = parents.stream()
                 .filter(parent -> !parent.getParentNotifications().isAllOff() && parent.getParentNotifications().isNewRequest())
-                .forEach(parent -> {
-                            parent.getClientApps()
-                                    .forEach(clientApp -> {
-                                                clientAppIds.add(clientApp.getAppId());
-                                    });
-                });
+                .flatMap(parent -> parent.getClientApps().stream())
+                .map(ClientApp::getAppId)
+                .collect(Collectors.toList());
         firebaseService.sendMessageForAll(clientAppIds, MESSAGE, child.getName());
     }
 
