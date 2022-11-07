@@ -7,9 +7,11 @@ import com.jungeeks.entity.Task;
 import com.jungeeks.entity.User;
 import com.jungeeks.entity.enums.TASK_STATUS;
 import com.jungeeks.entity.enums.TASK_TYPE;
+import com.jungeeks.entity.enums.USER_ROLE;
 import com.jungeeks.exception.BusinessException;
 import com.jungeeks.exception.enums.ERROR_CODE;
 import com.jungeeks.security.service.AuthorizationService;
+import com.jungeeks.service.business.FirebaseService;
 import com.jungeeks.service.dto.ParentTaskService;
 import com.jungeeks.service.entity.FamilyTaskService;
 import com.jungeeks.service.entity.TaskService;
@@ -28,16 +30,21 @@ public class ParentTaskServiceImpl implements ParentTaskService {
     private final AuthorizationService authorizationService;
     private final UserService userService;
     private final FamilyTaskService familyTaskService;
+    private final FirebaseService firebaseService;
+
+    private static final String REQUEST = "The parent has created a new task";
+
 
     @Autowired
     public ParentTaskServiceImpl(TaskService taskService,
                                  AuthorizationService authorizationService,
                                  UserService userService,
-                                 FamilyTaskService familyTaskService) {
+                                 FamilyTaskService familyTaskService, FirebaseService firebaseService) {
         this.taskService = taskService;
         this.authorizationService = authorizationService;
         this.userService = userService;
         this.familyTaskService = familyTaskService;
+        this.firebaseService = firebaseService;
     }
 
     @Override
@@ -46,6 +53,9 @@ public class ParentTaskServiceImpl implements ParentTaskService {
         log.debug("Find user with id {}", user.getId());
 
         saveFamilyTask(parentNewTaskDto, user);
+
+        List<User> childs = userService.getAllByFamilyIdAndUserRole(user.getFamily().getId(), USER_ROLE.CHILD);
+        sendMessageForUsersWithEnableNewTaskNotification(childs, user);
         return true;
     }
 
@@ -62,9 +72,9 @@ public class ParentTaskServiceImpl implements ParentTaskService {
                 familyTask.setPhotoReport(confirmTaskDto.isPhotoReport());
                 familyTask.setRewardPoints(confirmTaskDto.getRewardPoints());
                 familyTask.setTaskStatus(TASK_STATUS.ACTIVE);
-                familyTaskService.save(familyTask);
+                FamilyTask familyTaskDb = familyTaskService.save(familyTask);
                 log.debug("Confirm familyTask with id {}", familyTask.getId());
-
+                sendMessageForUsersWithEnableConfirmNotification(familyTaskDb.getAuthor(), user);
             } else {
                 throw new BusinessException("Task status is not pending");
             }
@@ -135,6 +145,24 @@ public class ParentTaskServiceImpl implements ParentTaskService {
                 .family(user.getFamily())
                 .taskStatus(TASK_STATUS.ACTIVE)
                 .build();
+    }
+
+    private void sendMessageForUsersWithEnableConfirmNotification(User child, User parent) {
+        if (!child.getChildNotifications().isAllOff() && child.getChildNotifications().isConfirmTask()) {
+            child.getClientApps()
+                    .forEach(clientApp -> firebaseService.sendMessage(clientApp.getAppId(), REQUEST,
+                            child.getEmail(), parent.getName()));
+        }
+    }
+
+    private void sendMessageForUsersWithEnableNewTaskNotification(List<User> users, User parent) {
+        users.stream()
+                .filter(child -> !child.getChildNotifications().isAllOff() && child.getChildNotifications().isNewTask())
+                .forEach(child -> {
+                    child.getClientApps()
+                            .forEach(clientApp -> firebaseService.sendMessage(clientApp.getAppId(), REQUEST,
+                                    parent.getEmail(), parent.getName()));
+                });
     }
 
     private String getUid() {

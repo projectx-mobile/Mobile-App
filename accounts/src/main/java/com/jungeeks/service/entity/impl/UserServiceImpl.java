@@ -4,11 +4,11 @@ import com.jungeeks.entity.ChildNotification;
 import com.jungeeks.entity.ParentNotification;
 import com.jungeeks.entity.User;
 import com.jungeeks.entity.enums.USER_ROLE;
+import com.jungeeks.entity.enums.USER_STATUS;
 import com.jungeeks.exception.BusinessException;
 import com.jungeeks.exception.enums.ERROR_CODE;
 import com.jungeeks.repository.AccountsUserRepository;
 import com.jungeeks.service.entity.UserService;
-import com.jungeeks.entity.enums.USER_STATUS;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,8 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static com.jungeeks.exception.enums.ERROR_CODE.USER_NOT_FOUND;
-import static com.jungeeks.exception.enums.ERROR_CODE.USER_WITH_FAMILY_ID_AND_ROLE;
+import static com.jungeeks.exception.enums.ERROR_CODE.*;
 
 @Slf4j
 @Service("accounts-userServiceImpl")
@@ -51,12 +50,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllByFamilyIdAndUserRole(String familyId, USER_ROLE user_role, USER_STATUS userStatus) {
-        log.debug("Request getAllByFamilyIdAndUserRole by familyId {} and userRole {}, userStatus {}", familyId, user_role, userStatus);
+    public List<User> getAllByFamilyIdAndUserRoleAndUserStatus(String familyId, USER_ROLE user_role, USER_STATUS userStatus) {
+        log.debug("Request getAllByFamilyIdAndUserRoleAndUserStatus by familyId {} and userRole {}, userStatus {}",
+                familyId, user_role, userStatus);
 
-        return accountsUserRepository.findAllByFamilyIdAndUser_role(familyId, user_role, userStatus).orElseThrow(
-                () -> new BusinessException(String.format("User with familyId %s and role %s not found",
-                        familyId, user_role), USER_WITH_FAMILY_ID_AND_ROLE, HttpStatus.NOT_FOUND)
+        return accountsUserRepository.findAllByFamilyIdAndUser_roleAndUser_status(familyId, user_role, userStatus).orElseThrow(
+                () -> new BusinessException(String.format("User with familyId %s, role %s and status %s not found",
+                        familyId, user_role, userStatus), USER_WITH_FAMILY_ID_AND_ROLE_AND_STATUS_NOT_FOUND, HttpStatus.NOT_FOUND)
         );
     }
 
@@ -79,9 +79,9 @@ public class UserServiceImpl implements UserService {
 
         user.setUser_status(newUserStatus);
 
-        if (newUserStatus.equals(USER_STATUS.REMOVED) || newUserStatus.equals(USER_STATUS.BANNED)){
+        if (newUserStatus.equals(USER_STATUS.REMOVED) || newUserStatus.equals(USER_STATUS.BANNED)) {
             USER_ROLE user_role = user.getUser_role();
-            switch (user_role){
+            switch (user_role) {
                 case PARENT -> {
                     ParentNotification parentNotifications = user.getParentNotifications();
                     parentNotifications.setAllOff(true);
@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
                 }
             }
         }
-        log.debug("Changed user_status from uId:{}",uid);
+        log.debug("Changed user_status from uId:{}", uid);
 
         return true;
     }
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new BusinessException(String.format("User with uid %s not found", uid),
                         USER_NOT_FOUND, HttpStatus.NOT_FOUND));
         user.setName(newName);
-        log.debug("Changed username from uId:{}",uid);
+        log.debug("Changed username from uId:{}", uid);
 
         return true;
     }
@@ -124,10 +124,28 @@ public class UserServiceImpl implements UserService {
     public boolean deleteFamilyMember(Long userId) {
         User user = accountsUserRepository.findUserById(userId)
                 .orElseThrow(() -> new BusinessException(String.format("User with id %s not found", userId),
-                USER_NOT_FOUND, HttpStatus.NOT_FOUND));
+                        USER_NOT_FOUND, HttpStatus.NOT_FOUND));
         user.setUser_status(USER_STATUS.REMOVED);
-        log.debug("Delete family member by id {}",userId);
+        log.debug("Delete family member by id {}", userId);
 
         return true;
+    }
+
+    @Override
+    public List<User> getAllByFamilyIdAndUserRole(String familyId, USER_ROLE userRole) {
+        log.debug("Request getAllByFamilyIdAndUserRole by familyId {} and userRole {}", familyId, userRole);
+
+        return accountsUserRepository.findAllByFamilyIdAndUser_role(familyId, userRole).orElseThrow(
+                () -> new BusinessException(String.format("User with familyId %s and role %s not found",
+                        familyId, userRole), USER_WITH_FAMILY_ID_AND_ROLE_NOT_FOUND, HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public List<User> getAllByFamilyIdAndUserRoleWithAdmin(String familyId, USER_ROLE userRole) {
+        log.debug("Request getAllByFamilyIdAndUserRoleWithAdmin by familyId {} and userRole {}", familyId, userRole);
+
+        return accountsUserRepository.findAllByFamilyIdAndUser_roleWithAdmin(familyId, userRole).orElseThrow(
+                () -> new BusinessException(String.format("User with familyId %s and role %s not found",
+                        familyId, userRole), USER_WITH_FAMILY_ID_AND_ROLE_NOT_FOUND, HttpStatus.NOT_FOUND));
     }
 }

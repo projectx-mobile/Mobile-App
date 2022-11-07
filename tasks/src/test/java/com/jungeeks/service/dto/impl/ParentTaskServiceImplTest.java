@@ -1,15 +1,15 @@
 package com.jungeeks.service.dto.impl;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import com.jungeeks.dto.ConfirmTaskDto;
 import com.jungeeks.dto.ParentNewTaskDto;
-import com.jungeeks.entity.Family;
-import com.jungeeks.entity.FamilyTask;
-import com.jungeeks.entity.Task;
-import com.jungeeks.entity.User;
+import com.jungeeks.entity.*;
 import com.jungeeks.entity.enums.TASK_STATUS;
 import com.jungeeks.exception.BusinessException;
 import com.jungeeks.security.entity.SecurityUserFirebase;
 import com.jungeeks.security.service.AuthorizationService;
+import com.jungeeks.service.business.FirebaseService;
 import com.jungeeks.service.entity.FamilyTaskService;
 import com.jungeeks.service.entity.TaskService;
 import com.jungeeks.service.entity.UserService;
@@ -33,6 +33,8 @@ class ParentTaskServiceImplTest {
     @InjectMocks
     private ParentTaskServiceImpl parentTaskService;
 
+    @Mock
+    private FirebaseService firebaseService;
     @Mock
     private TaskService taskService;
     @Mock
@@ -75,12 +77,23 @@ class ParentTaskServiceImplTest {
                 .build();
         parent = User.builder()
                 .id(1L)
+                .email("parent.email@gmail.com")
+                .name("parent")
                 .firebaseId(FIREBASE_ID)
                 .family(family)
                 .build();
         child = User.builder()
                 .id(2L)
+                .email("child.email@gmail.com")
+                .name("child")
                 .family(family)
+                .childNotifications(ChildNotification.builder()
+                        .allOff(false)
+                        .confirmTask(true)
+                        .build())
+                .clientApps(List.of(ClientApp.builder()
+                        .appId("test")
+                        .build()))
                 .build();
         childs = List.of(child);
         task = Task.builder()
@@ -93,6 +106,7 @@ class ParentTaskServiceImplTest {
                 .task(task)
                 .family(family)
                 .users(childs)
+                .author(child)
                 .taskStatus(TASK_STATUS.PENDING)
                 .build();
         familyTaskWithActiveStatus = FamilyTask.builder()
@@ -117,6 +131,7 @@ class ParentTaskServiceImplTest {
         when(userService.getUserByUid(FIREBASE_ID)).thenReturn(parent);
         when(userService.getUserByUid(any())).thenReturn(child);
         when(taskService.findByTitle(any())).thenReturn(task);
+        when(firebaseService.sendMessage(any(),any(), any(), any())).thenReturn(true);
 
         boolean save = parentTaskService.saveTask(parentNewTaskDtoWithTemplate);
 
@@ -129,6 +144,7 @@ class ParentTaskServiceImplTest {
         when(userService.getUserByUid(FIREBASE_ID)).thenReturn(parent);
         when(userService.getUserByUid(any())).thenReturn(child);
         when(taskService.save(any())).thenReturn(task);
+        when(firebaseService.sendMessage(any(),any(), any(), any())).thenReturn(true);
 
         boolean save = parentTaskService.saveTask(parentNewTaskDtoWithOutTemplate);
 
@@ -160,6 +176,7 @@ class ParentTaskServiceImplTest {
         when(userService.getUserByUid(FIREBASE_ID)).thenReturn(parent);
         when(familyTaskService.findById(any())).thenReturn(familyTask);
         when(familyTaskService.save(any())).thenReturn(familyTask);
+        when(firebaseService.sendMessage(any(),any(), any(), any())).thenReturn(true);
 
         boolean confirm = parentTaskService.confirmTask(confirmTaskDto);
         familyTask.setTaskStatus(TASK_STATUS.PENDING);
