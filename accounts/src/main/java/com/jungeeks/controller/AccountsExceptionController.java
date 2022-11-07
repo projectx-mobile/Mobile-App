@@ -33,7 +33,6 @@ public class AccountsExceptionController {
             return new ResponseEntity<>(businessException.getMessage(), businessException.getHttpStatus());
         }
 
-
         log.warn(businessException.getHttpStatus() + " by {}", businessException.getMessage());
 
         return new ResponseEntity<>(businessException.getError_code().getMessage(), businessException.getHttpStatus());
