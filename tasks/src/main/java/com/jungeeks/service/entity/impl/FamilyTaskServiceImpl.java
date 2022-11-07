@@ -26,8 +26,7 @@ public class FamilyTaskServiceImpl implements FamilyTaskService {
 
     @Override
     public FamilyTask save(FamilyTask familyTask) {
-        log.debug("Request save familyTask with family {} and author id {}", familyTask.getFamily().getId(),
-                familyTask.getAuthor().getId());
+        log.debug("Request save familyTask with family {} and author id {}", familyTask.getFamily().getId(), familyTask.getAuthor().getId());
 
         return familyTaskRepository.save(familyTask);
     }
@@ -36,7 +35,8 @@ public class FamilyTaskServiceImpl implements FamilyTaskService {
     public FamilyTask findById(Long taskId) {
         log.debug("Request findById by taskId {}", taskId);
 
-        return familyTaskRepository.findById(taskId).orElseThrow(
-                () -> new BusinessException(String.format("Task with id %s not found", taskId), ERROR_CODE.TASK_NOT_FOUND, NOT_FOUND));
+        return familyTaskRepository.findById(taskId)
+                .orElseThrow(() -> new BusinessException(String.format("Task with id %s not found", taskId),
+                                                            ERROR_CODE.TASK_NOT_FOUND, NOT_FOUND));
     }
 }

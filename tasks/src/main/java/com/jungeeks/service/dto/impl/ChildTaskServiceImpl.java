@@ -1,6 +1,7 @@
 package com.jungeeks.service.dto.impl;
 
 import com.jungeeks.dto.ChildNewTaskDto;
+import com.jungeeks.entity.ClientApp;
 import com.jungeeks.entity.FamilyTask;
 import com.jungeeks.entity.Task;
 import com.jungeeks.entity.User;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,7 +31,10 @@ public class ChildTaskServiceImpl implements ChildTaskService {
     private final FamilyTaskService familyTaskService;
     private final FirebaseService firebaseService;
 
-    private static final String REQUEST = "The child has created a new task and is awaiting approval";
+    /*
+     * Add message
+     */
+    private static final String MESSAGE = "";
 
     @Autowired
     public ChildTaskServiceImpl(TaskService taskService,
@@ -59,7 +64,7 @@ public class ChildTaskServiceImpl implements ChildTaskService {
 
     private void saveFamilyTask(ChildNewTaskDto childNewTaskDto, User user) {
         FamilyTask familyTask = mapChildTaskDtoToFamilyTask(childNewTaskDto, user);
-        Task task;
+        Task task = new Task();
         log.debug("In ChildNewTaskDto template {}", childNewTaskDto.getTemplate());
 
         if (childNewTaskDto.getTemplate() != null) {
@@ -90,15 +95,17 @@ public class ChildTaskServiceImpl implements ChildTaskService {
                 .build();
     }
 
-    private boolean sendMessageForUsersWithEnableNotification(List<User> parents, User child) {
+    private void sendMessageForUsersWithEnableNotification(List<User> parents, User child) {
+        List<String> clientAppIds = new ArrayList<>();
         parents.stream()
                 .filter(parent -> !parent.getParentNotifications().isAllOff() && parent.getParentNotifications().isNewRequest())
                 .forEach(parent -> {
-                    parent.getClientApps()
-                            .forEach(clientApp -> firebaseService.sendMessage(clientApp.getAppId(), REQUEST,
-                                    parent.getEmail(), child.getName()));
+                            parent.getClientApps()
+                                    .forEach(clientApp -> {
+                                                clientAppIds.add(clientApp.getAppId());
+                                    });
                 });
-        return true;
+        firebaseService.sendMessageForAll(clientAppIds, MESSAGE, child.getName());
     }
 
     private String getUid() {

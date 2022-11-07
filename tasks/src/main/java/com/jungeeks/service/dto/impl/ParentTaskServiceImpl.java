@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,8 +33,10 @@ public class ParentTaskServiceImpl implements ParentTaskService {
     private final FamilyTaskService familyTaskService;
     private final FirebaseService firebaseService;
 
-    private static final String REQUEST = "The parent has created a new task";
-
+    /*
+     * Add message
+     */
+    private static final String MESSAGE = "";
 
     @Autowired
     public ParentTaskServiceImpl(TaskService taskService,
@@ -67,20 +70,17 @@ public class ParentTaskServiceImpl implements ParentTaskService {
         FamilyTask familyTask = familyTaskService.findById(confirmTaskDto.getTaskId());
         log.debug("FamilyTask with familyId {} and user with familyId {}", familyTask.getFamily().getId(), user.getFamily().getId());
 
-        if (familyTask.getFamily() == user.getFamily()) {
-            if (familyTask.getTaskStatus() == TASK_STATUS.PENDING) {
-                familyTask.setPhotoReport(confirmTaskDto.isPhotoReport());
-                familyTask.setRewardPoints(confirmTaskDto.getRewardPoints());
-                familyTask.setTaskStatus(TASK_STATUS.ACTIVE);
-                FamilyTask familyTaskDb = familyTaskService.save(familyTask);
-                log.debug("Confirm familyTask with id {}", familyTask.getId());
-                sendMessageForUsersWithEnableConfirmNotification(familyTaskDb.getAuthor(), user);
-            } else {
-                throw new BusinessException("Task status is not pending");
-            }
+        if (familyTask.getFamily().equals(user.getFamily()) && familyTask.getTaskStatus() == TASK_STATUS.PENDING) {
+            familyTask.setPhotoReport(confirmTaskDto.isPhotoReport());
+            familyTask.setRewardPoints(confirmTaskDto.getRewardPoints());
+            familyTask.setTaskStatus(TASK_STATUS.ACTIVE);
+            FamilyTask familyTaskDb = familyTaskService.save(familyTask);
+            log.debug("Confirm familyTask with id {}", familyTask.getId());
+
+            sendMessageForUsersWithEnableConfirmNotification(familyTaskDb.getAuthor(), user);
         } else {
-            throw new BusinessException(String.format("Family id %s and user family id %s is not equal",
-                    familyTask.getFamily().getId(), user.getFamily().getId()), ERROR_CODE.FAMILY_ID_IS_NOT_EQUAL);
+            throw new BusinessException(String.format("Family id %s or task status %s is bad", familyTask.getFamily().getId(),
+                                            familyTask.getTaskStatus()), ERROR_CODE.FAMILY_TASK_DONT_MATCH);
         }
         return true;
     }
@@ -93,24 +93,22 @@ public class ParentTaskServiceImpl implements ParentTaskService {
         FamilyTask familyTask = familyTaskService.findById(taskId);
         log.debug("FamilyTask with familyId {} and user with familyId {}", familyTask.getFamily().getId(), user.getFamily().getId());
 
-        if (user.getFamily() == familyTask.getFamily()) {
-            if (familyTask.getTaskStatus() == TASK_STATUS.PENDING) {
-                familyTask.setTaskStatus(TASK_STATUS.REJECT);
-                familyTaskService.save(familyTask);
-                log.debug("Reject familyTask with id {}", familyTask.getId());
+        if (user.getFamily() == familyTask.getFamily() && familyTask.getTaskStatus() == TASK_STATUS.PENDING) {
+            familyTask.setTaskStatus(TASK_STATUS.REJECT);
+            familyTaskService.save(familyTask);
+            log.debug("Reject familyTask with id {}", familyTask.getId());
 
-            } else {
-                throw new BusinessException("Task status is not pending");
-            }
         } else {
-            throw new BusinessException(String.format("Family id %s and user family id %s is not equal",
-                    familyTask.getFamily().getId(), user.getFamily().getId()), ERROR_CODE.FAMILY_ID_IS_NOT_EQUAL);
+            throw new BusinessException(String.format("Family id %s or task status %s is bad", familyTask.getFamily().getId(),
+                                            familyTask.getTaskStatus()), ERROR_CODE.FAMILY_TASK_DONT_MATCH);
         }
         return true;
     }
 
     private void saveFamilyTask(ParentNewTaskDto parentNewTaskDto, User user) {
-        List<User> childs = parentNewTaskDto.getUserIds().stream().map(userService::getUserById).toList();
+        List<User> childs = parentNewTaskDto.getUserIds().stream()
+                                                          .map(userService::getUserById)
+                                                          .toList();
         log.debug("Size of child list {}", childs.size());
 
         FamilyTask familyTask = mapParentTaskDtoToFamilyTask(parentNewTaskDto, user, childs);
@@ -148,21 +146,25 @@ public class ParentTaskServiceImpl implements ParentTaskService {
     }
 
     private void sendMessageForUsersWithEnableConfirmNotification(User child, User parent) {
+        List<String> clientAppIds = new ArrayList<>();
         if (!child.getChildNotifications().isAllOff() && child.getChildNotifications().isConfirmTask()) {
             child.getClientApps()
-                    .forEach(clientApp -> firebaseService.sendMessage(clientApp.getAppId(), REQUEST,
-                            child.getEmail(), parent.getName()));
+                    .forEach(clientApp -> clientAppIds.add(clientApp.getAppId()));
         }
+        firebaseService.sendMessageForAll(clientAppIds, MESSAGE, parent.getName());
     }
 
-    private void sendMessageForUsersWithEnableNewTaskNotification(List<User> users, User parent) {
-        users.stream()
+    private void sendMessageForUsersWithEnableNewTaskNotification(List<User> childs, User parent) {
+        List<String> clientAppIds = new ArrayList<>();
+        childs.stream()
                 .filter(child -> !child.getChildNotifications().isAllOff() && child.getChildNotifications().isNewTask())
-                .forEach(child -> {
-                    child.getClientApps()
-                            .forEach(clientApp -> firebaseService.sendMessage(clientApp.getAppId(), REQUEST,
-                                    parent.getEmail(), parent.getName()));
+                .forEach(user -> {
+                            user.getClientApps()
+                                    .forEach(clientApp -> {
+                                        clientAppIds.add(clientApp.getAppId());
+                                    });
                 });
+        firebaseService.sendMessageForAll(clientAppIds, MESSAGE, parent.getName());
     }
 
     private String getUid() {

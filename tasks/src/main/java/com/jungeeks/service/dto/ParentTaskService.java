@@ -5,7 +5,6 @@ import com.jungeeks.dto.ParentNewTaskDto;
 
 public interface ParentTaskService {
 
-
     boolean saveTask(ParentNewTaskDto parentNewTaskDto);
 
     boolean confirmTask(ConfirmTaskDto confirmTaskDto);

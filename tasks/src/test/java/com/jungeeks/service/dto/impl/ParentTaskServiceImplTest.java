@@ -132,7 +132,7 @@ class ParentTaskServiceImplTest {
         when(userService.getUserByUid(any())).thenReturn(child);
         when(taskService.findByTitle(any())).thenReturn(task);
         when(userService.getAllByFamilyIdAndUserRole(any(), any())).thenReturn(childs);
-        when(firebaseService.sendMessage(any(),any(), any(), any())).thenReturn(true);
+        when(firebaseService.sendMessageForAll(any(),any(), any())).thenReturn(true);
 
         boolean save = parentTaskService.saveTask(parentNewTaskDtoWithTemplate);
 
@@ -145,7 +145,7 @@ class ParentTaskServiceImplTest {
         when(userService.getUserByUid(FIREBASE_ID)).thenReturn(parent);
         when(userService.getUserByUid(any())).thenReturn(child);
         when(taskService.save(any())).thenReturn(task);
-        when(firebaseService.sendMessage(any(),any(), any(), any())).thenReturn(true);
+        when(firebaseService.sendMessageForAll(any(),any(), any())).thenReturn(true);
 
         boolean save = parentTaskService.saveTask(parentNewTaskDtoWithOutTemplate);
 
@@ -188,7 +188,7 @@ class ParentTaskServiceImplTest {
         when(userService.getUserByUid(FIREBASE_ID)).thenReturn(parent);
         when(familyTaskService.findById(any())).thenReturn(familyTask);
         when(familyTaskService.save(any())).thenReturn(familyTask);
-        when(firebaseService.sendMessage(any(),any(), any(), any())).thenReturn(true);
+        when(firebaseService.sendMessageForAll(any(),any(), any())).thenReturn(true);
 
         boolean confirm = parentTaskService.confirmTask(confirmTaskDto);
         familyTask.setTaskStatus(TASK_STATUS.PENDING);

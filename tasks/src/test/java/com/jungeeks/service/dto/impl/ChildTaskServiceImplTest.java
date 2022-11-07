@@ -111,7 +111,7 @@ class ChildTaskServiceImplTest {
         when(taskService.findByTitle(any())).thenReturn(task);
         when(familyTaskService.save(familyTask)).thenReturn(familyTask);
         when(userService.getAllByFamilyIdAndUserRoleWithAdmin(any(), any())).thenReturn(parents);
-        when(firebaseService.sendMessage(any(),any(), any(), any())).thenReturn(true);
+        when(firebaseService.sendMessageForAll(any(),any(), any())).thenReturn(true);
 
         boolean saveTask = childTaskService.saveTask(childNewTaskDtoWithTemplate);
 
@@ -124,7 +124,7 @@ class ChildTaskServiceImplTest {
         when(userService.getUserByUid(FIREBASE_ID)).thenReturn(child);
         when(taskService.save(any())).thenReturn(task);
         when(familyTaskService.save(familyTask)).thenReturn(familyTask);
-        when(firebaseService.sendMessage(any(),any(), any(), any())).thenReturn(true);
+        when(firebaseService.sendMessageForAll(any(),any(), any())).thenReturn(true);
 
         boolean saveTask = childTaskService.saveTask(childNewTaskDtoWithOutTemplate);
 

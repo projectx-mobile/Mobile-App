@@ -37,26 +37,26 @@ public class UserServiceImpl implements UserService {
 
         return accountsUserRepository.findUserById(userId)
                 .orElseThrow(() -> new BusinessException(String.format("User with id %s not found", userId),
-                        ERROR_CODE.USER_NOT_FOUND, HttpStatus.NOT_FOUND));
+                                                         ERROR_CODE.USER_NOT_FOUND, HttpStatus.NOT_FOUND));
     }
 
     @Override
     public List<User> getAllByFamilyId(String familyId) {
         log.debug("Request getAllByFamilyId by familyId {}", familyId);
 
-        return accountsUserRepository.findAllByFamilyId(familyId).orElseThrow(
-                () -> new BusinessException(String.format("Family with id %s not found", familyId),
-                        ERROR_CODE.FAMILY_NOT_FOUND, HttpStatus.NOT_FOUND));
+        return accountsUserRepository.findAllByFamilyId(familyId)
+                .orElseThrow(() -> new BusinessException(String.format("Family with id %s not found", familyId),
+                                                             ERROR_CODE.FAMILY_NOT_FOUND, HttpStatus.NOT_FOUND));
     }
 
     @Override
     public List<User> getAllByFamilyIdAndUserRoleAndUserStatus(String familyId, USER_ROLE user_role, USER_STATUS userStatus) {
         log.debug("Request getAllByFamilyIdAndUserRoleAndUserStatus by familyId {} and userRole {}, userStatus {}",
-                familyId, user_role, userStatus);
+                    familyId, user_role, userStatus);
 
         return accountsUserRepository.findAllByFamilyIdAndUser_roleAndUser_status(familyId, user_role, userStatus).orElseThrow(
                 () -> new BusinessException(String.format("User with familyId %s, role %s and status %s not found",
-                        familyId, user_role, userStatus), USER_WITH_FAMILY_ID_AND_ROLE_AND_STATUS_NOT_FOUND, HttpStatus.NOT_FOUND)
+                                            familyId, user_role, userStatus), USER_NOT_FOUND, HttpStatus.NOT_FOUND)
         );
     }
 
@@ -64,9 +64,9 @@ public class UserServiceImpl implements UserService {
     public User getUserByUid(String uid) {
         log.debug("Request getUserByFirebaseId by uid {}", uid);
 
-        return accountsUserRepository.findByFirebaseId(uid).orElseThrow(
-                () -> new BusinessException(String.format("User with uid %s not found", uid),
-                        USER_NOT_FOUND, HttpStatus.NOT_FOUND));
+        return accountsUserRepository.findByFirebaseId(uid)
+                .orElseThrow(() -> new BusinessException(String.format("User with uid %s not found", uid),
+                                                            USER_NOT_FOUND, HttpStatus.NOT_FOUND));
     }
 
     @Transactional
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
     public boolean changeUserStatus(String uid, USER_STATUS newUserStatus) {
         User user = accountsUserRepository.findByFirebaseId(uid)
                 .orElseThrow(() -> new BusinessException(String.format("User with uid %s not found", uid),
-                        USER_NOT_FOUND, HttpStatus.NOT_FOUND));
+                                                            USER_NOT_FOUND, HttpStatus.NOT_FOUND));
 
         user.setUser_status(newUserStatus);
 
@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
     public boolean changeUserName(String uid, String newName) {
         User user = accountsUserRepository.findByFirebaseId(uid)
                 .orElseThrow(() -> new BusinessException(String.format("User with uid %s not found", uid),
-                        USER_NOT_FOUND, HttpStatus.NOT_FOUND));
+                                                            USER_NOT_FOUND, HttpStatus.NOT_FOUND));
         user.setName(newName);
         log.debug("Changed username from uId:{}", uid);
 
@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
     public boolean deleteFamilyMember(Long userId) {
         User user = accountsUserRepository.findUserById(userId)
                 .orElseThrow(() -> new BusinessException(String.format("User with id %s not found", userId),
-                        USER_NOT_FOUND, HttpStatus.NOT_FOUND));
+                                                            USER_NOT_FOUND, HttpStatus.NOT_FOUND));
         user.setUser_status(USER_STATUS.REMOVED);
         log.debug("Delete family member by id {}", userId);
 
@@ -135,17 +135,17 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllByFamilyIdAndUserRole(String familyId, USER_ROLE userRole) {
         log.debug("Request getAllByFamilyIdAndUserRole by familyId {} and userRole {}", familyId, userRole);
 
-        return accountsUserRepository.findAllByFamilyIdAndUser_role(familyId, userRole).orElseThrow(
-                () -> new BusinessException(String.format("User with familyId %s and role %s not found",
-                        familyId, userRole), USER_WITH_FAMILY_ID_AND_ROLE_NOT_FOUND, HttpStatus.NOT_FOUND));
+        return accountsUserRepository.findAllByFamilyIdAndUser_role(familyId, userRole)
+                .orElseThrow(() -> new BusinessException(String.format("User with familyId %s and role %s not found", familyId, userRole),
+                                                            USER_NOT_FOUND, HttpStatus.NOT_FOUND));
     }
 
     @Override
     public List<User> getAllByFamilyIdAndUserRoleWithAdmin(String familyId, USER_ROLE userRole) {
         log.debug("Request getAllByFamilyIdAndUserRoleWithAdmin by familyId {} and userRole {}", familyId, userRole);
 
-        return accountsUserRepository.findAllByFamilyIdAndUser_roleWithAdmin(familyId, userRole).orElseThrow(
-                () -> new BusinessException(String.format("User with familyId %s and role %s not found",
-                        familyId, userRole), USER_WITH_FAMILY_ID_AND_ROLE_NOT_FOUND, HttpStatus.NOT_FOUND));
+        return accountsUserRepository.findAllByFamilyIdAndUser_roleWithAdmin(familyId, userRole)
+                .orElseThrow(() -> new BusinessException(String.format("User with familyId %s and role %s not found",
+                                                            familyId, userRole), USER_NOT_FOUND, HttpStatus.NOT_FOUND));
     }
 }

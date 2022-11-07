@@ -27,8 +27,8 @@ public class TaskServiceImpl implements TaskService {
     public Task findByTitle(String title) {
         log.debug("Request findByTitle with title {}", title);
 
-        return taskRepository.findByTitle(title).orElseThrow(
-                () -> new BusinessException(String.format("Task with template %s not found", title), NOT_FOUND));
+        return taskRepository.findByTitle(title)
+                .orElseThrow(() -> new BusinessException(String.format("Task with template %s not found", title), NOT_FOUND));
     }
 
     @Override
