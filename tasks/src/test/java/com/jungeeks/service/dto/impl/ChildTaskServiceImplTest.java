@@ -139,4 +139,15 @@ class ChildTaskServiceImplTest {
 
         assertThrows(BusinessException.class, () -> childTaskService.saveTask(childNewTaskDtoWithTemplate));
     }
+
+    @Test
+    void saveTaskNegativeWithOutParents() {
+        when(authorizationService.getUser()).thenReturn(securityUserFirebase);
+        when(userService.getUserByUid(FIREBASE_ID)).thenReturn(child);
+        when(taskService.findByTitle(any())).thenReturn(task);
+        when(familyTaskService.save(familyTask)).thenReturn(familyTask);
+        when(userService.getAllByFamilyIdAndUserRoleWithAdmin(any(), any())).thenThrow(BusinessException.class);
+
+        assertThrows(BusinessException.class, () -> childTaskService.saveTask(childNewTaskDtoWithTemplate));
+    }
 }

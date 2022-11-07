@@ -131,6 +131,7 @@ class ParentTaskServiceImplTest {
         when(userService.getUserByUid(FIREBASE_ID)).thenReturn(parent);
         when(userService.getUserByUid(any())).thenReturn(child);
         when(taskService.findByTitle(any())).thenReturn(task);
+        when(userService.getAllByFamilyIdAndUserRole(any(), any())).thenReturn(childs);
         when(firebaseService.sendMessage(any(),any(), any(), any())).thenReturn(true);
 
         boolean save = parentTaskService.saveTask(parentNewTaskDtoWithTemplate);
@@ -166,6 +167,17 @@ class ParentTaskServiceImplTest {
         when(userService.getUserByUid(FIREBASE_ID)).thenReturn(parent);
         when(userService.getUserByUid(any())).thenReturn(child);
         when(taskService.findByTitle(any())).thenThrow(BusinessException.class);
+
+        assertThrows(BusinessException.class, () -> parentTaskService.saveTask(parentNewTaskDtoWithTemplate));
+    }
+
+    @Test
+    void saveTaskNegativeWithOutChilds() {
+        when(authorizationService.getUser()).thenReturn(securityUserFirebase);
+        when(userService.getUserByUid(FIREBASE_ID)).thenReturn(parent);
+        when(userService.getUserByUid(any())).thenReturn(child);
+        when(taskService.findByTitle(any())).thenReturn(task);
+        when(userService.getAllByFamilyIdAndUserRole(any(), any())).thenThrow(BusinessException.class);
 
         assertThrows(BusinessException.class, () -> parentTaskService.saveTask(parentNewTaskDtoWithTemplate));
     }
