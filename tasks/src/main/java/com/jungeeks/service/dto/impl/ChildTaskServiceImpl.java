@@ -99,8 +99,7 @@ public class ChildTaskServiceImpl implements ChildTaskService {
     private void sendMessageForUsersWithEnableNotification(List<User> parents, User child) {
         List<String> clientAppIds = parents.stream()
                 .filter(parent -> !parent.getParentNotifications().isAllOff() && parent.getParentNotifications().isNewRequest())
-                .flatMap(parent -> parent.getClientApps().stream())
-                .map(ClientApp::getAppId)
+                .flatMap(parent -> parent.getClientApps().stream().map(ClientApp::getAppId))
                 .collect(Collectors.toList());
         firebaseService.sendMessageForAll(clientAppIds, MESSAGE, child.getName());
     }

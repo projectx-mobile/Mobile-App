@@ -159,8 +159,7 @@ public class ParentTaskServiceImpl implements ParentTaskService {
     private void sendMessageForUsersWithEnableNewTaskNotification(List<User> childs, User parent) {
         List<String> clientAppIds = childs.stream()
                 .filter(child -> !child.getChildNotifications().isAllOff() && child.getChildNotifications().isNewTask())
-                .flatMap(child -> child.getClientApps().stream())
-                .map(ClientApp::getAppId)
+                .flatMap(child -> child.getClientApps().stream().map(ClientApp::getAppId))
                 .collect(Collectors.toList());
         firebaseService.sendMessageForAll(clientAppIds, MESSAGE, parent.getName());
     }
