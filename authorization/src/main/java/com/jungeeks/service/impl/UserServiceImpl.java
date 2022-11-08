@@ -2,13 +2,16 @@ package com.jungeeks.service.impl;
 
 import com.jungeeks.entity.ClientApp;
 import com.jungeeks.entity.User;
+import com.jungeeks.entity.enums.USER_STATUS;
 import com.jungeeks.exception.RegistrationFailedException;
+import com.jungeeks.exception.UserNotFoundException;
 import com.jungeeks.repository.UserRepository;
 import com.jungeeks.security.entity.SecurityUserFirebase;
 import com.jungeeks.service.SecurityService;
 import com.jungeeks.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
-@Service
+@Service("auth_userService")
 @Slf4j
 public class UserServiceImpl implements UserService {
 
@@ -24,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private SecurityService securityService;
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
+    public void setUserRepository(@Qualifier("auth_userRepository") UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -42,6 +45,7 @@ public class UserServiceImpl implements UserService {
             userDB = User.builder()
                     .firebaseId(user.getUid())
                     .email(user.getEmail())
+                    .user_status((USER_STATUS.ACTIVE))
                     .build();
             userRepository.save(userDB);
             log.debug("User with Uid:" + userDB.getFirebaseId() + " added to db");
@@ -79,6 +83,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkUserByContainsRegistrationToken() {
         User userDb = userRepository.findByFirebaseId(securityService.getUser().getUid()).orElse(null);
-        return Objects.nonNull(userDb.getClientApps());
+        return userDb.getClientApps().size()>0;
+    }
+
+    @Override
+    public boolean checkUserStatus(SecurityUserFirebase userFirebase) {
+        String uId = userFirebase.getUid();
+        User user = userRepository.findByFirebaseId(uId)
+                .orElseThrow(() -> new UserNotFoundException(String.format("User with uid %s not found", uId)));
+        return !user.getUser_status().equals(USER_STATUS.ACTIVE);
     }
 }

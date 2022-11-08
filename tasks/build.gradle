@@ -6,4 +6,12 @@ dependencies {
     implementation project(':accounts')
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'io.swagger:swagger-jaxrs:1.6.8'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.12'
+    implementation 'com.google.firebase:firebase-admin:9.0.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
 }

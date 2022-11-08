@@ -22,12 +22,4 @@ public class ParentNotification {
     private boolean newTaskStatus;
     private boolean newRequest;
     private boolean newReward;
-
-    @Enumerated(EnumType.STRING)
-    private NOTIFICATION_PERIOD notificationPeriod;
-
-    @ElementCollection
-    @CollectionTable(name="user_notification")
-    @MapKeyJoinColumn(name="user_id")
-    private Map<User, Boolean> userNotification;
 }

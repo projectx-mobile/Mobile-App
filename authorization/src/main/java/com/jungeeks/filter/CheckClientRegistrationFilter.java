@@ -3,7 +3,9 @@ package com.jungeeks.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jungeeks.entity.NoSecureUrl;
 import com.jungeeks.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+@Slf4j
 @Order(SecurityProperties.DEFAULT_FILTER_ORDER + 5)
 @Component
 public class CheckClientRegistrationFilter implements Filter {
@@ -26,6 +29,7 @@ public class CheckClientRegistrationFilter implements Filter {
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
+    @Qualifier("auth_userService")
     private UserService userService;
     @Autowired
     private NoSecureUrl noSecureUrl;

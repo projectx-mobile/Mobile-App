@@ -19,6 +19,7 @@ import java.util.List;
 public class FamilyTask {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

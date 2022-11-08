@@ -6,17 +6,9 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-/**
- * The type Authorization service.
- */
-@Service("utils_authorizationServiceImpl")
+@Service("utils-authorizationServiceImpl")
 public class AuthorizationServiceImpl implements AuthorizationService {
 
-    /**
-     * Gets user.
-     *
-     * @return the user
-     */
     public SecurityUserFirebase getUser() {
         SecurityUserFirebase securityUserFirebasePrincipal = null;
         SecurityContext securityContext = SecurityContextHolder.getContext();

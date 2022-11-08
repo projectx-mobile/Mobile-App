@@ -25,6 +25,7 @@ public class ChildNotification {
     private boolean confirmReward;
     private boolean penaltyAndBonus;
 
+    private boolean taskReminder;
     @Enumerated(EnumType.STRING)
     private NOTIFICATION_PERIOD notificationPeriod;
 }

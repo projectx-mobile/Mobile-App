@@ -6,7 +6,6 @@ plugins {
 }
 
 dependencies {
-    implementation project(':persistence')
     implementation project(':tasks')
     implementation project(':authorization')
     implementation project(':accounts')
@@ -14,6 +13,8 @@ dependencies {
     implementation project(':persistence')
     implementation project(':utils')
     implementation 'mysql:mysql-connector-java:8.0.30'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.liquibase:liquibase-core:4.15.0'
@@ -27,10 +28,31 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-mail:2.7.4'
     testImplementation 'com.google.firebase:firebase-admin:9.0.0'
-    testImplementation 'com.h2database:h2:2.1.214'
     testAnnotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
     testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    implementation 'io.swagger:swagger-jaxrs:1.6.6'
+    implementation 'com.amazonaws:aws-java-sdk-s3'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.11'
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.12.307')
+    testImplementation 'com.h2database:h2:2.1.214'
+}
+
+configurations {
+    liquibaseRuntime.extendsFrom runtimeClasspath
+}
+
+
+liquibase {
+    activities {
+        main {
+            changeLogFile "application/src/main/resources/db/changelog/db.changelog-master.yaml"
+            url "jdbc:mysql://127.0.0.1:3306/kids_app"
+            driver "com.mysql.cj.jdbc.Driver"
+            username "root"
+            password "12344321"
+        }
+    }
 }
 
 
