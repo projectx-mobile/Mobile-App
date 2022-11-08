@@ -39,4 +39,11 @@ public class FamilyTaskServiceImpl implements FamilyTaskService {
                 .orElseThrow(() -> new BusinessException(String.format("Task with id %s not found", taskId),
                                                             ERROR_CODE.TASK_NOT_FOUND, NOT_FOUND));
     }
+
+    @Override
+    public FamilyTask findByFamilyId(String familyId) {
+        log.debug("Request findById by familyId {}", familyId);
+
+        return familyTaskRepository.findByFamilyId(familyId);
+    }
 }

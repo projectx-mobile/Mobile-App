@@ -1,6 +1,7 @@
 package com.jungeeks.service.dto.impl;
 
 import com.jungeeks.dto.ChildNewTaskDto;
+import com.jungeeks.dto.TaskDto;
 import com.jungeeks.entity.ClientApp;
 import com.jungeeks.entity.FamilyTask;
 import com.jungeeks.entity.Task;
@@ -8,6 +9,7 @@ import com.jungeeks.entity.User;
 import com.jungeeks.entity.enums.TASK_STATUS;
 import com.jungeeks.entity.enums.TASK_TYPE;
 import com.jungeeks.entity.enums.USER_ROLE;
+import com.jungeeks.exception.InvalidRequestException;
 import com.jungeeks.security.service.AuthorizationService;
 import com.jungeeks.service.business.FirebaseService;
 import com.jungeeks.service.dto.ChildTaskService;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -102,6 +105,39 @@ public class ChildTaskServiceImpl implements ChildTaskService {
                 .flatMap(parent -> parent.getClientApps().stream().map(ClientApp::getAppId))
                 .collect(Collectors.toList());
         firebaseService.sendMessageForAll(clientAppIds, MESSAGE, child.getName());
+    }
+
+    public List<TaskDto> getAllTasksByUserId(Long userId) {
+        User authUser = userService.getUserByUid(getUid());
+        String authUserFamilyId = authUser.getFamily().getId();
+        User user = userService.getUserById(userId);
+        if (Objects.isNull(user) || !user.getFamily().getId().equals(authUserFamilyId)) {
+            log.warn("Invalid id param");
+            throw new InvalidRequestException("Invalid id parameter");
+        }
+//        return user.getFamily().getTasks().stream()
+//                .map(task -> TaskDto.builder()
+//                        .taskStatus(task.getTaskStatus())
+//                        .title(task.getTask().getTitle())
+//                        .rewardPoints(task.getRewardPoints())
+//                        .creation(task.getCreation())
+//                        .deadline(task.getDeadline())
+//                        .build())
+//                .toList();
+
+    }
+
+    public List<TaskDto> getAllTasksByUserUid() {
+        User user = userService.getUserByUid(authorizationService.getUser().getUid());
+//        return user.getFamily().getTasks().stream()
+//                .map(task -> TaskDto.builder()
+//                        .taskStatus(task.getTaskStatus())
+//                        .title(task.getTask().getTitle())
+//                        .rewardPoints(task.getRewardPoints())
+//                        .creation(task.getCreation())
+//                        .deadline(task.getDeadline())
+//                        .build())
+//                .toList();
     }
 
     private String getUid() {

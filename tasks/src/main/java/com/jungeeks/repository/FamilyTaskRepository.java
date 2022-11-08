@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FamilyTaskRepository extends JpaRepository<FamilyTask, Long> {
+    FamilyTask findByFamilyId(String familyId);
 }

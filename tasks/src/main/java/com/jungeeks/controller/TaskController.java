@@ -3,6 +3,7 @@ package com.jungeeks.controller;
 import com.jungeeks.dto.ChildNewTaskDto;
 import com.jungeeks.dto.ConfirmTaskDto;
 import com.jungeeks.dto.ParentNewTaskDto;
+import com.jungeeks.dto.TaskDto;
 import com.jungeeks.service.dto.ChildTaskService;
 import com.jungeeks.service.dto.ParentTaskService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/task")
 @RestController
@@ -47,5 +50,15 @@ public class TaskController {
     public ResponseEntity<HttpStatus> rejectTask(@RequestParam Long taskId) {
         parentTaskService.rejectTask(taskId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("child/list")
+    public ResponseEntity<List<TaskDto>> getFamilyTasks() {
+        return ResponseEntity.ok(childTaskService.getAllTasksByUserUid());
+    }
+
+    @PostMapping("child/list")
+    public ResponseEntity<List<TaskDto>> getFamilyTasks(@RequestParam(name = "userId") Long userId) {
+        return ResponseEntity.ok(childTaskService.getAllTasksByUserId(userId));
     }
 }
