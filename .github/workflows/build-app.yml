@@ -55,6 +55,10 @@ jobs:
           push: true
           tags: ${{ secrets.TMP_REGISTRY }}/${{ secrets.REPOSITORY_NAME }}:latest
 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: dockerise
+    steps:
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
@@ -62,7 +66,7 @@ jobs:
           username: ${{ secrets.TMP_SSH_USER }}
           password: ${{ secrets.TMP_SSH_PASS }}
           port: ${{ secrets.TMP_SSH_PORT }}
-          script: docker-compose -f ${{ secrets.PROJECT_PATH }} pull && docker-compose -f ${{ secrets.PROJECT_PATH }} up -d
+          script: sudo ${{ secrets.PROJECT_PATH }}
       
       #Temporary disabled while updating aws credentials
       #
