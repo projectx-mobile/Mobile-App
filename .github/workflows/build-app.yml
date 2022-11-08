@@ -61,7 +61,7 @@ jobs:
           host: ${{ secrets.TMP_SSH_HOST }}
           username: ${{ secrets.TMP_SSH_USER }}
           password: ${{ secrets.TMP_SSH_PASS }}
-          port: ${{ secrets.PORT }}
+          port: ${{ secrets.TMP_SSH_PORT }}
           script: docker-compose -f ${{ secrets.PROJECT_PATH }} pull && docker-compose -f ${{ secrets.PROJECT_PATH }} up -d
       
       #Temporary disabled while updating aws credentials
