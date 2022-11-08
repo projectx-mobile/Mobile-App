@@ -52,6 +52,7 @@ public class SecurityConfig {
                         "/swagger",
                         "/test/**",
                         "/registration/email/**",
+                        "/account/tasks/**",
                         "favicon.ico"
                 ))
                 .build();

@@ -12,6 +12,7 @@ dependencies {
     implementation project(':accounts')
     implementation project(':rewards')
     implementation project(':persistence')
+    implementation project(':utils')
     implementation 'mysql:mysql-connector-java:8.0.30'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
