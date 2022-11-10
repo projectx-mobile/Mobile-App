@@ -60,5 +60,5 @@ public class TaskController {
     @PostMapping("child/list")
     public ResponseEntity<List<TaskDto>> getFamilyTasks(@RequestParam(name = "userId") Long userId) {
         return ResponseEntity.ok(childTaskService.getAllTasksByUserId(userId));
-    }
+    }//TODO: объедини с предыдущим, если userId ечть в реквесте то выполняй этот метод, если нет то тот (проверка на null) UserPhotoController для примера в модуле accounts
 }

@@ -111,9 +111,9 @@ public class ChildTaskServiceImpl implements ChildTaskService {
         User authUser = userService.getUserByUid(getUid());
         String authUserFamilyId = authUser.getFamily().getId();
         User user = userService.getUserById(userId);
-        if (Objects.isNull(user) || !user.getFamily().getId().equals(authUserFamilyId)) {
+        if (Objects.isNull(user) || !user.getFamily().getId().equals(authUserFamilyId)) {//TODO: не надо проверять на null (внутри уже есть проверка)
             log.warn("Invalid id param");
-            throw new InvalidRequestException("Invalid id parameter");
+            throw new InvalidRequestException("Invalid id parameter");//TODO: посмотри как у нас сделан выброс exception (в модуле persistence есть специальный класс BusinessException)
         }
 //        return user.getFamily().getTasks().stream()
 //                .map(task -> TaskDto.builder()
