@@ -1,5 +1,5 @@
 on: 
-  push:
+  pull_request:
     branches: [ "master", "stage", "develop" ]
 name: build application
 jobs:
@@ -22,83 +22,3 @@ jobs:
         with:
           name: "Output artifacts"
           path: application/build/libs/*
-  dockerise:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-    #   - name: Checkout
-    #     uses: actions/checkout@v2
-    #   - name: Retrieve saved artifacts
-    #     uses: actions/download-artifact@v2
-    #     with:
-    #       name: "Output artifacts"
-    #       path: application/build/libs/
-    #   - run : ls -l application/build/libs
-  #     - name: Log in to the Container registry
-  #       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-  #       with:
-  #         registry: ${{ secrets.TMP_REGISTRY }}
-  #         username: ${{ secrets.TMP_REGISTRY_LOGIN }}
-  #         password: ${{ secrets.TMP_REGISTRY_PASS }}
-
-  #     - name: Extract metadata (tags, labels) for Docker
-  #       id: meta
-  #       uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-  #       with:
-  #         images: ${{ secrets.TMP_REGISTRY }}/${{ secrets.REPOSITORY_NAME }}
-
-  #     - name: Build and push Docker image
-  #       uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-  #       with:
-  #         file: docker/workflow.Dockerfile
-  #         context: .
-  #         push: true
-  #         tags: ${{ secrets.TMP_REGISTRY }}/${{ secrets.REPOSITORY_NAME }}:latest
-
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   needs: dockerise
-  #   steps:
-  #     - name: executing remote ssh commands using password
-  #       uses: appleboy/ssh-action@master
-  #       with:
-  #         host: ${{ secrets.TMP_SSH_HOST }}
-  #         username: ${{ secrets.TMP_SSH_USER }}
-  #         password: ${{ secrets.TMP_SSH_PASS }}
-  #         port: ${{ secrets.TMP_SSH_PORT }}
-  #         script: sudo ${{ secrets.PROJECT_PATH }}
-      
-      #Temporary disabled while updating aws credentials
-      #
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
-        with:
-          aws-access-key-id: ${{ secrets.AWS_REGISTRY_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_REGISTRY_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@aaf69d68aa3fb14c1d5a6be9ac61fe15b48453a2
-
-      - name: Build, tag, and push image to Amazon ECR
-        id: build-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.REPOSITORY_NAME }}
-          IMAGE_TAG: ${{ github.ref_name }}
-        run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f docker/workflow.Dockerfile . 
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-      
-      - name: Scan Docker image
-        id: docker-scan
-        uses: alexjurkiewicz/ecr-scan-image@v1.7.0
-        with:
-          repository: ${{ secrets.REPOSITORY_NAME }}
-          tag:  ${{ github.ref_name }}
-          fail_threshold: critical
-      - run: echo "${{ steps.docker-scan.outputs.total }} total vulnerabilities."
-
-      
