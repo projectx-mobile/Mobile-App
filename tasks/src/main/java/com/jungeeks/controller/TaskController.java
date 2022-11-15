@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RequestMapping("/task")
 @RestController
@@ -53,12 +54,13 @@ public class TaskController {
     }
 
     @GetMapping("child/list")
-    public ResponseEntity<List<TaskDto>> getFamilyTasks() {
-        return ResponseEntity.ok(childTaskService.getAllTasksByUserUid());
+    public ResponseEntity<List<TaskDto>> getFamilyTasks(@RequestParam(name = "userId", required = false) Long userId) {
+        if (Objects.isNull(userId)) {
+            return ResponseEntity.ok()
+                    .body(childTaskService.getAllTasksByUserUid());
+        } else {
+            return ResponseEntity.ok()
+                    .body(childTaskService.getAllTasksByUserId(userId));
+        }
     }
-
-    @PostMapping("child/list")
-    public ResponseEntity<List<TaskDto>> getFamilyTasks(@RequestParam(name = "userId") Long userId) {
-        return ResponseEntity.ok(childTaskService.getAllTasksByUserId(userId));
-    }//TODO: объедини с предыдущим, если userId ечть в реквесте то выполняй этот метод, если нет то тот (проверка на null) UserPhotoController для примера в модуле accounts
 }
