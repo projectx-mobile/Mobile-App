@@ -1,0 +1,17 @@
+drop table sec_user;
+drop table user_photo;
+drop table family;
+drop table family_task_user;
+drop table family_task;
+drop table task;
+drop table family_task_photo;
+drop table category;
+drop table family_rewards_requests;
+drop table family_rewards;
+drop table reward;
+drop table reward_photo;
+drop table reward_request;
+drop table reward_request_photo;
+drop table client_app;
+drop table child_notification;
+drop table parent_notification;
