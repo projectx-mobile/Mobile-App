@@ -1,11 +1,11 @@
 package com.jungeeks.service.dto.impl;
 
 import com.jungeeks.dto.ChildNewTaskDto;
+import com.jungeeks.dto.GetTaskDto;
 import com.jungeeks.entity.ClientApp;
 import com.jungeeks.entity.FamilyTask;
 import com.jungeeks.entity.Task;
 import com.jungeeks.entity.User;
-import com.jungeeks.entity.enums.TASK_STATUS;
 import com.jungeeks.entity.enums.TASK_TYPE;
 import com.jungeeks.entity.enums.USER_ROLE;
 import com.jungeeks.security.service.AuthorizationService;
@@ -18,9 +18,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.jungeeks.entity.enums.TASK_STATUS.*;
 
 @Service
 @Slf4j
@@ -62,6 +65,19 @@ public class ChildTaskServiceImpl implements ChildTaskService {
         return true;
     }
 
+    @Override
+    public List<GetTaskDto> getTasksByDate(LocalDate date) {
+        User user = userService.getUserByUid(getUid());
+        log.debug("Find user with id {}", user.getId());
+
+        LocalDateTime atStartOfDay = date.atStartOfDay();
+        LocalDateTime nextStartOfDay = date.plusDays(1).atStartOfDay();
+
+        List<FamilyTask> tasksByDate = familyTaskService.findAllByDate(atStartOfDay, nextStartOfDay);
+
+        return mapFamilyTaskToGetTaskDto(tasksByDate);
+    }
+
 
     private void saveFamilyTask(ChildNewTaskDto childNewTaskDto, User user) {
         FamilyTask familyTask = mapChildTaskDtoToFamilyTask(childNewTaskDto, user);
@@ -92,7 +108,7 @@ public class ChildTaskServiceImpl implements ChildTaskService {
                 .author(user)
                 .penaltyPoints(0L)
                 .family(user.getFamily())
-                .taskStatus(TASK_STATUS.PENDING)
+                .taskStatus(PENDING)
                 .build();
     }
 
@@ -106,5 +122,21 @@ public class ChildTaskServiceImpl implements ChildTaskService {
 
     private String getUid() {
         return authorizationService.getUser().getUid();
+    }
+
+    private List<GetTaskDto> mapFamilyTaskToGetTaskDto(List<FamilyTask> familyTasks) {
+        log.debug("Mapping list familyTask to list getTaskDto");
+
+        return familyTasks.stream()
+                .filter(task -> !task.getTaskStatus().equals(REJECT) && !task.getTaskStatus().equals(NOT_ACTIVE))
+                .map((task -> (GetTaskDto.builder()
+                                        .id(task.getId())
+                                        .title(task.getTask().getTitle())
+                                        .penaltyPoints(task.getPenaltyPoints())
+                                        .rewardPoints(task.getRewardPoints())
+                                        .deadLine(task.getDeadline())
+                                        .taskStatus(task.getTaskStatus())
+                                        .build())))
+                .toList();
     }
 }

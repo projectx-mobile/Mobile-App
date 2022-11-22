@@ -11,39 +11,32 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/task")
+@RequestMapping("/task/parent")
 @RestController
 @Slf4j
-public class TaskController {
+public class ParentTaskController {
 
-    private final ChildTaskService childTaskService;
     private final ParentTaskService parentTaskService;
 
     @Autowired
-    public TaskController(ChildTaskService taskService, ParentTaskService parentTaskService) {
-        this.childTaskService = taskService;
+    public ParentTaskController(ParentTaskService parentTaskService) {
         this.parentTaskService = parentTaskService;
     }
 
-    @PostMapping("/child/new")
-    public ResponseEntity<HttpStatus> saveNewTask(@RequestBody ChildNewTaskDto childNewTaskDto) {
-        childTaskService.saveTask(childNewTaskDto);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
-    @PostMapping("/parent/new")
+    @PostMapping("/new")
     public ResponseEntity<HttpStatus> saveNewTask(@RequestBody ParentNewTaskDto parentNewTaskDto) {
         parentTaskService.saveTask(parentNewTaskDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/parent/confirm")
+    @PostMapping("/confirm")
     public ResponseEntity<HttpStatus> confirmTask(@RequestBody ConfirmTaskDto confirmTaskDto) {
         parentTaskService.confirmTask(confirmTaskDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/parent/reject")
+    @PostMapping("/reject")
     public ResponseEntity<HttpStatus> rejectTask(@RequestParam Long taskId) {
         parentTaskService.rejectTask(taskId);
         return new ResponseEntity<>(HttpStatus.OK);
