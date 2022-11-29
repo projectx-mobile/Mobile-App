@@ -3,7 +3,7 @@ on:
     branches: [ "master", "stage", "develop" ]
 name: upload image to aws
 jobs:
-  dockerise:
+  build-image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,3 +35,16 @@ jobs:
           tag:  ${{ github.ref_name }}
           fail_threshold: critical
       - run: echo "${{ steps.docker-scan.outputs.total }} total vulnerabilities."
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: update host image 
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_HOST_USERNAME }}
+          password: ${{ secrets.DEPLOY_HOST_PASSWORD }}
+          port: ${{ secrets.DEPLOY_HOST_PORT }}
+          script: | 
+            sudo docker-compose -f ${{ secrets.path }} pull
+            sudo docker-compose -f ${{ secrets.path }} up -d --remove-orphans
