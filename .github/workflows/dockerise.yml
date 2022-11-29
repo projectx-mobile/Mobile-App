@@ -36,6 +36,7 @@ jobs:
           fail_threshold: critical
       - run: echo "${{ steps.docker-scan.outputs.total }} total vulnerabilities."
   deploy:
+    needs: build-image
     runs-on: ubuntu-latest
     steps:
       - name: update host image 
